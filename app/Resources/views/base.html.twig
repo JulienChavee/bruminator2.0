@@ -1,13 +1,146 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8" />
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
-        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
-    </body>
+<head>
+    <meta charset="UTF-8" />
+    <title>{% block title %}Bruminator{% endblock %}</title>
+    {% block stylesheets %}
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.4/css/bootstrap.min.css" integrity="sha384-2hfp1SzUoho7/TsGGGDaFdsuuDL0LX2hnUp6VkX3CUQ2K4K+xjboZdsXyp4oUHZj" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+    {% endblock %}
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+</head>
+<body>
+{% block menu %}
+    <nav class="navbar navbar-light bg-faded navbar-full navbar-static-top">
+        <div class="container">
+            <a class="navbar-brand" href="{{ path('main_default_index') }}">Bruminator</a>
+        </div>
+    </nav>
+{% endblock %}
+
+<div class="container m-t-1">
+    {% block alert_sucess %}
+        <div class="modal fade modal_alert_success" tabindex="-1" role="dialog" aria-labelledby="modalAlertSuccess" aria-hidden="true">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title">Succès</h4>
+                    </div>
+
+                    <div class="modal-body">
+                        <i class="fa fa-check text-success"></i> Action correctement effectuée
+                        <div class="modal-body-more-info text-muted"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endblock %}
+
+    {% block alert_error %}
+        <div class="modal fade modal_alert_error" tabindex="-1" role="dialog" aria-labelledby="modalAlertSuccess" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title">Erreur</h4>
+                    </div>
+
+                    <div class="modal-body">
+                        <i class="fa fa-times text-danger"></i> Une erreur s'est produite
+                        <div class="modal-body-more-info text-muted"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endblock %}
+
+    {% block alert_confirmation %}
+        <div class="modal fade modal_alert_confirmation" tabindex="-1" role="dialog" aria-labelledby="modalAlertSuccess" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title">Demande de confirmation</h4>
+                    </div>
+
+                    <div class="modal-body">
+                        Êtes-vous sûr de vouloir effectuer cette action ?
+                        <div class="modal-body-more-info text-muted"></div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger-outline modal-confirmation-no" data-dismiss="modal">Non</button>
+                        <button type="button" class="btn btn-primary-outline modal-confirmation-yes" data-dismiss="modal">Oui</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endblock %}
+
+    {% if not app.user %}
+        <div class="modal fade modal_connect" tabindex="-1" role="dialog" aria-labelledby="modalAlertSuccess" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    <ol class="breadcrumb">
+        {% block breadcrumb %}
+            {% if app.request.get('_route') == 'main_default_index' %}
+                <li class="breadcrumb-item active"><i class="fa fa-home"></i> Accueil</li>
+            {% else %}
+                <li class="breadcrumb-item"><a href="{{ path('main_default_index') }}"><i class="fa fa-home"></i> Accueil</a></li>
+            {% endif %}
+        {% endblock %}
+    </ol>
+
+    {% block alert %}
+        {% for flashType in app.session.flashBag.keys %}
+            <div class="alert alert-{{ flashType }}">
+                {% for flashMessage in app.session.flashBag.get(flashType) %}
+                    {{ flashMessage }}
+                    {% if not loop.last %}
+                        <br>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        {% endfor %}
+    {% endblock %}
+
+    {% block body %}
+
+    {% endblock %}
+</div>
+
+{% block javascripts %}
+    <script   src="https://code.jquery.com/jquery-3.1.0.min.js"   integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s="   crossorigin="anonymous"></script>
+    <script   src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"   integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E="   crossorigin="anonymous"></script>
+
+    {% javascripts '@MainBundle/Resources/assets/js/tether.min.js' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.4/js/bootstrap.min.js" integrity="sha384-VjEeINv9OSwtWFLAtmc4JCtEJXXBub00gtSnszmspDLCtC0I4z4nqz7rEFbIZLLU" crossorigin="anonymous"></script>
+
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        });
+
+        $(function () {
+            $('[data-toggle="popover"]').popover()
+        });
+    </script>
+{% endblock %}
+</body>
 </html>

@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} • Créer un compte{% endblock %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+    <li class="breadcrumb-item active">Créer un compte</li>
+{% endblock %}
+
+{% block body %}
+    <h1>Créer un compte</h1>
+    <hr>
+
+    <div class="row">
+        {% include 'UserBundle:Registration:register_content.html.twig' %}
+    </div>
+{% endblock %}

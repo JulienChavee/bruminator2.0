@@ -1,0 +1,64 @@
+{% form_theme form 'MainBundle:Form:form_errors.html.twig' %}
+
+<div class="col-xs-7">
+    {{ form_start(form, {'method': 'post', 'action': path('fos_user_registration_register'), 'attr': {'class': 'fos_user_registration_register'}}) }}
+
+    <fieldset class="form-group row {% if form.username.vars.errors|length > 0 %}has-danger{% endif %}">
+        <label class="col-sm-3 col-form-label">Pseudo</label>
+        <div class="col-sm-9">
+            {{ form_widget(form.username, {'attr': {'class': 'form-control', 'placeholder':'Pseudo'}}) }}
+            <div class="form-control-feedback">{{ form_errors(form.username) }}</div>
+            <small class="form-text text-muted">
+                Veuillez à indiquer votre pseudo sur lequel nous pourrons vous contacter en jeu
+            </small>
+        </div>
+    </fieldset>
+
+    <fieldset class="form-group row {% if form.email.vars.errors|length > 0 %}has-danger{% endif %}">
+        <label class="col-sm-3 col-form-label">Email</label>
+        <div class="col-sm-9">
+            {{ form_widget(form.email, {'attr': {'class': 'form-control', 'placeholder':'Email'}}) }}
+            <div class="form-control-feedback">{{ form_errors(form.email) }}</div>
+            <small class="form-text text-warning">
+                <b><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Il est préférable de choisir une adresse email qui n'est pas liée à un compte Ankama</b>
+            </small>
+        </div>
+    </fieldset>
+
+    <fieldset class="form-group row {% if form.plainPassword.first.vars.errors|length > 0 %}has-danger{% endif %}">
+        <label class="col-sm-3 col-form-label">Mot de passe</label>
+        <div class="col-sm-9">
+            {{ form_widget(form.plainPassword.first, {'attr': {'class': 'form-control', 'placeholder':'Mot de passe'}}) }}
+            <div class="form-control-feedback">{{ form_errors(form.plainPassword.first) }}</div>
+            <small class="form-text text-warning">
+                <b><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Il est préférable de choisir un mot de passe différent de celui de votre compte Ankama</b>
+            </small>
+            <small class="form-text text-muted">Le mot de passe doit posséder minimum 6 caractères</small>
+        </div>
+    </fieldset>
+
+    <fieldset class="form-group row {% if form.plainPassword.second.vars.errors|length > 0 %}has-danger{% endif %}">
+        <label class="col-sm-3 col-form-label">Vérification du mot de passe</label>
+        <div class="col-sm-9">
+            {{ form_widget(form.plainPassword.second, {'attr': {'class': 'form-control', 'placeholder':'Vérification du mot de passe'}}) }}
+            <div class="form-control-feedback">{{ form_errors(form.plainPassword.second) }}</div>
+        </div>
+    </fieldset>
+
+    <div class="offset-sm-3">
+        <input type="submit" class="btn btn-primary" value="Créer le compte" />
+    </div>
+
+    {{ form_end(form) }}
+</div>
+
+<div class="col-xs-5">
+    <h3>Informations</h3>
+    <hr>
+
+    Ce compte vous permet de gérer votre équipe, vérifier vos horaires de match, ... pour le tournoi du <b>Bruminator</b>.<br>
+    <br>
+    Nous nous efforçons à vous garantir la sécurité maximale de votre compte et de vos informations personnelles. Ainsi, vos mots de passe sont <b>cryptés</b> afin qu'ils ne puissent <b>pas être retrouvés</b>.<br>
+    <br>
+    Votre adresse email est utilisée afin de vous envoyer des <b>informations utiles</b> relatives au tournoi. Celle-ci n'est pas visible par les autres membres.
+</div>
