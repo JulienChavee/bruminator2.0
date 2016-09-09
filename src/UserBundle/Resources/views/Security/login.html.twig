@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ parent() }} • Connexion
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+    {% stylesheets output='css/signin.css' '@UserBundle/Resources/public/css/signin.css' %}
+        <link rel="stylesheet" href="{{ asset_url }}">
+    {% endstylesheets %}
+{% endblock %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+    <li class="breadcrumb-item active">Connexion</li>
+{% endblock %}
+
+{% block body %}
+    {% if error %}
+        <div class="alert alert-danger">
+            {{ error.messageKey|replace({"Invalid credentials": "Pseudo et/ou mot de passe incorrect"}) }}
+        </div>
+    {% endif %}
+
+    <form action="{{ path("fos_user_security_check") }}" class="form-signin" method="post">
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+
+        <h2 class="form-signin-heading">Se connecter</h2>
+
+        <input type="text" id="username" name="_username" class="form-control" placeholder="Pseudo" value="{{ last_username }}" required="required" />
+
+        <input type="password" id="password" name="_password" class="form-control" placeholder="Mot de passe" required="required" />
+
+        <div class="checkbox">
+            <label for="remember_me">
+                <input type="checkbox" id="remember_me" name="_remember_me" checked />
+                Se souvenir de moi
+            </label>
+        </div>
+
+        <input type="submit" id="_submit" name="_submit" class="btn btn-lg btn-primary btn-block" value="Se connecter" />
+    </form>
+{% endblock %}

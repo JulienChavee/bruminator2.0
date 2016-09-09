@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} • Inscription confirmée{% endblock %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+    <li class="breadcrumb-item active">Inscription confirmée</li>
+{% endblock %}
+
+{% block body %}
+    <h1>Inscription réussie !</h1>
+    <hr>
+
+    <div class="text-xs-center">
+        {% image '@UserBundle/Resources/public/images/inscription_ok.png' output='/images/inscription_ok.png' %}
+            <img class="m-t-1" src="{{ asset_url }}" alt="Inscription réussie"/>
+        {% endimage %}
+    </div>
+{% endblock %}

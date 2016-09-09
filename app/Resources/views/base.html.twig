@@ -14,6 +14,21 @@
     <nav class="navbar navbar-light bg-faded navbar-full navbar-static-top">
         <div class="container">
             <a class="navbar-brand" href="{{ path('main_default_index') }}">Bruminator</a>
+
+            <ul class="nav navbar-nav pull-xs-right">
+                {% if app.user %}
+                    <li class="nav-item {% if app.request.attributes.get('_route') matches '{^user_.*$}' or app.request.attributes.get('_route') matches '{^team_(?!front).*$}' %}active{% endif %} dropdown">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user"></i> {{ app.user.username }}</a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="">Inscription d'équipe</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="{{ path('fos_user_security_logout') }}">Se déconnecter</a>
+                        </div>
+                    </li>
+                {% else %}
+                    <a href="{{ path('fos_user_registration_register') }}" class="btn btn-success">S'inscrire</a>
+                    <button class="btn btn-outline-primary" data-toggle="modal" data-target=".modal_connect">Se connecter</button>
+                {% endif %}
         </div>
     </nav>
 {% endblock %}
@@ -88,7 +103,7 @@
         <div class="modal fade modal_connect" tabindex="-1" role="dialog" aria-labelledby="modalAlertSuccess" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
-
+                    {% include 'UserBundle::loginpopup.html.twig' %}
                 </div>
             </div>
         </div>
@@ -126,7 +141,7 @@
     <script   src="https://code.jquery.com/jquery-3.1.0.min.js"   integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s="   crossorigin="anonymous"></script>
     <script   src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"   integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E="   crossorigin="anonymous"></script>
 
-    {% javascripts '@MainBundle/Resources/assets/js/tether.min.js' %}
+    {% javascripts '@MainBundle/Resources/public/js/tether.min.js' %}
         <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
 
