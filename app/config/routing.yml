@@ -1,7 +1,7 @@
 team:
     resource: "@TeamBundle/Controller/"
     type:     annotation
-    prefix:   /
+    prefix:   /team
 
 main:
     resource: "@MainBundle/Controller/"
@@ -15,4 +15,7 @@ user:
 
 fos_user:
     resource: "@FOSUserBundle/Resources/config/routing/all.xml"
+
+fos_js_routing:
+    resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
 

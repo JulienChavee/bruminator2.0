@@ -1,0 +1,102 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ parent() }} • Team • Inscription
+{% endblock %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+    <li class="breadcrumb-item"><a href="{{ path('team_homepage') }}">Team</a></li>
+    <li class="breadcrumb-item active">Création</li>
+{% endblock %}
+
+{% block body %}
+
+    <h1>Inscription de mon équipe</h1>
+    <hr>
+
+    <div class="row">
+        <div class="col-md-6 m-t-1">
+            <fieldset class="form-group row">
+                <label class="col-sm-4 col-form-label">Nom de l'équipe</label>
+                <div class="col-sm-8">
+                    <input id="team_name" type="text" class="form-control" placeholder="Nom de l'équipe">
+                    <div class="form-control-feedback"></div>
+                    <small class="form-text text-muted">
+                        Veuillez choisir un nom pronçable, « Team zgyrrrjjdhfbi » sera refusé
+                    </small>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+
+    <div class="card-group m-t-2">
+        {% for i in 1..4 %}
+            <div class="card card-outline-secondary col-md-3">
+                <div class="card-block">
+                    <h3 class="card-title">Joueur {{ i }}</h3>
+                    <fieldset class="form-group">
+                        <label>Pseudo <sup class="text-danger"><i class="fa fa-asterisk" aria-hidden="true"></i></sup></label>
+                            <input id="player_{{ i }}" type="text" class="form-control" placeholder="Pseudo du joueur {{ i }}">
+                            <div class="form-control-feedback"></div>
+                    </fieldset>
+
+                    <fieldset class="form-group">
+                        <label>Niveau <sup class="text-danger"><i class="fa fa-asterisk" aria-hidden="true"></i></sup></label>
+                        <input id="player_level_{{ i }}" type="number" class="form-control" min="185" max="200" placeholder="Niveau du joueur {{ i }}">
+                        <div class="form-control-feedback"></div>
+                    </fieldset>
+
+                    <fieldset class="form-group">
+                        <label>Classe <sup class="text-danger"><i class="fa fa-asterisk" aria-hidden="true"></i></sup></label>
+                        <select id="player_class_{{ i }}" class="custom-select form-control">
+                            <option disabled selected>Sélectionnez une classe</option>
+                            {% for class in classes %}
+                                <option value="{{ class.id }}">{{ class.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </fieldset>
+
+                    <hr>
+
+                    <fieldset class="form-group m-t-1">
+                        <label>Remplaçant <small class="text-muted">(optionnel)</small></label>
+                        <input id="player_remplacant_{{ i }}" type="text" class="form-control" placeholder="Pseudo du remplaçant {{ i }}">
+                        <div class="form-control-feedback"></div>
+                    </fieldset>
+
+                    <fieldset class="form-group m-t-1">
+                        <label>Niveau <small class="text-muted">(optionnel)</small></label>
+                        <input id="player_remplacant_level_{{ i }}" type="text" class="form-control" placeholder="Niveau du remplaçant {{ i }}">
+                        <div class="form-control-feedback"></div>
+                    </fieldset>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="row m-t-2">
+        <div class="col-md-6">
+            <fieldset class="form-group">
+                <label>Disponibilités <sup class="text-danger"><i class="fa fa-asterisk" aria-hidden="true"></i></sup></label>
+                <textarea id="team_disponibilite" class="form-control" rows="5"></textarea>
+                <small class="form-text text-muted">
+                    Entrez ici vos disponibilités ainsi que vos remarques (serveur d'origine si migrant, ...)
+                </small>
+            </fieldset>
+        </div>
+    </div>
+
+    <button class="btn btn-primary btn-lg addTeam">Inscrire l'équipe</button>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {% javascripts output='js/compiled/team/registration.js'
+        '@TeamBundle/Resources/public/js/team.js'
+    %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}

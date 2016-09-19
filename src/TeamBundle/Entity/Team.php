@@ -3,6 +3,7 @@
 namespace TeamBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Team
@@ -24,7 +25,8 @@ class Team
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=255)
+     * @ORM\Column(name="name", type="string", length=255, unique=true)
+     * @Assert\NotBlank(message="Le nom de l'équipe ne peut pas être vide")
      */
     private $name;
 

@@ -12,12 +12,30 @@
 <body>
 {% block menu %}
     <nav class="navbar navbar-light bg-faded navbar-full navbar-static-top">
-        <div class="container">
+        <button class="navbar-toggler hidden-sm-up" type="button" data-toggle="collapse" data-target="#navCollapsing" aria-controls="exCollapsingNavbar2" aria-expanded="false" aria-label="Toggle navigation">
+            &#9776;
+        </button>
+        <div class="container collapse navbar-toggleable-xs" id="navCollapsing">
             <a class="navbar-brand" href="{{ path('main_default_index') }}">Bruminator</a>
+
+            <ul class="nav navbar-nav">
+                {% if app.user %}
+                    <li class="nav-item dropdown {% if app.request.attributes.get('_route') matches '{^team_(?!front).*$}' %}active{% endif %}">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Mon équipe</a>
+                        <div class="dropdown-menu">
+                            {% if app.user.team %}
+                                <a class="dropdown-item" href="#">Action</a>
+                            {% else %}
+                                <a class="dropdown-item" href="{{ path('team_registration') }}">Inscription</a>
+                            {% endif %}
+                        </div>
+                    </li>
+                {% endif %}
+            </ul>
 
             <ul class="nav navbar-nav pull-xs-right">
                 {% if app.user %}
-                    <li class="nav-item {% if app.request.attributes.get('_route') matches '{^user_.*$}' or app.request.attributes.get('_route') matches '{^team_(?!front).*$}' %}active{% endif %} dropdown">
+                    <li class="nav-item {% if app.request.attributes.get('_route') matches '{^user_.*$}' %}active{% endif %} dropdown">
                         <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user"></i> {{ app.user.username }}</a>
                         <div class="dropdown-menu">
                             <a class="dropdown-item" href="">Inscription d'équipe</a>
@@ -55,7 +73,7 @@
     {% endblock %}
 
     {% block alert_error %}
-        <div class="modal fade modal_alert_error" tabindex="-1" role="dialog" aria-labelledby="modalAlertSuccess" aria-hidden="true">
+        <div class="modal fade modal_alert modal_alert_error" tabindex="-1" role="dialog" aria-labelledby="modalAlertSuccess" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -141,6 +159,9 @@
     <script   src="https://code.jquery.com/jquery-3.1.0.min.js"   integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s="   crossorigin="anonymous"></script>
     <script   src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"   integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E="   crossorigin="anonymous"></script>
 
+    <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+    <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
+
     {% javascripts '@MainBundle/Resources/public/js/tether.min.js' %}
         <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
@@ -154,6 +175,10 @@
 
         $(function () {
             $('[data-toggle="popover"]').popover()
+        });
+
+        $('.modal_alert').on('hide.bs.modal', function() {
+            $('.modal-body-more-info').empty();
         });
     </script>
 {% endblock %}

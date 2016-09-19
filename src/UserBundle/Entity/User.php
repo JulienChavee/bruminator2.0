@@ -18,4 +18,28 @@ class User extends BaseUser
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
+
+    /**
+     * @var \TeamBundle\Entity\Team
+     *
+     * @ORM\ManyToOne(targetEntity="TeamBundle\Entity\Team")
+     * @ORM\JoinColumn(name="team", referencedColumnName="id")
+     */
+    private $team;
+
+    /**
+     * @return mixed
+     */
+    public function getTeam()
+    {
+        return $this->team;
+    }
+
+    /**
+     * @param mixed $team
+     */
+    public function setTeam($team)
+    {
+        $this->team = $team;
+    }
 }

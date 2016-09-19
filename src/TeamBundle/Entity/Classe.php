@@ -49,6 +49,13 @@ class Classe
      */
     private $points;
 
+    /**
+     * @var string $bannedClass
+     *
+     * @ORM\Column(name="bannedClass", type="string")
+     */
+    private $bannedClass;
+
 
     /**
      * Get id
@@ -155,5 +162,28 @@ class Classe
     {
         return $this->points;
     }
-}
 
+    /**
+     * Set bannedClass
+     *
+     * @param string $bannedClass
+     *
+     * @return Classe
+     */
+    public function setBannedClass($bannedClass)
+    {
+        $this->bannedClass = $bannedClass;
+
+        return $this;
+    }
+
+    /**
+     * Get bannedClass
+     *
+     * @return string
+     */
+    public function getBannedClass()
+    {
+        return $this->bannedClass;
+    }
+}

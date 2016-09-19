@@ -3,6 +3,7 @@
 namespace TeamBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Player
@@ -25,6 +26,7 @@ class Player
      * @var string
      *
      * @ORM\Column(name="pseudo", type="string", length=255, unique=true)
+     * @Assert\NotBlank(message="Le nom du joueur ne peut pas être vide")
      */
     private $pseudo;
 
@@ -32,6 +34,7 @@ class Player
      * @var int
      *
      * @ORM\Column(name="level", type="integer")
+     * @Assert\NotBlank(message="Le niveau du joueur ne peut pas être vide")
      */
     private $level;
 
@@ -40,6 +43,7 @@ class Player
      *
      * @ORM\ManyToOne(targetEntity="TeamBundle\Entity\Classe")
      * @ORM\JoinColumn(name="classe", referencedColumnName="id")
+     * @Assert\NotNull(message="La classe du joueur ne peut pas être vide")
      */
     private $class;
 
