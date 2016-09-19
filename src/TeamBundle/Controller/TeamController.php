@@ -58,7 +58,7 @@ class TeamController extends Controller
                         $team->setInscriptionDate( new \DateTime() );
                         $team->setPaid( false );
                         $team->setValid( false );
-                        $team->setAvailable( $request->get( 'dispo' ) ); // TODO
+                        $team->setAvailable( $request->get( 'dispo' ) );
                         $players = json_decode( $request->get( 'players' ), true );
 
                         foreach( $players as $k => $v ) {
