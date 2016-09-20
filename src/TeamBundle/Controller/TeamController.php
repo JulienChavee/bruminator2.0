@@ -6,9 +6,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Serializer\Encoder\JsonDecode;
 use TeamBundle\Entity\Player;
 use TeamBundle\Entity\Team;
+use \DateTime;
 
 class TeamController extends Controller
 {
@@ -17,24 +17,44 @@ class TeamController extends Controller
      */
     public function indexAction()
     {
-        return "";
+        $user = $this->getUser();
+
+        $team = $user->getTeam();
+
+        if( $team )
+            return $this->render( 'TeamBundle:Default:index.html.twig', array( 'team' => $team ) );
+        else {// Si aucune équipe inscrite, on redirige sur la page pour en inscrire une
+            $this->addFlash( 'danger', 'Vous ne possédez aucune équipe' );
+
+            return $this->redirectToRoute('team_registration');
+        }
     }
 
     /**
      * @Route("/registration", name="team_registration")
      */
     public function registrationAction( Request $request ) {
-        $user = $this->getUser();
+        $em = $this->getDoctrine()->getManager();
 
-        if( !empty( $user ) && empty( $user->getTeam() ) ) {
-            $em = $this->getDoctrine()->getManager();
-            $classes = $em->getRepository( 'TeamBundle:Classe')->findAll(); // TODO : Classer par odre alaphabétique
+        $now = new DateTime( 'now' );
+        $inscription_end = DateTime::createFromFormat( 'Y-m-d H:i:s', $em->getRepository( 'AdminBundle:Config' )->getOneBy( array( 'name' => 'inscription_end' ) ) );
 
-            return $this->render( 'TeamBundle:Default:registration.html.twig', array( 'classes' => $classes ) );
+        if( $now < $inscription_end ) {
+            $user = $this->getUser();
+
+            if (!empty($user) && empty($user->getTeam())) {
+                $classes = $em->getRepository('TeamBundle:Classe')->findBy(array(), array('name' => 'ASC'));
+
+                return $this->render('TeamBundle:Default:registration.html.twig', array('classes' => $classes));
+            } else {
+                $this->addFlash('danger', 'Vous possédez déjà une équipe');
+
+                return $this->redirectToRoute('team_homepage');
+            }
         } else {
-            $this->addFlash( 'danger', 'Vous possédez déjà une équipe' );
+            $this->addFlash('danger', 'Les inscriptions d\'équipes sont terminées');
 
-            return $this->redirectToRoute( 'team_homepage' );
+            return $this->redirectToRoute('homepage');
         }
     }
 
@@ -134,11 +154,13 @@ class TeamController extends Controller
 
             if( empty( $v[ 'level' ] ) && !is_numeric( $v[ 'level' ] ) )
                 $errors[] = "Le niveau du joueur $k ne peut pas être vide";
-            else if( $v[ 'level' ] < 185 ) // TODO : Passer le niveau minimum en paramètre du tournoi
-                $errors[] = "Le niveau du joueur $k ne peut pas être inférieur à 185";
-            else if ( $v[ 'level' ] > 200 ) { // TODO : Passer le niveau max en paramètre du tournoi
-                $errors[] = "Le niveau du joueur $k ne peut pas être supérieur à 200";
+            else if( $v[ 'level' ] < $em->getRepository( 'AdminBundle:Config' )->getOneBy( array( 'name' => 'min_level' ) ) )
+                $errors[] = "Le niveau du joueur $k ne peut pas être inférieur à ".$em->getRepository( 'AdminBundle:Config' )->getOneBy( array( 'name' => 'min_level' ) );
+            else if ( $v[ 'level' ] > $em->getRepository( 'AdminBundle:Config' )->getOneBy( array( 'name' => 'max_level' ) ) ) {
+                $errors[] = "Le niveau du joueur $k ne peut pas être supérieur à ".$em->getRepository( 'AdminBundle:Config' )->getOneBy( array( 'name' => 'max_level' ) );
             }
+
+            // TODO : Vérifier le niveau moyen
 
             if( empty( $v[ 'class' ] ) )
                 $errors[] = "La classe du joueur $k ne peut pas être vide";

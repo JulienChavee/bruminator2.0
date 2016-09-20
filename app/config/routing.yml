@@ -1,12 +1,17 @@
-team:
-    resource: "@TeamBundle/Controller/"
-    type:     annotation
-    prefix:   /team
-
 main:
     resource: "@MainBundle/Controller/"
     type:     annotation
     prefix:   /
+
+admin:
+    resource: "@AdminBundle/Controller/"
+    type:     annotation
+    prefix:   /admin
+
+team:
+    resource: "@TeamBundle/Controller/"
+    type:     annotation
+    prefix:   /team
 
 user:
     resource: "@UserBundle/Controller/"

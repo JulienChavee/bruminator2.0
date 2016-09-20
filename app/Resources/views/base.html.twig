@@ -6,6 +6,10 @@
     {% block stylesheets %}
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.4/css/bootstrap.min.css" integrity="sha384-2hfp1SzUoho7/TsGGGDaFdsuuDL0LX2hnUp6VkX3CUQ2K4K+xjboZdsXyp4oUHZj" crossorigin="anonymous">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+
+        {% stylesheets '@MainBundle/Resources/public/css/sticky-footer.css' %}
+            <link rel="stylesheet" href="{{ asset_url }}">
+        {% endstylesheets %}
     {% endblock %}
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
 </head>
@@ -16,7 +20,7 @@
             &#9776;
         </button>
         <div class="container collapse navbar-toggleable-xs" id="navCollapsing">
-            <a class="navbar-brand" href="{{ path('main_default_index') }}">Bruminator</a>
+            <a class="navbar-brand" href="{{ path('homepage') }}">Bruminator</a>
 
             <ul class="nav navbar-nav">
                 {% if app.user %}
@@ -24,7 +28,7 @@
                         <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Mon équipe</a>
                         <div class="dropdown-menu">
                             {% if app.user.team %}
-                                <a class="dropdown-item" href="#">Action</a>
+                                <a class="dropdown-item" href="{{ path('team_homepage') }}">Gérer</a>
                             {% else %}
                                 <a class="dropdown-item" href="{{ path('team_registration') }}">Inscription</a>
                             {% endif %}
@@ -130,7 +134,7 @@
             {% if app.request.get('_route') == 'main_default_index' %}
                 <li class="breadcrumb-item active"><i class="fa fa-home"></i> Accueil</li>
             {% else %}
-                <li class="breadcrumb-item"><a href="{{ path('main_default_index') }}"><i class="fa fa-home"></i> Accueil</a></li>
+                <li class="breadcrumb-item"><a href="{{ path('homepage') }}"><i class="fa fa-home"></i> Accueil</a></li>
             {% endif %}
         {% endblock %}
     </ol>
@@ -152,6 +156,12 @@
 
     {% endblock %}
 </div>
+
+<footer class="footer">
+    <div class="container text-xs-center">
+        <span class="text-muted">• © Copyright {{ "now"|date('Y') }} • bruminator.eu • Certaines illustrations sont la propriété d'Ankama Studio •</span>
+    </div>
+</footer>
 
 {% block javascripts %}
     <script   src="https://code.jquery.com/jquery-3.1.0.min.js"   integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s="   crossorigin="anonymous"></script>

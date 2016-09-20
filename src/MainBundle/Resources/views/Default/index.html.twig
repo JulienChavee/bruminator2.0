@@ -13,10 +13,10 @@
         <li class="nav-item">
             <a class="nav-link active" data-toggle="tab" href="#news" role="tab">News</a>
         </li>
-        <!--<li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#profile" role="tab">Profile</a>
-        </li>
         <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#informations" role="tab">Informations pratiques</a>
+        </li>
+        <!--<li class="nav-item">
             <a class="nav-link" data-toggle="tab" href="#messages" role="tab">Messages</a>
         </li>
         <li class="nav-item">
@@ -34,8 +34,13 @@
                 </div>
             {% endfor %}
         </div>
-        <!--<div class="tab-pane" id="profile" role="tabpanel">...</div>
-        <div class="tab-pane" id="messages" role="tabpanel">...</div>
+        <div class="tab-pane" id="informations" role="tabpanel">
+            <h2 class="m-t-2">Dates du tournoi</h2>
+            <div class="m-t-1">
+                <b>Inscriptions :</b> du {{ config.inscription_start.value|date('d F Y à H:i') }} au {{ config.inscription_end.value|date('d F Y à H:i') }}
+            </div>
+        </div>
+        <!--<div class="tab-pane" id="messages" role="tabpanel">...</div>
         <div class="tab-pane" id="settings" role="tabpanel">...</div>-->
     </div>
 {% endblock %}

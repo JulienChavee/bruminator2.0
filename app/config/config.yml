@@ -5,6 +5,7 @@ imports:
     - { resource: "@MainBundle/Resources/config/services.yml" }
     - { resource: "@UserBundle/Resources/config/services.yml" }
     - { resource: "@TeamBundle/Resources/config/services.yml" }
+    - { resource: "@AdminBundle/Resources/config/services.yml" }
 
 # Put parameters here that don't need to change on each machine where the app is deployed
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
@@ -80,6 +81,9 @@ fos_user:
     db_driver: orm
     firewall_name: main
     user_class: UserBundle\Entity\User
+    registration:
+        confirmation:
+            enabled: true
 
 fos_js_routing:
     routes_to_expose: [ (.*) ]
