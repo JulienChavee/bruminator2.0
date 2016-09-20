@@ -42,19 +42,19 @@ class TeamController extends Controller
         if( $now < $inscription_end ) {
             $user = $this->getUser();
 
-            if (!empty($user) && empty($user->getTeam())) {
-                $classes = $em->getRepository('TeamBundle:Classe')->findBy(array(), array('name' => 'ASC'));
+            if ( !empty( $user ) && empty( $user->getTeam() ) ) {
+                $classes = $em->getRepository( 'TeamBundle:Classe' )->findBy( array(), array( 'name' => 'ASC' ) );
 
-                return $this->render('TeamBundle:Default:registration.html.twig', array('classes' => $classes));
+                return $this->render( 'TeamBundle:Default:registration.html.twig', array( 'classes' => $classes ) );
             } else {
-                $this->addFlash('danger', 'Vous possédez déjà une équipe');
+                $this->addFlash( 'danger', 'Vous possédez déjà une équipe' );
 
-                return $this->redirectToRoute('team_homepage');
+                return $this->redirectToRoute( 'team_homepage' );
             }
         } else {
-            $this->addFlash('danger', 'Les inscriptions d\'équipes sont terminées');
+            $this->addFlash( 'danger', 'Les inscriptions d\'équipes sont terminées' );
 
-            return $this->redirectToRoute('homepage');
+            return $this->redirectToRoute( 'homepage' );
         }
     }
 
