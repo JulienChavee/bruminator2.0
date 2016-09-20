@@ -1,1 +1,14 @@
-Hello World!
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ parent() }} • Administration
+{% endblock %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+    <li class="breadcrumb-item active">Administration</li>
+{% endblock %}
+
+{% block body %}
+
+{% endblock %}

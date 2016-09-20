@@ -1,0 +1,91 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ parent() }} • Administration • Gestion des news
+{% endblock %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+    <li class="breadcrumb-item"><a href="{{ path('admin_homepage') }}">Administration</a></li>
+    <li class="breadcrumb-item active">Gestion des news</li>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+    {% stylesheets '@MainBundle/Resources/public/css/bootstrap-datetimepicker.min.css' %}
+        <link rel="stylesheet" href="{{ asset_url }}">
+    {% endstylesheets %}
+{% endblock %}
+
+{% block body %}
+    <h1>Gestion des news</h1>
+    <hr>
+
+    <div class="modal fade" id="addNews" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">Ajouter une news</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-danger addNewError hidden-xs-up"></div>
+
+                    <div class="form-horizontal">
+                        <div class="form-group row">
+                            <label class="form-control-label col-md-2" for="addNew_Title">Titre</label>
+                            <div class="col-md-10">
+                                <input type="text" id="addNew_Title" placeholder="Titre" class="form-control">
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="form-control-label col-md-2" for="addNew_Date">Date de publication</label>
+                            <div class="col-md-10">
+                                <input type="text" id="addNew_Date" placeholder="Date de publication" class="form-control">
+                                <small class="text-muted">
+                                    Laissez ce champs vide pour utiliser la date et l'heure actuelle
+                                </small>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="form-control-label col-md-2" for="addNew_Message">Message</label>
+                            <div class="col-md-10">
+                                <textarea class="form-control" id="addNew_Message" rows="5" placeholder="Message"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                    <button type="button" class="btn btn-primary addNews"><i class="fa fa-plus"></i> Enregistrer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button type="button" class="btn btn-primary btn-lg pull-right" data-toggle="modal" data-target="#addNews"><i class="fa fa-plus"></i> Ajouter une news</button>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {% javascripts output='js/compiled/admin/news.js'
+    '@AdminBundle/Resources/public/js/news.js'
+    '@MainBundle/Resources/public/js/moment.min.js'
+    '@MainBundle/Resources/public/js/moment-with-locales.min.js'
+    '@MainBundle/Resources/public/js/bootstrap-datetimepicker.min.js'
+    %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+    <script src="{{ asset('bundles/main/js/ckeditor/ckeditor.js') }}"></script>
+
+    <script>
+        CKEDITOR.replace('addNew_Message');
+    </script>
+{% endblock %}

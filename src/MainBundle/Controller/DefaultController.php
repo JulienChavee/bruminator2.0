@@ -15,8 +15,7 @@ class DefaultController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $news = $em->getRepository( 'MainBundle:News' )->findBy( array(), array( 'date' => 'DESC' ) );
-        $config = $em->getRepository( 'AdminBundle:Config' )->getAll();
 
-        return $this->render('MainBundle:Default:index.html.twig', array( 'news' => $news, 'config' => $config ) );
+        return $this->render('MainBundle:Default:index.html.twig', array( 'news' => $news ) );
     }
 }

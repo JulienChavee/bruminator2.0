@@ -148,7 +148,7 @@
 
     <ol class="breadcrumb">
         {% block breadcrumb %}
-            {% if app.request.get('_route') == 'main_default_index' %}
+            {% if app.request.get('_route') == 'homepage' %}
                 <li class="breadcrumb-item active"><i class="fa fa-home"></i> Accueil</li>
             {% else %}
                 <li class="breadcrumb-item"><a href="{{ path('homepage') }}"><i class="fa fa-home"></i> Accueil</a></li>

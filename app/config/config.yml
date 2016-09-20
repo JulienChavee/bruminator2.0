@@ -81,9 +81,6 @@ fos_user:
     db_driver: orm
     firewall_name: main
     user_class: UserBundle\Entity\User
-    registration:
-        confirmation:
-            enabled: true
 
 fos_js_routing:
     routes_to_expose: [ (.*) ]
