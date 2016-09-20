@@ -37,7 +37,7 @@
         <div class="tab-pane" id="informations" role="tabpanel">
             <h2 class="m-t-2">Dates du tournoi</h2>
             <div class="m-t-1">
-                <b>Inscriptions :</b> du {{ config.inscription_start.value|date('d F Y à H:i') }} au {{ config.inscription_end.value|date('d F Y à H:i') }}
+                <b>Inscriptions :</b> du {{ config.inscription_start.value|format_datetime('d F Y à H:i') }} au {{ config.inscription_end.value|date('d F Y à H:i') }}
             </div>
         </div>
         <!--<div class="tab-pane" id="messages" role="tabpanel">...</div>

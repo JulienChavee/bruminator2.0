@@ -38,7 +38,7 @@
             </ul>
 
             <ul class="nav navbar-nav pull-xs-right">
-                <li class="nav-item dropdown">
+                <li class="nav-item dropdown hidden-sm-down">
                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Sponsors</a>
                     <div class="dropdown-menu">
                         {% for key, sponsor in 'sponsor'|config %}
@@ -48,7 +48,7 @@
                         {% endfor %}
                     </div>
                 </li>
-                <li class="nav-item hidden-sm hidden-xs">
+                <li class="nav-item hidden-sm-down m-r-2">
                     <a class="nav-link" href="{{ 'lien_dofus'|config }}" target="_blank">
                         {% image '@MainBundle/Resources/public/images/dofus.png' output='/images/dofus.png' %}
                             <img alt="Logo Dofus" src="{{ asset_url }}">
