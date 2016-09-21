@@ -31,7 +31,9 @@
         "symfony/assetic-bundle": "^2.8",
         "friendsofsymfony/user-bundle": "~2.0@dev",
         "friendsofsymfony/jsrouting-bundle": "^1.6",
-        "sonata-project/intl-bundle": "^2.2"
+        "sonata-project/intl-bundle": "^2.2",
+        "symfony/serializer": "^3.1",
+        "symfony/property-access": "^3.1"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",

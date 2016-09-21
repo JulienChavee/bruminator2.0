@@ -26,7 +26,7 @@
 
     <div class="tab-content">
         <div class="tab-pane active" id="news" role="tabpanel">
-            <div class="col-md-8">
+            <div class="col-md-7">
                 {% for new in news %}
                     {% include '@Main/News/newsRow.html.twig' %}
                 {% else %}
@@ -36,7 +36,7 @@
                 {% endfor %}
             </div>
 
-            <div class="col-md-4 m-t-1">
+            <div class="col-md-4 offset-md-1 m-t-1">
                 <h3>Dernières teams <small class="text-muted">{{ teams|length }}/{{ 'max_total_team'|config }}</small></h3>
                 <hr>
 

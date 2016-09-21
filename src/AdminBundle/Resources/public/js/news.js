@@ -80,10 +80,10 @@ $('.addNews').on('click', function() {
                 if (data.status == 'ok') {
                     modal.modal('hide');
 
-                    /*if ($('.table_news_tbody').find('tr td').length == 1)
+                    if ($('.table_news_tbody').find('tr td').length == 1)
                         $('.table_news_tbody').find('tr td').remove();
 
-                    $('.table_news_tbody').append(data.return);*/
+                    $('.table_news_tbody').append(data.return);
 
                     $('.modal_alert_success').modal('show');
                     setTimeout(function () {
@@ -177,7 +177,7 @@ $('.table_news_tbody').on('click', 'button[data-action="edit"]', function() {
             if(data.status == 'ok') {
                 modal.find('#addNew_Title').val(data.news.title);
                 CKEDITOR.instances['addNew_Message'].setData(data.news.message);
-                modal.find('#addNew_Date').val(moment.unix(data.news.publishDate.timestamp).format("DD/MM/YYYY HH:mm"));
+                modal.find('#addNew_Date').val(moment.unix(data.news.date.timestamp).format("DD/MM/YYYY HH:mm"));
 
                 modal.find('.modal-title').html("Modification d'une news");
                 modal.find('.fa-plus').removeClass('fa-plus').addClass('fa-pencil');

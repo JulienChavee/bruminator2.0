@@ -2,7 +2,7 @@
     <div class="m-t-2">
         <div class="row">
             <h2 class="{% if new.date > date() %}text-danger{% endif %}"> {% if new.date > date() %}<i class="fa fa-eye-slash" data-toggle="tooltip" title="News non publiée"></i> {% endif %}{{ new.title }}</h2>
-            <span class="text-muted"><i class="fa fa-user"></i> {{ new.author }} - <i class="fa fa-clock-o"></i> {{ new.date|date('d F Y - H:i') }}</span>
+            <span class="text-muted"><i class="fa fa-user"></i> {{ new.author }} - <i class="fa fa-clock-o"></i> {{ new.date|format_date('dd MMMM yyyy - HH:mm') }}</span>
             <hr class="text-danger">
         </div>
 

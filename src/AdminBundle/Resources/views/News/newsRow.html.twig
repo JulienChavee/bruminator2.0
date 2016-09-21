@@ -1,0 +1,21 @@
+<tr data-id="{{ news.id }}">
+    <td>{{ news.id }}</td>
+    <td>{{ news.title }}</td>
+    <td>{{ news.date|format_date('dd MMMM yyyy - HH:mm') }}</td>
+    <td>{{ news.author.username }}</td>
+    <td>
+        {% if news.date > date() %}
+            <span class="tag tag-info">Programée</span>
+        {% else %}
+            <span class="tag tag-success">Publiée</span>
+        {% endif %}
+    </td>
+    <td>
+        <div class="btn-toolbar" role="toolbar" aria-label="Outils">
+            <div class="btn-group btn-group-sm" role="group" aria-label="Edition">
+                <button type="button" class="btn btn-secondary" data-action="delete" data-id="{{ news.id }}"><i class="fa fa-trash"></i></button>
+                <button type="button" class="btn btn-secondary" data-action="edit" data-id="{{ news.id }}"><i class="fa fa-pencil"></i></button>
+            </div>
+        </div>
+    </td>
+</tr>
