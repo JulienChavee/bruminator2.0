@@ -14,3 +14,8 @@ services:
             doctrine: "@doctrine"
         tags:
             - { name: twig.extension }
+
+    main.twig.remove_accent_extension:
+            class: MainBundle\Twig\RemoveAccentExtension
+            tags:
+                - { name: twig.extension }

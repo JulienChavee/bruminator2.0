@@ -46,7 +46,7 @@
 
                         {% for player in team.players %}
                             <div style="margin-bottom:3px;">
-                                <img src="{{ asset('bundles/main/images/class/'~player.class.shortName|lower~'1.png' ) }}" alt="{{ player.class.name }}" data-toggle="tooltip" data-trigger="hover" title="{{ player.class.name }}"> {{ player.pseudo }}
+                                <img src="{{ asset('bundles/main/images/class/'~player.class.shortName|lower|remove_accent~'1.png' ) }}" alt="{{ player.class.name }}" data-toggle="tooltip" data-trigger="hover" title="{{ player.class.name }}"> {{ player.pseudo }}
                             </div>
                         {% endfor %}
 
