@@ -141,6 +141,7 @@ class TeamController extends Controller
         $errors = array();
         $pilliers = 0;
         $bannedClass = 0;
+        $levelTotal = 0;
         $classes = array();
 
         if( empty( $teamName ) )
@@ -160,7 +161,7 @@ class TeamController extends Controller
                 $errors[] = "Le niveau du joueur $k ne peut pas être supérieur à ".$em->getRepository( 'AdminBundle:Config' )->getOneBy( array( 'name' => 'max_level' ) );
             }
 
-            // TODO : Vérifier le niveau moyen
+            $levelTotal += $v[ 'level' ];
 
             if( empty( $v[ 'class' ] ) )
                 $errors[] = "La classe du joueur $k ne peut pas être vide";
@@ -195,6 +196,9 @@ class TeamController extends Controller
 
         if( empty( $dispo ) )
             $errors[] = "Vous devez indiquer vos disponibilités";
+
+        if( $levelTotal / $em->getRepository( 'AdminBundle:Config' )->getOneBy( array( 'name' => 'nb_players_team' ) ) < $em->getRepository( 'AdminBundle:Config' )->getOneBy( array( 'name' => 'min_average_level' ) ) )
+            $errors[] = "Le niveau moyen de l'équie doit être supérieur à ".$em->getRepository( 'AdminBundle:Config' )->getOneBy( array( 'name' => 'min_average_level' ) );
 
         return $errors;
     }

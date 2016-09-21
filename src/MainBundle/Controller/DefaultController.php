@@ -16,6 +16,8 @@ class DefaultController extends Controller
 
         $news = $em->getRepository( 'MainBundle:News' )->findBy( array(), array( 'date' => 'DESC' ) );
 
-        return $this->render('MainBundle:Default:index.html.twig', array( 'news' => $news ) );
+        $teams = $em->getRepository( 'TeamBundle:Team' )->findBy( array(), array( 'inscriptionDate' => 'DESC' ));
+
+        return $this->render('MainBundle:Default:index.html.twig', array( 'news' => $news, 'teams' => $teams ) );
     }
 }
