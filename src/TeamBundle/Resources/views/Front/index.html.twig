@@ -6,7 +6,7 @@
 
 {% block breadcrumb %}
     {{ parent() }}
-    <li class="active">Liste des équipes</li>
+    <li class="breadcrumb-item active">Liste des équipes</li>
 {% endblock %}
 
 {% block body %}
@@ -21,13 +21,11 @@
                     <i class="fa fa-calendar"></i> {{ team.inscriptionDate | date('d/m/Y') }}<br>
                     {% if team.valid %}<i class="fa fa-check text-success"></i> Équipe validée{% else %}<i class="fa fa-remove text-danger"></i> Équipe non validée{% endif %}<br>
                 </p>
-                <div class="row">
-                    {% for player in team.players if not player.isRemplacant %}
-                        <div class="col-md-3">
-                            <img src="{{ asset('bundles/main/images/class/'~ player.class.shortName|lower|remove_accent ~'1.png') }}" class="img-thumbnail" data-toggle="tooltip" data-trigger="hover" title="{{ player.pseudo }}, {{ player.class.name }} {{ player.level }}">
-                        </div>
-                    {% endfor %}
-                </div>
+                {% for player in team.players if not player.isRemplacant %}
+                    <span class="p-r-1">
+                        <img src="{{ asset('bundles/main/images/class/'~ player.class.shortName|lower|remove_accent ~'1.png') }}" data-toggle="tooltip" data-trigger="hover" title="{{ player.pseudo }}, {{ player.class.name }} {{ player.level }}">
+                    </span>
+                {% endfor %}
                 <a href="{{ path('team_front_homepage', {'id':team.id, 'slugTeam': team.name|slugify}) }}" class="btn btn-primary m-t-1">Plus d'informations</a>
             </div>
         </div>
