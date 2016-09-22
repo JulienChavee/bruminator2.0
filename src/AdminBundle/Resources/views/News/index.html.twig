@@ -109,6 +109,7 @@
     <script src="{{ asset('bundles/main/js/ckeditor/ckeditor.js') }}"></script>
 
     <script>
+        CKEDITOR.config.embed_provider = '//iframe.ly/api/oembed?url={url}&callback={callback}&api_key=0edb248f2f368d5bfa6ddd';
         CKEDITOR.replace('addNew_Message');
     </script>
 {% endblock %}

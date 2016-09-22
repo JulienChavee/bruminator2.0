@@ -135,6 +135,27 @@ class TeamController extends Controller
         return $response;
     }
 
+    /**
+     * @Route("/view/{id}-{slugTeam}", name="team_front_homepage", defaults={"id": "", "slugTeam": ""},)
+     */
+    public function frontIndexAction( $id, $slugTeam ) {
+        if( empty( $id ) || empty( $slugTeam ) ) {
+            $em = $this->getDoctrine()->getManager();
+            $teams = $em->getRepository( 'TeamBundle:Team' )->findAll();
+            return $this->render( 'TeamBundle:Front:index.html.twig', array( 'teams' => $teams ) );
+        } else
+            return $this->frontViewTeamAction( $id, $slugTeam );
+    }
+
+    public function frontViewTeamAction( $id, $slugTeam ) {
+        $em = $this->getDoctrine()->getManager();
+        $team = $em->getRepository( 'TeamBundle:Team' )->findOneBy( array( 'id' => $id ) );
+        if( $this->get( 'cocur_slugify' )->slugify( $team->getName() ) == $slugTeam )
+            return $this->render( 'TeamBundle:Front:team.html.twig', array( 'team' => $team ) );
+        else
+            return $this->redirectToRoute( 'team_front_homepage', array( 'id' => $team->getId(), 'slugTeam' => $this->get( 'cocur_slugify' )->slugify( $team->getName() ) ) );
+    }
+
     private function validateTeam( $teamName, $players, $dispo ) {
         $em = $this->getDoctrine()->getManager();
 
