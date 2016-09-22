@@ -42,7 +42,10 @@
 
                 {% for team in teams|slice(0, 5) %}
                     <div>
-                        <h4>{{ team.name }} <small class="text-muted">{{ team.inscriptionDate|format_date('dd MMMM yyyy') }}</small></h4>
+                        <h4 {% if team.name|length > 20 %}data-toggle="tooltip" data-trigger="hover" title="{{ team.name }}"{% endif %}>{{ team.name|truncate(20) }}</h4>
+                        <div class="text-muted p-b-1">
+                            <i class="fa fa-clock-o"></i> {{ team.inscriptionDate|time_diff }}
+                        </div>
 
                         {% for player in team.players if not player.isRemplacant%}
                             <div style="margin-bottom:3px;">

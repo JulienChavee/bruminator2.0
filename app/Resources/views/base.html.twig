@@ -35,6 +35,13 @@
                         </div>
                     </li>
                 {% endif %}
+
+                <li class="nav-item {% if app.request.attributes.get('_route') matches '{^team_front.*$}' %}active{% endif %} dropdown">
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Tournoi</a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="{{ path('team_front_homepage') }}">Liste des équipes</a>
+                    </div>
+                </li>
             </ul>
 
             <ul class="nav navbar-nav pull-xs-right">
