@@ -1,24 +1,25 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-    {{ parent() }} • Liste des équipes
+    {{ parent() }} • {{ team.name }}
 {% endblock %}
 
 {% block breadcrumb %}
     {{ parent() }}
-    <li class="breadcrumb-item active">Liste des équipes</li>
+    <li class="breadcrumb-item"><a href="{{ path('team_front_homepage') }}">Liste des équipes</a></li>
+    <li class="breadcrumb-item active">{{ team.name }}</li>
 {% endblock %}
 
 {% block body %}
-    <h1>Liste des équipes inscrites</h1>
+    <h1>{{ team.name }}</h1>
     <hr>
 
-    {% for team in teams %}
+    <div class="row">
         <div class="col-md-4">
             <div class="card card-block">
-                <h4 class="card-title" {% if team.name|length > 19 %}data-toggle="tooltip" data-trigger="hover" title="{{ team.name }}"{% endif %}>{{ team.name|truncate(19) }}</h4>
+                <h4 class="card-title">Informations générales</h4>
                 <p class="card-text">
-                    <i class="fa fa-calendar"></i> {{ team.inscriptionDate | date('d/m/Y') }}<br>
+                    <i class="fa fa-calendar"></i> {{ team.inscriptionDate | time_diff }}<br>
                     {% if team.valid %}<i class="fa fa-check text-success"></i> Équipe validée{% else %}<i class="fa fa-remove text-danger"></i> Équipe non validée{% endif %}<br>
                 </p>
                 {% for player in team.players if not player.isRemplacant %}
@@ -26,12 +27,22 @@
                         <img src="{{ asset('bundles/main/images/class/'~ player.class.shortName|lower|remove_accent ~'1.png') }}" data-toggle="tooltip" data-trigger="hover" title="{{ player.pseudo }}, {{ player.class.name }} {{ player.level }}">
                     </span>
                 {% endfor %}
-                <a href="{{ path('team_front_homepage', {'id':team.id, 'slugTeam': team.name|slugify}) }}" class="btn btn-primary m-t-1">Plus d'informations</a>
             </div>
         </div>
-    {% else %}
-        <div class="alert alert-info">
-            Aucune équipe ne s'est inscrite pour le moment
+
+        <div class="col-md-4">
+            <div class="card card-block">
+                <h4 class="card-title">Informations du tournoi</h4>
+                <p class="card-text">
+                    <!-- TODO -->
+                </p>
+            </div>
         </div>
-    {% endfor %}
+    </div>
+
+    <!--<div class="m-t-1 row">
+        <h2>Matchs</h2>
+
+        {##}{ render(controller('TeamBundle:Team:frontViewTeamMatchs', { 'id': team.id })) }}
+    </div> TODO-->
 {% endblock %}
