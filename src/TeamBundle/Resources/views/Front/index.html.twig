@@ -18,7 +18,7 @@
             <div class="card card-block">
                 <h4 class="card-title" {% if team.name|length > 19 %}data-toggle="tooltip" data-trigger="hover" title="{{ team.name }}"{% endif %}>{{ team.name|truncate(19) }}</h4>
                 <p class="card-text">
-                    <i class="fa fa-calendar"></i> {{ team.inscriptionDate | date('d/m/Y') }}<br>
+                    <i class="fa fa-calendar"></i> {{ team.inscriptionDate | time_diff }}<br>
                     {% if team.valid %}<i class="fa fa-check text-success"></i> Équipe validée{% else %}<i class="fa fa-remove text-danger"></i> Équipe non validée{% endif %}<br>
                 </p>
                 {% for player in team.players if not player.isRemplacant %}
