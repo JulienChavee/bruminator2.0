@@ -6,17 +6,125 @@
 
 {% block breadcrumb %}
     {{ parent() }}
-    <li class="breadcrumb-item activ">Mon équipe</li>
+    <li class="breadcrumb-item active">Mon équipe</li>
 {% endblock %}
 
 {% block body %}
+    <div class="modal fade" id="editPlayer" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">Modifier un joueur</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-danger editPlayerError hidden-xs-up"></div>
+
+                    <div class="form-horizontal">
+                        <div class="form-group row">
+                            <label class="form-control-label col-md-2" for="editPlayer_Pseudo">Pseudo</label>
+                            <div class="col-md-7">
+                                <input type="text" id="editPlayer_Pseudo" placeholder="Pseudo" class="form-control">
+                            </div>
+                        </div>
+
+                        <div class="alert alert-warning editPlayerPseudoChanged hidden-xs-up">
+                            <i class='fa fa-exclamation-triangle'></i> Nous avons détecté que vous souhaitiez changer le pseudo du joueur.<br>
+                            Est-ce toujours le même joueur mais avec un pseudo différent ou bien un tout autre joueur ?
+                            <div class="custom-controls-stacked">
+                                <label class="custom-control custom-radio">
+                                    <input id="editPlayer_SamePlayer" name="editPlayer_SameOrNew" type="radio" class="custom-control-input" value="false" checked>
+                                    <span class="custom-control-indicator"></span>
+                                    <span class="custom-control-description">Même joueur avec un pseudo différent</span>
+                                </label>
+                                <label class="custom-control custom-radio">
+                                    <input id="editPlayer_NewPlayer" name="editPlayer_SameOrNew" type="radio" class="custom-control-input" value="true">
+                                    <span class="custom-control-indicator"></span>
+                                    <span class="custom-control-description">Nouveau joueur</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="form-control-label col-md-2" for="editPlayer_Level">Niveau</label>
+                            <div class="col-md-3">
+                                <input type="number" id="editPlayer_Level" placeholder="Niveau" class="form-control"  min="{{ 'min_level'|config }}" max="{{ 'max_level'|config }}">
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="form-control-label col-md-2" for="editPlayer_Classe">Classe</label>
+                            <div class="col-md-4">
+                                <select id="editPlayer_Class" class="custom-select form-control">
+                                    {% for class in classes %}
+                                        <option value="{{ class.id }}">{{ class.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="alert alert-warning editPlayerClassChanged hidden-xs-up">
+                            <i class='fa fa-exclamation-triangle'></i> Nous avons détecté que vous souhaitiez changer de classe et que vous possédez un remplaçant.<br>
+                            Si c'est le cas, merci de veiller à ce que le remplaçant soit de la même classe que vous. Le cas échéant, changez celui-ci ou bien retirez le en effaçant les champs ci-dessous.
+                        </div>
+
+                        <hr>
+                        <h3>Remplaçant</h3>
+                        <div class="form-group row">
+                            <label class="form-control-label col-md-2" for="editPlayer_Remplacant_Pseudo">Pseudo</label>
+                            <div class="col-md-7">
+                                <input type="text" id="editPlayer_Remplacant_Pseudo" placeholder="Pseudo" class="form-control">
+                            </div>
+                        </div>
+
+                        <div class="alert alert-warning editPlayerRemplacantPseudoChanged hidden-xs-up">
+                            <i class='fa fa-exclamation-triangle'></i> Nous avons détecté que vous souhaitiez changer le pseudo du joueur.<br>
+                            Est-ce toujours le même joueur mais avec un pseudo différent ou bien un tout autre joueur ?
+                            <div class="custom-controls-stacked">
+                                <label class="custom-control custom-radio">
+                                    <input id="editPlayer_RemplacantSamePlayer" name="editPlayer_Remplacant_SameOrNew" type="radio" class="custom-control-input" value="false" checked>
+                                    <span class="custom-control-indicator"></span>
+                                    <span class="custom-control-description">Même joueur avec un pseudo différent</span>
+                                </label>
+                                <label class="custom-control custom-radio">
+                                    <input id="editPlayer_RemplacantNewPlayer" name="editPlayer_Remplacant_SameOrNew" type="radio" class="custom-control-input" value="true">
+                                    <span class="custom-control-indicator"></span>
+                                    <span class="custom-control-description">Nouveau joueur</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="form-control-label col-md-2" for="editPlayer_Remplacant_Level">Niveau</label>
+                            <div class="col-md-3">
+                                <input type="number" id="editPlayer_Remplacant_Level" placeholder="Niveau" class="form-control"  min="{{ 'min_level'|config }}" max="{{ 'max_level'|config }}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                    <button type="button" class="btn btn-primary editPlayer" data-team="{{ team.id }}"><i class="fa fa-pencil"></i> Modifier</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if not team.paid %}
+        <div class="alert alert-danger">
+            <i class="fa fa-exclamation-triangle"></i> Nous n'avons toujours pas reçu l'<b>argent de votre inscription</b>. Veuillez contacter un organisateur afin d'effectuer le paiement
+        </div>
+    {% endif %}
+
     <div class="m-b-2">
         <div class="col-md-4 bg-inverse p-a-2 text-xs-center">
             <i class="fa fa-tag"></i> {{ team.name }}
         </div>
 
         <div class="col-md-4 bg-inverse p-a-2 text-xs-center">
-            <i class="fa fa-calendar"></i> {{ team.inscriptionDate | date("d/m/Y") }}
+            <i class="fa fa-calendar"></i> {{ team.inscriptionDate | localizeddate('long', 'short', 'fr', 'Europe/Brussels', 'dd MMMM yyyy - HH:mm') }}
         </div>
 
         <div class="col-md-4 bg-inverse p-a-2 text-xs-center">
@@ -29,4 +137,21 @@
 
         <div class="clearfix"></div>
     </div>
+
+    <div class="row">
+        {% for player in team.players if not player.isRemplacant %}
+            {% include '@Team/Default/playerRow.html.twig' %}
+        {% endfor %}
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {% javascripts output='js/compiled/team/default/team.js'
+    '@TeamBundle/Resources/public/js/player.js'
+    '@TeamBundle/Resources/public/js/team.js'
+    %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
 {% endblock %}

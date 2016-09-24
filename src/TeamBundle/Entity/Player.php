@@ -62,6 +62,14 @@ class Player
      */
     private $isRemplacant;
 
+    /**
+     * @var \TeamBundle\Entity\Player
+     *
+     * @ORM\OneToOne(targetEntity="TeamBundle\Entity\Player")
+     * @ORM\JoinColumn(name="remplacant", referencedColumnName="id", nullable=true)
+     */
+    private $remplacant;
+
 
     /**
      * Get id
@@ -191,5 +199,29 @@ class Player
     public function getIsRemplacant()
     {
         return $this->isRemplacant;
+    }
+
+    /**
+     * Set remplacant
+     *
+     * @param \TeamBundle\Entity\Player $remplacant
+     *
+     * @return Player
+     */
+    public function setRemplacant(\TeamBundle\Entity\Player $remplacant = null)
+    {
+        $this->remplacant = $remplacant;
+
+        return $this;
+    }
+
+    /**
+     * Get remplacant
+     *
+     * @return \TeamBundle\Entity\Player
+     */
+    public function getRemplacant()
+    {
+        return $this->remplacant;
     }
 }
