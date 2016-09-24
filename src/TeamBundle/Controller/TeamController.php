@@ -18,15 +18,17 @@ class TeamController extends Controller
     public function indexAction()
     {
         $user = $this->getUser();
-
         $team = $user->getTeam();
 
-        if( $team )
-            return $this->render( 'TeamBundle:Default:index.html.twig', array( 'team' => $team ) );
-        else {// Si aucune équipe inscrite, on redirige sur la page pour en inscrire une
+        if( $team ) {
+            $em = $this->getDoctrine()->getManager();
+            $classes = $em->getRepository( 'TeamBundle:Classe' )->findBy( array(), array( 'name' => 'ASC' ) );
+
+            return $this->render( 'TeamBundle:Default:index.html.twig', array( 'team' => $team, 'classes' => $classes ) );
+        } else {// Si aucune équipe inscrite, on redirige sur la page pour en inscrire une
             $this->addFlash( 'danger', 'Vous ne possédez aucune équipe' );
 
-            return $this->redirectToRoute('team_registration');
+            return $this->redirectToRoute( 'team_registration' );
         }
     }
 
