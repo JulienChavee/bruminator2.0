@@ -1,0 +1,32 @@
+<tr data-id="{{ team.id }}">
+    <td>{{ team.name }}</td>
+    <td>
+        {% for player in team.players if not player.isRemplacant %}
+            <img src="{{ asset('bundles/main/images/class/'~ player.class.shortName|lower|remove_accent ~'1.png') }}" data-toggle="tooltip" data-trigger="hover" title="{{ player.pseudo }}, {{ player.class.name }} {{ player.level }}">
+        {% endfor %}
+    </td>
+    <td class="text-xs-center">
+        {% if team.valid %}
+            <i class="fa fa-check text-success"></i>
+        {% else %}
+            <i class="fa fa-times text-danger"></i>
+        {% endif %}
+    </td>
+    <td class="text-xs-center">
+        {% if team.paid %}
+            <i class="fa fa-check text-success"></i>
+        {% else %}
+            <i class="fa fa-times text-danger"></i>
+        {% endif %}
+    </td>
+    <td>
+        <div class="btn-toolbar" role="toolbar" aria-label="Outils">
+            <div class="btn-group btn-group-sm" role="group" aria-label="Edition">
+                <button type="button" class="btn btn-secondary" data-action="delete" data-id="{{ team.id }}" data-toggle="tooltip" title="Supprimer l'équipe" disabled><i class="fa fa-trash"></i></button>
+                <button type="button" class="btn btn-secondary" data-action="edit" data-id="{{ team.id }}" data-toggle="tooltip" title="Modifier l'équipe" disabled><i class="fa fa-pencil"></i></button>
+                <button type="button" class="btn btn-secondary" data-action="validate" data-id="{{ team.id }}" data-toggle="tooltip" title="{% if team.valid %}Invalider{% else %}Valider{% endif %} l'équipe"><i class="fa fa-{% if team.valid %}times text-danger{% else %}check text-success{% endif %}"></i></button>
+                <button type="button" class="btn btn-secondary" data-action="pay" data-id="{{ team.id }}" data-toggle="tooltip" title="{% if team.paid %}Invalider{% else %}Valider{% endif %} le paiement"><i class="fa fa-money {% if team.paid %}text-danger{% else %}text-success{% endif %}"></i></button>
+            </div>
+        </div>
+    </td>
+</tr>
