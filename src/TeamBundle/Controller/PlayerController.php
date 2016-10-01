@@ -61,8 +61,8 @@ class PlayerController extends Controller
                     $remplacant = $player->getRemplacant() ? $em->getRepository( 'TeamBundle:Player' )->findOneBy( array( 'id' => $player->getRemplacant()->getId() ) ) : null;
 
                     if( $request->get( 'newPlayer' ) == "true" ) {
-                        $player->setTeam( NULL );
-                        $em->flush();
+                        $oldPlayer = $player;
+                        $oldPlayer->setTeam( NULL );
 
                         $player = new Player();
                         $player->setPseudo( $request->get( 'pseudo' ) );
@@ -82,8 +82,8 @@ class PlayerController extends Controller
                     if( !empty( $request->get( 'remplacantPseudo' ) ) && !empty( $request->get( 'remplacantLevel' ) ) ) {
                         if( !$remplacant || $request->get( 'newRemplacant' ) == "true" ) {
                             if( $remplacant ) {
-                                $remplacant->setTeam(null);
-                                $em->flush();
+                                $oldRemplacant = $remplacant;
+                                $oldRemplacant->setTeam(null);
                             }
 
                             $remplacant = new Player();
@@ -98,9 +98,9 @@ class PlayerController extends Controller
 
                             $player->setRemplacant( $remplacant );
                         } else {
-                            $remplacant->setPseudo($request->get('remplacantPseudo'));
-                            $remplacant->setLevel($request->get('remplacantLevel'));
-                            $remplacant->setClass($class);
+                            $remplacant->setPseudo( $request->get( 'remplacantPseudo' ) );
+                            $remplacant->setLevel( $request->get( 'remplacantLevel' ) );
+                            $remplacant->setClass( $class );
                         }
                     } else {
                         if( $remplacant ) {
@@ -109,13 +109,14 @@ class PlayerController extends Controller
                         }
                     }
 
-                    $errors = $this->get( 'validator' )->validate( $player );
+                    $errors_validator = $this->get( 'validator' )->validate( $player );
+                    $errors_teamControl = $this->get( 'team.control_team' )->checkCompo( $team->getPlayers() );
 
-                    if( count( $errors ) == 0 ) {
+                    if( count( $errors_validator ) == 0 && count( $errors_teamControl ) == 0 ) {
                         $em->flush();
                         $response = new Response( json_encode( array( 'status' => 'ok', 'return' => $this->render('TeamBundle:Default:playerRow.html.twig', array( 'player' => $player, 'team' => $team ) )->getContent() ) ) );
                     } else
-                        $response = new Response(json_encode(array('status' => 'ko', 'message' => 'Impossible de modifier le joueur', 'errors' => $this->render('TeamBundle:Default:validation.html.twig', array('errors' => $errors))->getContent(), 'debug' => $errors)));
+                        $response = new Response( json_encode( array( 'status' => 'ko', 'message' => 'Impossible de modifier le joueur', 'errors' => $this->render( 'TeamBundle:Default:validation.html.twig', array( 'errors_validator' => $errors_validator, 'errors_teamControl' => $errors_teamControl ) )->getContent(), 'debug' => '' ) ) );
                 } else
                     $response = new Response( json_encode( array( 'status' => 'ko', 'message' => 'Vous n\'avez pas la permission d\'éditer ce joueur', 'debug' => 'Utilisateur connecté != manager de l\'équipe du joueur' ) ) );
             }
