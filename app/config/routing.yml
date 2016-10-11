@@ -18,6 +18,11 @@ user:
     type:     annotation
     prefix:   /user
 
+log:
+    resource: "@LogBundle/Controller/"
+    type:     annotation
+    prefix:   /log
+
 fos_user:
     resource: "@FOSUserBundle/Resources/config/routing/all.xml"
 
