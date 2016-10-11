@@ -225,6 +225,12 @@
         $('.modal_alert').on('hide.bs.modal', function() {
             $('.modal-body-more-info').empty();
         });
+
+        $('body').on('mouseover', '.editable_content', function() {
+            $(this).find('.editable_tool').removeClass('invisible');
+        }).on('mouseleave', '.editable_content', function() {
+            $(this).find('.editable_tool').addClass('invisible');
+        });
     </script>
 {% endblock %}
 </body>

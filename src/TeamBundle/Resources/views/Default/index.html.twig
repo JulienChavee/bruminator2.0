@@ -143,6 +143,13 @@
             {% include '@Team/Default/playerRow.html.twig' %}
         {% endfor %}
     </div>
+
+    <div class="row">
+        <div class="col-md-6 disponibilites editable_content">
+            <h2>Vos disponibilités <small><i class="fa fa-pencil editable_tool invisible" data-toggle="tooltip" data-trigger="hover" title="Modifier les disponibilités" role="button" data-action="edit" data-id="{{ team.id }}"></i></small></h2>
+            {% include '@Team/Default/dispoRow.html.twig' %}
+        </div>
+    </div>
 {% endblock %}
 
 {% block javascripts %}

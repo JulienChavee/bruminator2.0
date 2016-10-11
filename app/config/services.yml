@@ -40,3 +40,7 @@ services:
     team.control_team:
         class: TeamBundle\Utils\ControlTeam
         arguments: ['@doctrine.orm.entity_manager']
+
+    log.action_log:
+        class: LogBundle\Utils\Log
+        arguments: ['@doctrine.orm.entity_manager']

@@ -138,6 +138,67 @@ class TeamController extends Controller
     }
 
     /**
+     * @Route("/ajax/updatedispo", name="team_ajax_update_dispo")
+     */
+    public function ajaxUpdateDispo( Request $request ) {
+        if( $request->isXmlHttpRequest() ) {
+            try {
+                $user = $this->getUser();
+
+                $em = $this->getDoctrine()->getManager();
+                $team = $em->getRepository( 'TeamBundle:Team' )->findOneBy( array( 'id' => $request->get( 'id' ) ) );
+
+                if( $user->getTeam() == $team ) {
+                    $team->setAvailable( $request->get( 'dispo' ) );
+
+                    $errors = $this->get( 'validator' )->validate( $team );
+                    if( count( $errors ) == 0 ) {
+                        $em->flush();
+                        $response = new Response( json_encode( array( 'status' => 'ok', 'return' => $this->render('TeamBundle:Default:dispoRow.html.twig', array( 'team' => $team ) )->getContent() ) ) );
+                    } else
+                        $response = new Response( json_encode( array( 'status' => 'ko', 'message' => 'Impossible de modifier les disponibilités'/*, 'errors' => $this->render( 'TeamBundle:Default:validation.html.twig', array( 'errors_validator' => $errors_validator, 'errors_teamControl' => $errors_teamControl ) )->getContent(), 'debug' => ''*/ ) ) ); // TODO : Renvoyer les erreurs
+                } else
+                    $response = new Response( json_encode( array( 'status' => 'ko', 'message' => 'Vous n\'avez pas la permission d\'éditer cette équipe', 'debug' => 'Utilisateur connecté != manager de l\'équipe' ) ) );
+            }
+            catch( \Exception $e ) {
+                $response = new Response( json_encode( array( 'status' => 'ko', 'message' => 'Une erreur inconnue s\'est produite', 'debug' => $e->getMessage() ) ) );
+            }
+            $response->headers->set( 'Content-Type', 'application/json' );
+            return $response;
+        }
+        $response = new Response( json_encode( array( 'status' => 'ko', 'message' => 'Accès non autorisé', 'debug' => 'Bad request' ) ) );
+        $response->headers->set( 'Content-Type', 'application/json') ;
+        return $response;
+    }
+
+    /**
+     * @Route("/ajax/getdispo", name="team_ajax_get_dispo")
+     */
+    public function ajaxGetDispo( Request $request ) {
+        if( $request->isXmlHttpRequest() ) {
+            try {
+                $user = $this->getUser();
+
+                $em = $this->getDoctrine()->getManager();
+                $team = $em->getRepository( 'TeamBundle:Team' )->findOneBy( array( 'id' => $request->get( 'id' ) ) );
+
+                if( $user->getTeam() == $team ) {
+                    $response = new Response( json_encode( array( 'status' => 'ok', 'return' => $team->getAvailable() ) ) );
+                } else
+                    $response = new Response( json_encode( array( 'status' => 'ko', 'message' => 'Vous n\'avez pas la permission d\'éditer cette équipe', 'debug' => 'Utilisateur connecté != manager de l\'équipe' ) ) );
+            }
+            catch( \Exception $e ) {
+                $response = new Response( json_encode( array( 'status' => 'ko', 'message' => 'Une erreur inconnue s\'est produite', 'debug' => $e->getMessage() ) ) );
+            }
+            $response->headers->set( 'Content-Type', 'application/json' );
+            return $response;
+        }
+        $response = new Response( json_encode( array( 'status' => 'ko', 'message' => 'Accès non autorisé', 'debug' => 'Bad request' ) ) );
+        $response->headers->set( 'Content-Type', 'application/json') ;
+        return $response;
+    }
+
+    /**
      * @Route("/view/{id}-{slugTeam}", name="team_front_homepage", defaults={"id": "", "slugTeam": ""},)
      */
     public function frontIndexAction( $id, $slugTeam ) {
