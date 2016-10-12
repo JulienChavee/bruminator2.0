@@ -74,8 +74,8 @@ swiftmailer:
     encryption:           tls
     auth_mode:            login
     spool:
-        type:                 file
-        path:                 '%kernel.cache_dir%/swiftmailer/spool'
+        type:                 memory
+        #path:                 '%kernel.cache_dir%/swiftmailer/spool'
     sender_address:       contact@bruminator.eu
     antiflood:
         threshold:            99
