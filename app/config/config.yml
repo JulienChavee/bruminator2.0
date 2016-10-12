@@ -67,8 +67,8 @@ doctrine:
 # Swiftmailer Configuration
 swiftmailer:
     transport:            "%mailer_transport%"
-    username:             "%mailer_host%"
-    password:             "%mailer_user%"
+    username:             "%mailer_user%"
+    password:             "%mailer_password%"
     host:                 "%mailer_host%"
     port:                 587
     encryption:           tls
@@ -76,7 +76,7 @@ swiftmailer:
     spool:
         type:                 file
         path:                 '%kernel.cache_dir%/swiftmailer/spool'
-    sender_address:       ~
+    sender_address:       contact@bruminator.eu
     antiflood:
         threshold:            99
         sleep:                0
@@ -94,6 +94,11 @@ fos_user:
     db_driver: orm
     firewall_name: main
     user_class: UserBundle\Entity\User
+    from_email:
+        address:        contact@bruminator.eu
+        sender_name:    Bruminator
+    service:
+        mailer: fos_user.mailer.default
 
 fos_js_routing:
     routes_to_expose: [ (.*) ]
