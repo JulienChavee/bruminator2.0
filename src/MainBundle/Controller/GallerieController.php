@@ -8,7 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 class GallerieController extends Controller
 {
     /**
-     * @Route("/gallerie", name="gallerie")
+     * @Route("/musee", name="gallerie")
      */
     public function indexAction()
     {
