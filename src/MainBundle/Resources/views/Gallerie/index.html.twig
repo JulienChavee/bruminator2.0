@@ -28,7 +28,7 @@
                 <hr>
                 <div class="row">
                     {% for winner in edition.winners %}
-                        <div class="col-md-4">
+                        <div class="{% if loop.first %}offset-md-4{% elseif not loop.last %}offset-md-2{% endif %} col-md-4">
                             <div class="card">
                                 <a href="{{ winner.url }}" target="_blank">
                                     <img class="card-img-top img-fluid" src="{{ winner.url }}" alt="Participation de {{ winner.player }}">
@@ -39,6 +39,10 @@
                                 </div>
                             </div>
                         </div>
+
+                        {% if loop.first %}
+                            </div><div class="row">
+                        {% endif %}
                     {% endfor %}
                 </div>
 
