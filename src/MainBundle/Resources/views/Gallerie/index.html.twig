@@ -30,7 +30,9 @@
                     {% for winner in edition.winners %}
                         <div class="col-md-4">
                             <div class="card">
-                                <img class="card-img-top img-fluid" src="{{ winner.url }}" alt="">
+                                <a href="{{ winner.url }}" target="_blank">
+                                    <img class="card-img-top img-fluid" src="{{ winner.url }}" alt="Participation de {{ winner.player }}">
+                                </a>
                                 <div class="card-block">
                                     <h4 class="card-title">{{ winner.server }}</h4>
                                     <p class="card-text">{{ winner.player }}</p>
@@ -46,7 +48,9 @@
                     {% for participation in edition.participations %}
                         <div class="col-md-3">
                             <div class="card">
-                                <img class="card-img-top img-fluid" src="{{ participation.url }}" alt="">
+                                <a href="{{ participation.url }}" target="_blank">
+                                    <img class="card-img-top img-fluid" src="{{ participation.url }}" alt="{{ participation.player }}">
+                                </a>
                                 <div class="card-block">
                                     <h4 class="card-title">{{ participation.server }}</h4>
                                     <p class="card-text">{{ participation.player }}</p>
