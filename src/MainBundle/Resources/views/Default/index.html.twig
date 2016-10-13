@@ -44,7 +44,7 @@
                     <div>
                         <h4 {% if team.name|length > 20 %}data-toggle="tooltip" data-trigger="hover" title="{{ team.name }}"{% endif %}>{{ team.name|truncate(20) }}</h4>
                         <div class="text-muted p-b-1">
-                            <i class="fa fa-clock-o"></i> {{ team.inscriptionDate|time_diff }}
+                            <i class="fa fa-clock-o"></i> {{ team.inscriptionDate|time_diff }} - <a href="{{ path('team_front_homepage', {'id':team.id, 'slugTeam': team.name|slugify}) }}" class="text-muted">Vers l'équipe <i class="fa fa-share"></i></a>
                         </div>
 
                         {% for player in team.players if not player.isRemplacant%}
