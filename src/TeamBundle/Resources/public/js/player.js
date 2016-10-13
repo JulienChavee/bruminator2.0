@@ -1,6 +1,6 @@
 var previousRemplacantPseudo = "";
 
-$('.playerCard').on('click', 'i[data-action="edit"]', function() {
+$('body').on('click', '.playerCard i[data-action="edit"]', function() {
     var id = $(this).data('id');
     var modal = $('#editPlayer');
 
