@@ -1,0 +1,61 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ parent() }} • Le musée
+{% endblock %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+    <li class="breadcrumb-item active">Le musée</li>
+{% endblock %}
+
+{% block body %}
+    <h1>Le musée</h1>
+    <hr>
+
+    <ul class="nav nav-tabs">
+        {% for key, edition in res %}
+            <li class="nav-item">
+                <a class="nav-link {% if loop.last %}active{% endif %}" data-toggle="tab" href="#brumi{{ key }}" role="tab">Bruminator {{ key }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <div class="tab-content">
+        {% for key, edition in res %}
+            <div class="tab-pane {% if loop.last %}active{% endif %}" id="brumi{{ key }}" role="tabpanel">
+                <h3 class="m-t-1">Notre top 3</h3>
+                <hr>
+                <div class="row">
+                    {% for winner in edition.winners %}
+                        <div class="col-md-4">
+                            <div class="card">
+                                <img class="card-img-top img-fluid" src="{{ winner.url }}" alt="">
+                                <div class="card-block">
+                                    <h4 class="card-title">{{ winner.server }}</h4>
+                                    <p class="card-text">{{ winner.player }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <h3 class="m-t-1">Les autres participations</h3>
+                <hr>
+                <div class="row">
+                    {% for participation in edition.participations %}
+                        <div class="col-md-3">
+                            <div class="card">
+                                <img class="card-img-top img-fluid" src="{{ participation.url }}" alt="">
+                                <div class="card-block">
+                                    <h4 class="card-title">{{ participation.server }}</h4>
+                                    <p class="card-text">{{ participation.player }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
