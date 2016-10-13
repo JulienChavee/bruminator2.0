@@ -67,7 +67,12 @@
         <div class="tab-pane" id="informations" role="tabpanel">
             <h2 class="m-t-2">Dates du tournoi</h2>
             <div class="m-t-1">
-                <b>Inscriptions :</b> du {{ 'inscription_start'|config|format_datetime('dd MMMM yyyy à HH:mm') }} au {{ 'inscription_end'|config|format_datetime('dd MMMM yyyy à HH:mm') }}
+                <b>Inscriptions :</b> du {{ 'inscription_start'|config|format_datetime('dd MMMM yyyy à HH:mm') }} au {{ 'inscription_end'|config|format_datetime('dd MMMM yyyy à HH:mm') }}<br>
+                {% if 'type_tournoi'|config == 'ronde' %}
+                    {% for val in (1..'rondes'|config.total) %}
+                        <b>Ronde {{ val }} :</b> du {{ ('ronde' ~ val)|config.start_date|format_datetime('dd MMMM yyyy') }} au {{ ('ronde' ~ val)|config.end_date|format_datetime('dd MMMM yyyy') }}<br>
+                    {% endfor %}
+                {% endif %}
             </div>
         </div>
         <!--<div class="tab-pane" id="messages" role="tabpanel">...</div>
