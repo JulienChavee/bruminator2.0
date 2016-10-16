@@ -6,7 +6,7 @@ class ControlTeam {
 
     protected $em;
 
-    public function __construct($em)
+    public function __construct( $em )
     {
         $this->em = $em;
     }
@@ -44,14 +44,14 @@ class ControlTeam {
 
         foreach( $players as $k => $v ) {
             if( !$v->getIsRemplacant() ) {
-                $tempClassBanned = json_decode($v->getClass()->getBannedClass());
+                $tempClassBanned = json_decode( $v->getClass()->getBannedClass() );
                 $classes[] = $v->getClass();
 
-                if (!is_null($tempClassBanned)) {
-                    foreach ($tempClassBanned as $k2 => $v2) {
-                        $temp = $this->em->getRepository('TeamBundle:Classe')->findOneBy(array('id' => $v2));
+                if( !is_null( $tempClassBanned ) ) {
+                    foreach( $tempClassBanned as $k2 => $v2 ) {
+                        $temp = $this->em->getRepository('TeamBundle:Classe')->findOneBy( array( 'id' => $v2 ) );
 
-                        if (in_array($temp, $classes))
+                        if( in_array( $temp, $classes ) )
                             $bannedClass++;
                     }
                 }

@@ -44,3 +44,7 @@ services:
     log.action_log:
         class: LogBundle\Utils\Log
         arguments: ['@doctrine.orm.entity_manager']
+
+    match.control_match:
+        class: MatchBundle\Utils\ControlMatch
+        arguments: ['@doctrine.orm.entity_manager']
