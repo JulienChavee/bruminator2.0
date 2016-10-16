@@ -62,7 +62,7 @@ class PlayerController extends Controller
 
                     if( $request->get( 'newPlayer' ) == "true" ) {
                         $oldPlayer = $player;
-                        $oldPlayer->setTeam( NULL );
+                        $oldPlayer->setTeam( null );
 
                         $player = new Player();
                         $player->setPseudo( $request->get( 'pseudo' ) );
@@ -110,10 +110,11 @@ class PlayerController extends Controller
                     }
 
                     $errors_validator = $this->get( 'validator' )->validate( $player );
-                    $errors_teamControl = $this->get( 'team.control_team' )->checkCompo( $team->getPlayers() );
-
-                    if( count( $errors_validator ) == 0 && count( $errors_teamControl ) == 0 ) {
+                    //$errors_teamControl = $this->get( 'team.control_team' )->checkCompo( $team->getPlayers() );
+                    // TODO : Revoir le check de la composotion (voir issue #17)
+                    if( count( $errors_validator ) == 0 /*&& count( $errors_teamControl ) == 0*/ ) {
                         $em->flush();
+
                         $response = new Response( json_encode( array( 'status' => 'ok', 'return' => $this->render('TeamBundle:Default:playerRow.html.twig', array( 'player' => $player, 'team' => $team ) )->getContent() ) ) );
                     } else
                         $response = new Response( json_encode( array( 'status' => 'ko', 'message' => 'Impossible de modifier le joueur', 'errors' => $this->render( 'TeamBundle:Default:validation.html.twig', array( 'errors_validator' => $errors_validator, 'errors_teamControl' => $errors_teamControl ) )->getContent(), 'debug' => '' ) ) );

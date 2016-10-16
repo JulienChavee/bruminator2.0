@@ -18,6 +18,10 @@ $('body').on('click', '.playerCard i[data-action="edit"]', function() {
                 modal.find('#editPlayer_Pseudo').val(data.player.pseudo);
                 modal.find('#editPlayer_Level').val(data.player.level);
                 modal.find('#editPlayer_Class').val(data.player.class.id);
+                if(data.player.remplacant) {
+                    modal.find('#editPlayer_Remplacant_Pseudo').val(data.player.remplacant.pseudo);
+                    modal.find('#editPlayer_Remplacant_Level').val(data.player.remplacant.level);
+                }
 
                 modal.find('.editPlayer').data('id', id);
                 modal.modal('show');
