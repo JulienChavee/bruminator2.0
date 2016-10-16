@@ -39,53 +39,41 @@ class ControlMatch
 
         if( $rondes['ronde_actuelle'] === 0 ) {
             try {
-                if ($total = count($teams) % 2 != 0) {
-                    $match = new Matchs();
+                if( $total = count( $teams ) % 2 != 0 ) {
+                    $return = $this->generateMatchBarrage( $teams );
+                    $teams = $return[ 'teams' ];
 
-                    if (rand(0, 1) === 0) {
-                        $match->setAttack(array_slice($teams, -1, 1)[0]);
-                        $match->setDefense(array_slice($teams, -2, 1)[0]);
-                    } else {
-                        $match->setAttack(array_slice($teams, -2, 1)[0]);
-                        $match->setDefense(array_slice($teams, -1, 1)[0]);
-                    }
+                    $this->em->persist( $return[ 'match' ] );
 
-                    $match->setDate(NULL);
-                    $match->setArbitre(NULL);
-                    $match->setType('Match de barrage');
-
-                    $this->em->persist($match);
-
-                    $teams = array_slice($teams, 0, count($teams) - 3);
-                    $total = count($teams) - 1;
+                    $total = count( $teams ) - 1;
                 }
 
                 $teamsSelected = array();
-                for ($i = 0; $i < $total / 2; $i++) {
+                for ( $i = 0; $i < $total / 2; $i++ ) {
                     do {
-                        $attack = rand(0, $total);
-                    } while (in_array($attack, $teamsSelected));
+                        $attack = rand( 0, $total );
+                    } while ( in_array( $attack, $teamsSelected ) );
 
                     do {
-                        $def = rand(0, $total);
-                    } while (in_array($def, $teamsSelected) || $def == $attack);
+                        $def = rand( 0, $total );
+                    } while ( in_array( $def, $teamsSelected ) || $def == $attack );
 
                     $match = new Matchs();
-                    $match->setAttack($teams[$attack]);
-                    $match->setDefense($teams[$def]);
-                    $match->setDate(NULL);
-                    $match->setArbitre(NULL);
-                    $match->setType('Ronde 1');
+                    $match->setAttack( $teams[ $attack ] );
+                    $match->setDefense( $teams[ $def ] );
+                    $match->setDate( NULL );
+                    $match->setArbitre( NULL );
+                    $match->setType( 'Ronde 1' );
 
-                    $this->em->persist($match);
+                    $this->em->persist( $match );
 
-                    array_push($teamsSelected, $attack, $def);
+                    array_push( $teamsSelected, $attack, $def );
                 }
 
-                $this->em->flush();
+                $rondes[ 'ronde_actuelle'] = 1;
+                $config->setValue( json_encode( $rondes ) );
 
-                $rondes['ronde_actuelle'] = 1;
-                $config->setValue(json_encode($rondes));
+                $this->em->flush();
             }
             catch( \Exception $e ) {
                 return array( 'status' => 'ko', 'message' => 'Une erreur inconnue s\'est produite', 'debug' => $e->getMessage() );
@@ -93,5 +81,25 @@ class ControlMatch
 
             return array( 'status' => 'ok' );
         }
+    }
+
+    private function generateMatchBarrage( $teams ) {
+        $match = new Matchs();
+
+        if ( rand( 0, 1 ) === 0 ) {
+            $match->setAttack( array_slice( $teams, -1, 1 )[ 0 ] );
+            $match->setDefense( array_slice( $teams, -2, 1 )[ 0 ] );
+        } else {
+            $match->setAttack( array_slice( $teams, -2, 1 )[ 0 ] );
+            $match->setDefense( array_slice( $teams, -1, 1 )[ 0 ] );
+        }
+
+        $match->setDate( NULL );
+        $match->setArbitre( NULL );
+        $match->setType( 'Match de barrage' );
+
+        $teams = array_slice( $teams, 0, count( $teams ) - 3 );
+
+        return array( 'match' => $match, 'teams' => $teams );
     }
 }
