@@ -27,7 +27,7 @@ class MatchController extends Controller
      */
     public function ajaxGenerateMatchAction( Request $request ) {
         // TODO : Vérifier ajax et si la fin des inscription est < now()
-        $response = new Response( $this->get( 'match.control_match' )->generateMatch() );
+        $response = new Response( json_encode( $this->get( 'match.control_match' )->generateMatch() ) );
         $response->headers->set( 'Content-Type', 'application/json' );
 
         return $response;
