@@ -23,8 +23,9 @@ class TeamController extends Controller
         if( $team ) {
             $em = $this->getDoctrine()->getManager();
             $classes = $em->getRepository( 'TeamBundle:Classe' )->findBy( array(), array( 'name' => 'ASC' ) );
+            $matchs = $em->getRepository( 'MatchBundle:Matchs' )->findByTeam( $team->getId() );
 
-            return $this->render( 'TeamBundle:Default:index.html.twig', array( 'team' => $team, 'classes' => $classes ) );
+            return $this->render( 'TeamBundle:Default:index.html.twig', array( 'team' => $team, 'matchs' => $matchs, 'classes' => $classes ) );
         } else {// Si aucune équipe inscrite, on redirige sur la page pour en inscrire une
             $this->addFlash( 'danger', 'Vous ne possédez aucune équipe' );
 
