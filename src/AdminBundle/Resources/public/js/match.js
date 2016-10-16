@@ -15,10 +15,7 @@ $('.modal_alert_confirmation').on('click', '.modal-confirmation-yes[data-action=
         },
         success: function (data) {
             if (data.status == 'ok') {
-                $('.modal_alert_success').modal('show');
-                setTimeout(function () {
-                    $(".modal_alert_success").modal('hide');
-                }, 1700);
+                location.reload();
             } else {
                 $('.modal-body-more-info').html(data.message);
                 $('.modal_alert_error').modal('show');
