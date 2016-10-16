@@ -34,7 +34,7 @@ class ControlMatch
 
     private function generateNextRonde() {
         $teams = $this->em->getRepository( 'TeamBundle:Team' )->findBy( array( 'valid' => 1 ), array( 'inscriptionDate' => 'asc' ) );
-        $config =  $this->em->getRepository( 'AdminBundle:Config' )->getOneBy( array( 'name' => 'rondes' ) );
+        $config =  $this->em->getRepository( 'AdminBundle:Config' )->findOneBy( array( 'name' => 'rondes' ) );
         $rondes = json_decode( $config->getValue(), true );
 
         if( $rondes['ronde_actuelle'] === 0 ) {
