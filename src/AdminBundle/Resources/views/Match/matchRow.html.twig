@@ -1,0 +1,58 @@
+<div data-id="{{ match.id }}">
+    <div class="card matchCard">
+        <div class="card-header">
+            <span class="text-danger">{{ match.attack.name }}</span> <b>VS</b> <span class="text-primary">{{ match.defense.name }}</span>
+        </div>
+        <div class="card-block">
+            <div class="card-text">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6 class="text-danger">Disponibilités {{ match.attack.name }}</h6>
+                        <hr>
+                        <div class="text-justify">
+                            {{ match.attack.available|nl2br }}
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <h6 class="text-primary">Disponibilités {{ match.defense.name }}</h6>
+                        <hr>
+                        <div class="text-justify">
+                            {{ match.defense.available|nl2br }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row m-t-2">
+                    <div class="col-md-6 editable_content">
+                        <h6>Date</h6>
+                        <hr>
+
+                        <div class="editDate">
+                            {% if match.date %}
+                                {{ match.date|format_date('dd MMMM yyyy - HH:mm') }}
+                            {% else %}
+                                <i>Aucune date pour le moment</i>
+                            {% endif %}
+                            <i class="fa fa-pencil editable_tool invisible" data-toggle="tooltip" data-trigger="hover" title="Modifier la date" role="button" data-action="edit" data-id="{{ match.id }}"></i>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 editable_content">
+                        <h6>Arbitre</h6>
+                        <hr>
+
+                        <div class="editArbitre">
+                            {% if match.arbitre %}
+                                {{ match.arbitre.pseudo }}
+                            {% else %}
+                                <i>Aucun arbitre pour le moment</i>
+                            {% endif %}
+                            <i class="fa fa-pencil editable_tool invisible" data-toggle="tooltip" data-trigger="hover" title="Modifier la date" role="button" data-action="edit" data-id="{{ match.id }}"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ parent() }} • Calendrier
+{% endblock %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+    <li class="breadcrumb-item active">Calendrier</li>
+{% endblock %}
+
+{% block body %}
+    <h1>Calendrier</h1>
+    <hr>
+
+    {% include 'MainBundle:Calendrier:calendarGrid.html.twig' %}
+{% endblock %}

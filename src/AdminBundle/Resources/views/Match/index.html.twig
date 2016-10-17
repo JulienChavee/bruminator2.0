@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ parent() }} • Administration • Gestion des matchs
+{% endblock %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+    <li class="breadcrumb-item"><a href="{{ path('admin_homepage') }}">Administration</a></li>
+    <li class="breadcrumb-item active">Gestion des matchs</li>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+    {% stylesheets '@MainBundle/Resources/public/css/bootstrap-datetimepicker.min.css' %}
+        <link rel="stylesheet" href="{{ asset_url }}">
+    {% endstylesheets %}
+{% endblock %}
+
+{% block body %}
+    <h1>Gestion des matchs</h1>
+    <hr>
+
+    {% for match in matchs %}
+        {% include 'AdminBundle:Match:matchRow.html.twig' %}
+    {% else %}
+        {% if date('inscription_end'|config) > date() %}
+            <div class="alert alert-danger">
+                Les inscriptions ne sont pas encore terminées
+            </div>
+        {% else %}
+            <div class="alert alert-info">
+                Les inscriptions sont terminées.<br>
+                Il y a {{ nbTeamValid }} team <b>validées</b> sur {{ nbTeam }} <b>inscrites</b><br>
+                <br>
+                Voulez-vous générer les matchs ?<br>
+                <button class="btn btn-primary" data-action="generateMatch">Oui</button><button class="btn btn-outline-danger m-l-1">Non</button>
+            </div>
+        {% endif %}
+    {% endfor %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {% javascripts output='js/compiled/admin/match.js'
+    '@AdminBundle/Resources/public/js/match.js'
+    '@MainBundle/Resources/public/js/moment.min.js'
+    '@MainBundle/Resources/public/js/moment-with-locales.min.js'
+    '@MainBundle/Resources/public/js/bootstrap-datetimepicker.min.js'
+    %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}

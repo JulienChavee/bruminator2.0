@@ -38,11 +38,24 @@
                 </p>
             </div>
         </div>
+
+        {% if is_granted('ROLE_ADMIN') %}
+            <div class="col-md-4">
+                <div class="card card-block">
+                    <h4 class="card-title">Disponibilités</h4>
+                    <p class="card-text">
+                        {{ team.available }}
+                    </p>
+                </div>
+            </div>
+        {% endif %}
     </div>
 
-    <!--<div class="m-t-1 row">
+    <div class="m-t-1 row">
         <h2>Matchs</h2>
 
-        {##}{ render(controller('TeamBundle:Team:frontViewTeamMatchs', { 'id': team.id })) }}
-    </div> TODO-->
+        <div class="row">
+            {{ render(controller('TeamBundle:Team:frontViewTeamMatchs', { 'id': team.id })) }}
+        </div>
+    </div>
 {% endblock %}

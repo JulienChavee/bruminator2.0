@@ -13,6 +13,11 @@ team:
     type:     annotation
     prefix:   /team
 
+match:
+    resource: "@MatchBundle/Controller/"
+    type:     annotation
+    prefix:   /match
+
 user:
     resource: "@UserBundle/Controller/"
     type:     annotation

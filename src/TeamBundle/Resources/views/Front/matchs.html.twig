@@ -1,0 +1,5 @@
+{% for match in matchs %}
+    {% include 'TeamBundle:Default:matchRow.html.twig' %}
+{% else %}
+    <i>Aucun match prévu pour le moment</i>
+{% endfor %}
