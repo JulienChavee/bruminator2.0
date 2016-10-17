@@ -39,7 +39,9 @@ class ControlMatch
 
         if( $rondes['ronde_actuelle'] === 0 ) {
             try {
-                if( $total = count( $teams ) % 2 != 0 ) {
+                $total = count( $teams ) % 2;
+
+                if( $total != 0 ) {
                     $return = $this->generateMatchBarrage( $teams );
                     $teams = $return[ 'teams' ];
 
