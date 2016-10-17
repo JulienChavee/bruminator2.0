@@ -47,7 +47,7 @@ class ControlMatch
 
                     $this->em->persist( $return[ 'match' ] );
 
-                    $total = count( $teams ) - 1;
+                    $total = count( $teams );
                 }
 
                 $teamsSelected = array();

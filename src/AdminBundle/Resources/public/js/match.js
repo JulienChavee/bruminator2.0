@@ -40,7 +40,7 @@ $('body').on('click', '.editDate i[data-action="edit"]', function() {
         },
         success: function (data) {
             if (data.status == 'ok') {
-                $('.editDate')
+                $('div[data-id="' + id + '"] .editDate')
                     .empty()
                     .append(
                         $('<input>').addClass('form-control inputDate').attr('type', 'text').attr('placeholder', 'Date du match (laisser vide pour aucune date)').val(data.return != null ? moment(data.return.date).format("DD/MM/YYYY HH:mm") : '')
@@ -50,7 +50,7 @@ $('body').on('click', '.editDate i[data-action="edit"]', function() {
                         $('<button>').addClass('btn btn-outline-secondary m-t-1').text('Annuler').attr('data-id', id).attr('data-action', 'cancel')
                     );
             } else {
-                $('.editDate')
+                $('div[data-id="' + id + '"] .editDate')
                     .empty()
                     .append(
                         $('<input>').addClass('form-control inputDate').attr('type', 'text').attr('placeholder', 'Date du match (laisser vide pour aucune date)')
@@ -130,9 +130,9 @@ $('body').on('click', '.editDate button[data-action="cancel"]', function(){
         success: function (data) {
             if (data.status == 'ok') {
                 if( data.return != null) {
-                    $('.editDate').empty().append(moment(data.return.date).locale('fr').format("DD MMMM YYYY - HH:mm"));
+                    $('div[data-id="' + id + '"] .editDate').empty().append(moment(data.return.date).locale('fr').format("DD MMMM YYYY - HH:mm"));
                 } else {
-                    $('.editDate').empty().append(
+                    $('div[data-id="' + id + '"] .editDate').empty().append(
                         $('<i>').text('Aucune date pour le moment ')
                     ).append(
                         $('<i>').addClass('fa fa-pencil editable_tool invisible').data('id', id).attr('data-action', 'edit')
