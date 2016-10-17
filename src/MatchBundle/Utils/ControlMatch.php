@@ -53,11 +53,11 @@ class ControlMatch
                 $teamsSelected = array();
                 for ( $i = 0; $i < $total / 2; $i++ ) {
                     do {
-                        $attack = rand( 0, $total );
+                        $attack = rand( 0, ($total - 1) );
                     } while ( in_array( $attack, $teamsSelected ) );
 
                     do {
-                        $def = rand( 0, $total );
+                        $def = rand( 0, ($total - 1) );
                     } while ( in_array( $def, $teamsSelected ) || $def == $attack );
 
                     $match = new Matchs();
