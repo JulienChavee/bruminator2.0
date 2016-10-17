@@ -10,12 +10,20 @@
     <li class="breadcrumb-item active">Gestion des matchs</li>
 {% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+
+    {% stylesheets '@MainBundle/Resources/public/css/bootstrap-datetimepicker.min.css' %}
+        <link rel="stylesheet" href="{{ asset_url }}">
+    {% endstylesheets %}
+{% endblock %}
+
 {% block body %}
     <h1>Gestion des matchs</h1>
     <hr>
 
-    {% if matchCreated %}
-
+    {% for match in matchs %}
+        {% include 'AdminBundle:Match:matchRow.html.twig' %}
     {% else %}
         {% if date('inscription_end'|config) > date() %}
             <div class="alert alert-danger">
@@ -30,7 +38,7 @@
                 <button class="btn btn-primary" data-action="generateMatch">Oui</button><button class="btn btn-outline-danger m-l-1">Non</button>
             </div>
         {% endif %}
-    {% endif %}
+    {% endfor %}
 {% endblock %}
 
 {% block javascripts %}
@@ -38,6 +46,9 @@
 
     {% javascripts output='js/compiled/admin/match.js'
     '@AdminBundle/Resources/public/js/match.js'
+    '@MainBundle/Resources/public/js/moment.min.js'
+    '@MainBundle/Resources/public/js/moment-with-locales.min.js'
+    '@MainBundle/Resources/public/js/bootstrap-datetimepicker.min.js'
     %}
         <script src="{{ asset_url }}"></script>
     {% endjavascripts %}

@@ -144,10 +144,24 @@
         {% endfor %}
     </div>
 
-    <div class="row">
+    <div class="row m-t-2">
         <div class="col-md-6 disponibilites editable_content">
             <h2>Vos disponibilités <small><i class="fa fa-pencil editable_tool invisible" data-toggle="tooltip" data-trigger="hover" title="Modifier les disponibilités" role="button" data-action="edit" data-id="{{ team.id }}"></i></small></h2>
             {% include '@Team/Default/dispoRow.html.twig' %}
+        </div>
+    </div>
+
+    <div class="row m-t-2">
+        <div class="col-md-12">
+            <h2>Vos matchs</h2>
+
+            <div class="row">
+                {% for match in matchs %}
+                    {% include 'TeamBundle:Default:matchRow.html.twig' %}
+                {% else %}
+                    <i>Aucun match pour le moment</i>
+                {% endfor %}
+            </div>
         </div>
     </div>
 {% endblock %}

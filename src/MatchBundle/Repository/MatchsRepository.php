@@ -20,18 +20,20 @@ class MatchsRepository extends \Doctrine\ORM\EntityRepository
             $qb->orderBy( 'm.date ', 'DESC');
         $qb->setParameter( '1', $id );
         $qb->setParameter( '2', $id );
+
         return $qb->getQuery()->getResult();
     }
 
-    function findByDate( \DateTime $time ) {
+    function findByDate( \DateTime $time, $order = array() ) {
         $qb = $this->createQueryBuilder( 'm' );
-        $qb->andWhere(
-            $qb->expr()->andX()
-                ->add( 'm.date >= ?1' )
-                ->add( 'm.date < ?2' )
+        $qb->where( $qb->expr()->orX()
+            ->add( 'm.date >= ?1' )
+            ->add( 'm.date IS NULL')
         );
+        if( !empty( $order ) )
+            $qb->orderBy( 'm.'.$order[ 'field' ], $order[ 'type' ] );
         $qb->setParameter( '1', $time->format( 'Y-m-d' ) );
-        $qb->setParameter( '2', $time->add( new \DateInterval( 'P1M' ) )->format( 'Y-m-d' ) );
+
         return $qb->getQuery()->getResult();
     }
 }

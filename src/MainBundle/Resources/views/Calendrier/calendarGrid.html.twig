@@ -1,0 +1,55 @@
+<table class="table table-bordered" style="table-layout: fixed;">
+    <thead class="thead-inverse">
+        <tr>
+            <th class="text-xs-center" width="14%">Lundi</th>
+            <th class="text-xs-center" width="14%">Mardi</th>
+            <th class="text-xs-center" width="14%">Mercredi</th>
+            <th class="text-xs-center" width="14%">Jeudi</th>
+            <th class="text-xs-center" width="14%">Vendredi</th>
+            <th class="text-xs-center" width="14%">Samedi</th>
+            <th class="text-xs-center" width="14%">Dimanche</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <tr>
+            {% set daysInMonth = time|date('t') %}
+            {% set startDow = time|date('F 1\\s\\t Y')|date('N') - 1 %}
+            {% set dow = startDow %}
+            {% for day in range(1,daysInMonth) %}
+                {% if loop.first and startDow != 0 %}
+                    <td colspan="{{ startDow }}" class="table-active"></td>
+                {% endif %}
+                <td height="85px">
+                    <div>
+                        <div>
+                            <span class="pull-xs-left tag {% if time|date('d') == day %}tag-danger{% else %}tag-default{% endif %}">{{ day }}</span>
+                            <!--<span class="pull-xs-right">nb matchs</span>-->
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="text-xs-center m-t-1">
+                            {% for match in matchs if match.date|date('d') == day %}
+                                {% if not loop.first %}
+                                    <hr>
+                                {% endif %}
+                                <span><a href="{{ path('team_front_homepage', {'id':match.attack.id, 'slugTeam': match.attack.name|slugify}) }}" class="text-danger">{{ match.attack.name }}</a></span><br>
+                                <small><b>{{ match.date|date('H:i') }}</b></small><br>
+                                <span><a href="{{ path('team_front_homepage', {'id':match.defense.id, 'slugTeam': match.defense.name|slugify}) }}" class="text-primary">{{ match.defense.name }}</a></span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </td>
+                {% if loop.last and dow != 6 %}
+                    <td colspan="{{ 6 - dow }}" class="table-active"></td>
+                {% endif %}
+                {% if dow == 6 %}
+                    {% set dow = 0 %}
+                    </tr>
+                    <tr>
+                {% else %}
+                    {% set dow = dow + 1 %}
+                {% endif %}
+            {% endfor %}
+        </tr>
+    </tbody>
+</table>

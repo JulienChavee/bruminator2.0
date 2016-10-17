@@ -1,0 +1,16 @@
+<div class="col-md-4">
+    <div class="card card-outline-primary">
+        <div class="card-block">
+            <b><span class="text-danger">{{ match.attack.name }}</span></b> VS <b><span class="text-primary">{{ match.defense.name }}</span></b>
+            <hr>
+            <i class="fa fa-clock-o" data-toggle="tooltip" data-trigger="hover" title="Date du match"></i> {% if match.date %}{{ match.date|format_date('dd MMMM YYYY - HH:mm') }}{% else %}<i>Aucune date pour le moment</i>{% endif %}<br>
+            <i class="fa fa-user" data-toggle="tooltip" data-trigger="hover" title="Arbitre"></i> {% if match.arbitre %}{{ match.arbitre.pseudo }}{% else %}<i>Aucun arbitre pour le moment</i>{% endif %}
+
+            {% if date(match.date) < date('now') %}
+                <hr>
+                <i class="fa fa-trophy" data-toggle="tooltip" data-trigger="hover" title="Vainqueur"></i> Vainqueur (x tours)<br>
+                <small><a href="" class="text-muted"><i class="fa fa-share"></i> Vers la feuille du match</a></small>
+            {% endif %}
+        </div>
+    </div>
+</div>

@@ -50,14 +50,15 @@
                     </li>
                 {% endif %}
 
-                <li class="nav-item {% if app.request.attributes.get('_route') matches '{^team_front.*$}' %}active{% endif %} dropdown">
+                <li class="nav-item {% if app.request.attributes.get('_route') matches '{^(team_front.*|calendrier.*)$}' %}active{% endif %} dropdown">
                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Tournoi</a>
                     <div class="dropdown-menu">
                         <a class="dropdown-item" href="{{ path('team_front_homepage') }}">Liste des équipes</a>
+                        <a class="dropdown-item" href="{{ path('calendrier') }}">Calendrier</a>
                     </div>
                 </li>
 
-                <li class="nav-item {#% if app.request.attributes.get('_route') matches '{^team_front.*$}' %}active{% endif %#} dropdown">
+                <li class="nav-item {% if app.request.attributes.get('_route') matches '{^gallerie.*$}' %}active{% endif %} dropdown">
                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Autres curiosités</a>
                     <div class="dropdown-menu">
                         <a class="dropdown-item" href="{{ path('gallerie') }}">Le musée</a>
@@ -250,6 +251,10 @@
             $(this).find('.editable_tool').removeClass('invisible');
         }).on('mouseleave', '.editable_content', function() {
             $(this).find('.editable_tool').addClass('invisible');
+        });
+
+        $('body').on('click', '*', function() {
+            $('[data-toggle="tooltip"]').tooltip('hide');
         });
     </script>
 {% endblock %}

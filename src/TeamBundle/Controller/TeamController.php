@@ -23,7 +23,7 @@ class TeamController extends Controller
         if( $team ) {
             $em = $this->getDoctrine()->getManager();
             $classes = $em->getRepository( 'TeamBundle:Classe' )->findBy( array(), array( 'name' => 'ASC' ) );
-            $matchs = $em->getRepository( 'MatchBundle:Matchs' )->findByTeam( $team->getId() );
+            $matchs = $em->getRepository( 'MatchBundle:Matchs' )->findByTeam( $team->getId(), true );
 
             return $this->render( 'TeamBundle:Default:index.html.twig', array( 'team' => $team, 'matchs' => $matchs, 'classes' => $classes ) );
         } else {// Si aucune équipe inscrite, on redirige sur la page pour en inscrire une
@@ -211,13 +211,20 @@ class TeamController extends Controller
             return $this->frontViewTeamAction( $id, $slugTeam );
     }
 
-    public function frontViewTeamAction( $id, $slugTeam ) {
+    private function frontViewTeamAction( $id, $slugTeam ) {
         $em = $this->getDoctrine()->getManager();
         $team = $em->getRepository( 'TeamBundle:Team' )->findOneBy( array( 'id' => $id ) );
         if( $this->get( 'cocur_slugify' )->slugify( $team->getName() ) == $slugTeam )
             return $this->render( 'TeamBundle:Front:team.html.twig', array( 'team' => $team ) );
         else
             return $this->redirectToRoute( 'team_front_homepage', array( 'id' => $team->getId(), 'slugTeam' => $this->get( 'cocur_slugify' )->slugify( $team->getName() ) ) );
+    }
+
+    public function frontViewTeamMatchsAction( $id ) {
+        $em = $this->getDoctrine()->getManager();
+        $matchs = $em->getRepository( 'MatchBundle:Matchs' )->findByTeam( $id, true );
+
+        return $this->render( 'TeamBundle:Front:matchs.html.twig', array( 'matchs' => $matchs ) );
     }
 
     private function validateTeam( $teamName, $players, $dispo ) {
