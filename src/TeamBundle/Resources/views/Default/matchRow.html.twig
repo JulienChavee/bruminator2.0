@@ -1,7 +1,7 @@
 <div class="col-md-4">
-    <div class="card card-outline-primary">
+    <div class="card card-outline-secondary">
         <div class="card-block">
-            <b><span class="text-danger">{{ match.attack.name }}</span></b> VS <b><span class="text-primary">{{ match.defense.name }}</span></b>
+            <b><span class="text-danger" {% if match.attack.name|length > 14 %}data-toggle="tooltip" data-trigger="hover" title="{{ match.attack.name }}"{% endif %}>{{ match.attack.name|truncate(14) }}</span></b> VS <b><span class="text-primary" {% if match.defense.name|length > 14 %}data-toggle="tooltip" data-trigger="hover" title="{{ match.defense.name }}"{% endif %}>{{ match.defense.name|truncate(14) }}</span></b>
             <hr>
             <i class="fa fa-clock-o" data-toggle="tooltip" data-trigger="hover" title="Date du match"></i> {% if match.date %}{{ match.date|format_date('dd MMMM YYYY - HH:mm') }}{% else %}<i>Aucune date pour le moment</i>{% endif %}<br>
             <i class="fa fa-user" data-toggle="tooltip" data-trigger="hover" title="Arbitre"></i> {% if match.arbitre %}{{ match.arbitre.pseudo }}{% else %}<i>Aucun arbitre pour le moment</i>{% endif %}

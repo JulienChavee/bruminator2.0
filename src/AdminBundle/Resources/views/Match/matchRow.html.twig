@@ -10,7 +10,7 @@
                         <h6 class="text-danger">Disponibilités {{ match.attack.name }}</h6>
                         <hr>
                         <div class="text-justify">
-                            {{ match.attack.available }}
+                            {{ match.attack.available|nl2br }}
                         </div>
                     </div>
 
@@ -18,7 +18,7 @@
                         <h6 class="text-primary">Disponibilités {{ match.defense.name }}</h6>
                         <hr>
                         <div class="text-justify">
-                            {{ match.defense.available }}
+                            {{ match.defense.available|nl2br }}
                         </div>
                     </div>
                 </div>

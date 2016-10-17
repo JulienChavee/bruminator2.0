@@ -28,7 +28,7 @@
                         </div>
                         <div class="clearfix"></div>
                         <div class="text-xs-center m-t-1">
-                            {% for match in matchs if match.date|date('d') == day %}
+                            {% for match in matchs if match.date and match.date|date('d') == day %}
                                 {% if not loop.first %}
                                     <hr>
                                 {% endif %}
