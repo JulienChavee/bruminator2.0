@@ -6,6 +6,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
 
 class MatchController extends Controller
 {
@@ -77,6 +79,75 @@ class MatchController extends Controller
 
                 if( $match )
                     $response = new Response( json_encode( array( 'status' => 'ok', 'return' => $match->getDate() ) ) );
+                else
+                    $response = new Response( json_encode( array( 'status' => 'ko', 'message' => 'Ce match est introuvable' ) ) );
+            }
+            catch( \Exception $e ) {
+                $response = new Response( json_encode( array( 'status' => 'ko', 'message' => 'Une erreur inconnue s\'est produite', 'debug' => $e->getMessage() ) ) );
+            }
+            $response->headers->set( 'Content-Type', 'application/json' );
+            return $response;
+        }
+
+        $response = new Response( json_encode( array( 'status' => 'ko', 'message' => 'Accès refusé', 'debug' => 'Bad request' ) ) );
+        $response->headers->set( 'Content-Type', 'application/json') ;
+        return $response;
+    }
+
+    /**
+     * @Route("/match/ajax/editarbitre", name="admin_match_ajax_edit_arbitre")
+     */
+    public function ajaxEditArbitreAction( Request $request ) {
+        if( $request->isXmlHttpRequest() ) {
+            try {
+                $em = $this->getDoctrine()->getManager();
+
+                $match = $em->getRepository( 'MatchBundle:Matchs' )->findOneBy( array( 'id' => $request->get( 'id' ) ) );
+
+                if( $match ) {
+                    $match->setArbitre( $request->get( 'arbitre' ) == '' ? NULL : $em->getRepository( 'UserBundle:User' )->findOneBy( array( 'id' => $request->get( 'arbitre' ) ) ) );
+
+                    $em->flush();
+
+                    $response = new Response( json_encode( array( 'status' => 'ok', 'return' => $this->render( 'AdminBundle:Match:matchRow.html.twig', array( 'match' => $match ) )->getContent() ) ) );
+                } else
+                    $response = new Response( json_encode( array( 'status' => 'ko', 'message' => 'Ce match est introuvable' ) ) );
+            }
+            catch( \Exception $e ) {
+                $response = new Response( json_encode( array( 'status' => 'ko', 'message' => 'Une erreur inconnue s\'est produite', 'debug' => $e->getMessage() ) ) );
+            }
+            $response->headers->set( 'Content-Type', 'application/json' );
+            return $response;
+        }
+
+        $response = new Response( json_encode( array( 'status' => 'ko', 'message' => 'Accès refusé', 'debug' => 'Bad request' ) ) );
+        $response->headers->set( 'Content-Type', 'application/json') ;
+        return $response;
+    }
+
+    /**
+     * @Route("/match/ajax/getArbitre", name="admin_match_ajax_get_arbitre")
+     */
+    public function ajaxGetArbitreAction( Request $request ) {
+        if( $request->isXmlHttpRequest() ) {
+            try {
+                $em = $this->getDoctrine()->getManager();
+
+                $match = $em->getRepository( 'MatchBundle:Matchs' )->findOneBy( array( 'id' => $request->get( 'id' ) ) );
+                $listArbitres = $em->getRepository( 'UserBundle:User' )->findByRole( 'ROLE_ADMIN' );
+                $listArbitres = array_merge( $em->getRepository( 'UserBundle:User' )->findByRole( 'ROLE_SUPER_ADMIN' ), $listArbitres );
+
+                $normalizer  = new ObjectNormalizer();;
+                $normalizer->setCircularReferenceHandler(function ($object) {
+                    return $object->getId();
+                });
+                $serializer = new Serializer( array( $normalizer ) );
+                $listArbitres = $serializer->normalize( $listArbitres );
+
+                $arbitre = $serializer->normalize( $match->getArbitre() );
+
+                if( $match )
+                    $response = new Response( json_encode( array( 'status' => 'ok', 'return' => $arbitre, 'listArbitres' => $listArbitres ) ) );
                 else
                     $response = new Response( json_encode( array( 'status' => 'ko', 'message' => 'Ce match est introuvable' ) ) );
             }

@@ -65,6 +65,7 @@ $('body').on('click', '.editDate i[data-action="edit"]', function() {
                 locale : 'fr',
                 format: 'DD/MM/YYYY HH:mm',
                 useCurrent : false,
+                stepping: 5,
                 icons: {
                     time: 'fa fa-clock-o',
                     date: 'fa fa-calendar',
@@ -130,7 +131,11 @@ $('body').on('click', '.editDate button[data-action="cancel"]', function(){
         success: function (data) {
             if (data.status == 'ok') {
                 if( data.return != null) {
-                    $('div[data-id="' + id + '"] .editDate').empty().append(moment(data.return.date).locale('fr').format("DD MMMM YYYY - HH:mm"));
+                    $('div[data-id="' + id + '"] .editDate').empty()
+                        .append(moment(data.return.date).locale('fr').format("DD MMMM YYYY - HH:mm"))
+                        .append(
+                            $('<i>').addClass('fa fa-pencil editable_tool invisible').data('id', id).attr('data-action', 'edit')
+                        );
                 } else {
                     $('div[data-id="' + id + '"] .editDate').empty().append(
                         $('<i>').text('Aucune date pour le moment ')
@@ -146,6 +151,114 @@ $('body').on('click', '.editDate button[data-action="cancel"]', function(){
 
 });
 
-function getDate() {
+$('body').on('click', '.editArbitre i[data-action="edit"]', function() {
+    var id = $(this).data('id');
 
-}
+    $.ajax({
+        type: 'POST',
+        url: Routing.generate('admin_match_ajax_get_arbitre'),
+        data: {
+            id: id
+        },
+        error: function (request, error) { // Info Debuggage si erreur
+            console.log("Erreur : responseText: " + request.responseText);
+        },
+        success: function (data) {
+            if (data.status == 'ok') {
+                $('div[data-id="' + id + '"] .editArbitre')
+                    .empty()
+                    .append(
+                        $('<select>').addClass('custom-select selectArbitre')
+                    ).append(
+                        $('<div>').append(
+                            $('<button>').addClass('btn btn-primary m-t-1 m-r-1').text('Valider').attr('data-id', id).attr('data-action', 'validate')
+                        ).append(
+                            $('<button>').addClass('btn btn-outline-secondary m-t-1').text('Annuler').attr('data-id', id).attr('data-action', 'cancel')
+                        )
+                    );
+
+                $.each(data.listArbitres, function (i, item) {
+                    $('.selectArbitre').append(
+                        $('<option>', {
+                            value: item.id,
+                            text : item.username
+                        }
+                    ));
+                });
+            } else {
+                // TODO : Afficher une erreur
+                console.log(data.debug)
+            }
+        }
+    });
+
+});
+
+$('body').on('click', '.editArbitre button[data-action="validate"]', function() {
+    var id = $(this).data('id');
+    var arbitre = $('.selectArbitre').val();
+
+    $.ajax({
+        type: 'POST',
+        url: Routing.generate('admin_match_ajax_edit_arbitre'),
+        data: {
+            id: id,
+            arbitre: arbitre
+        },
+        error: function (request, error) { // Info Debuggage si erreur
+            console.log("Erreur : responseText: " + request.responseText);
+        },
+        success: function (data) {
+            if (data.status == 'ok') {
+                var line = $('div[data-id="' + id + '"]');
+                line.replaceWith(data.return);
+
+                $('.modal_alert_success').modal('show');
+                setTimeout(function () {
+                    $(".modal_alert_success").modal('hide');
+                }, 1700);
+            } else {
+                $('.modal-body-more-info').html(data.message);
+                $('.modal_alert_error').modal('show');
+
+                console.log(data.debug);
+            }
+        }
+    });
+});
+
+$('body').on('click', '.editArbitre button[data-action="cancel"]', function(){
+    var id = $(this).data('id');
+
+    $.ajax({
+        type: 'POST',
+        url: Routing.generate('admin_match_ajax_get_arbitre'),
+        data: {
+            id: id
+        },
+        error: function (request, error) { // Info Debuggage si erreur
+            console.log("Erreur : responseText: " + request.responseText);
+        },
+        success: function (data) {
+            if (data.status == 'ok') {
+                if( data.return != null) {
+                    console.log(data.return);
+                    $('div[data-id="' + id + '"] .editArbitre').empty()
+                        .append(data.return.username)
+                        .append(
+                            $('<i>').addClass('fa fa-pencil editable_tool invisible').data('id', id).attr('data-action', 'edit')
+                        );
+                } else {
+                    $('div[data-id="' + id + '"] .editArbitre').empty().append(
+                        $('<i>').text('Aucun arbitre pour le moment ')
+                    ).append(
+                        $('<i>').addClass('fa fa-pencil editable_tool invisible').data('id', id).attr('data-action', 'edit')
+                    );
+                }
+            } else {
+                location.reload();
+            }
+        }
+    });
+
+});
