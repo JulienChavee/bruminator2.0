@@ -274,6 +274,9 @@ class Matchs
                     $res[ 'pointsGoulta' ] = 40;
                     break;
             }
+
+            if( $this->getMatchResult()->getNombreTour() < 9 )
+                $res[ 'pointsGoulta' ] += 20;
         } else {
             $res[ 'pointsSuisse' ] = 0;
 
@@ -292,6 +295,19 @@ class Matchs
                     $res['pointsGoulta'] = 25;
                     break;
             }
+        }
+
+        if( $team == $this->getAttack() ) {
+            $retard = $this->getMatchResult()->getMatchResultTeam()[0]->getRetard();
+
+            if( $retard == 30 )
+                $res[ 'pointsGoulta' ] -= 20;
+            else if( $retard >=25 )
+                $res[ 'pointsGoulta' ] -= 15;
+            else if( $retard >= 20)
+                $res[ 'pointsGoulta' ] -= 10;
+            else if( $retard >= 15 )
+                $res[ 'pointsGoulta' ] -= 5;
         }
 
         return $res;
