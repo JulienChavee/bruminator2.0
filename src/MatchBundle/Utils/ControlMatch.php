@@ -105,8 +105,8 @@ class ControlMatch
 
                 while ($i < count($teams)) {
                     $match = new Matchs();
-                    $match->setAttack($teams[$i]);
-                    $match->setDefense($teams[$i + 1]);
+                    $match->setAttack($classement[ 'team' ][$i]);
+                    $match->setDefense($classement[ 'team' ][$i + 1]);
                     $match->setDate(NULL);
                     $match->setArbitre(NULL);
                     $match->setType('Ronde ' . ($rondes[ 'ronde_actuelle' ] + 1) );
