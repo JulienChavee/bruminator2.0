@@ -51,11 +51,8 @@
         {% endif %}
     </div>
 
+    <h2>Matchs</h2>
     <div class="m-t-1 row">
-        <h2>Matchs</h2>
-
-        <div class="row">
-            {{ render(controller('TeamBundle:Team:frontViewTeamMatchs', { 'id': team.id })) }}
-        </div>
+        {{ render(controller('TeamBundle:Team:frontViewTeamMatchs', { 'id': team.id })) }}
     </div>
 {% endblock %}

@@ -22,8 +22,32 @@
     <h1>Gestion des matchs</h1>
     <hr>
 
-    {% for match in matchs %}
-        {% include 'AdminBundle:Match:matchRow.html.twig' %}
+    {% if matchs|length > 0 %}
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#future" role="tab">Matchs à venir</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#ended" role="tab">Matchs terminés</a>
+            </li>
+        </ul>
+
+        <div class="tab-content">
+            <div class="tab-pane active m-t-1" id="future" role="tabpanel">
+                {% for match in matchs if not match.date or match.date > date() %}
+                    {% include 'AdminBundle:Match:matchRow.html.twig' %}
+                {% else %}
+                    <i>Aucun match à venir</i>
+                {% endfor %}
+            </div>
+            <div class="tab-pane m-t-1" id="ended" role="tabpanel">
+                {% for match in matchs if match.date and match.date < date() %}
+                    {% include 'AdminBundle:Match:matchRowEnded.html.twig' %}
+                {% else %}
+                    <i>Aucun match terminé</i>
+                {% endfor %}
+            </div>
+        </div>
     {% else %}
         {% if date('inscription_end'|config) > date() %}
             <div class="alert alert-danger">
@@ -38,7 +62,7 @@
                 <button class="btn btn-primary" data-action="generateMatch">Oui</button><button class="btn btn-outline-danger m-l-1">Non</button>
             </div>
         {% endif %}
-    {% endfor %}
+    {% endif %}
 {% endblock %}
 
 {% block javascripts %}

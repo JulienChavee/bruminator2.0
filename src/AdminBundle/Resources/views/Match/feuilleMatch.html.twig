@@ -1,0 +1,151 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ parent() }}  • Gestion des matchs • Feuille de match
+{% endblock %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+    <li class="breadcrumb-item"><a href="{{ path('admin_match') }}">Gestion des matchs</a></li>
+    <li class="breadcrumb-item active">Feuille de match</li>
+{% endblock %}
+
+{% block body %}
+    <h1>Feuille de match</h1>
+    <hr>
+
+    <div class="row m-b-1">
+        <div class="col-md-6">
+            <h3 class="text-danger m-b-1">{{ match.attack.name }}</h3>
+
+            <div class="form-group">
+                <label class="custom-control custom-checkbox offset-sm-4">
+                    <input type="checkbox" class="custom-control-input" id="attack_forfait" {% if match.matchResult and match.matchResult.matchResultTeam.0.forfait %}checked="checked"{% endif %}>
+                    <span class="custom-control-indicator"></span>
+                    <span class="custom-control-description">Equipe forfait ?</span>
+                </label>
+            </div>
+
+            <div class="form-group row">
+                <label for="attack_nb_mort" class="col-sm-4 col-form-label">Nombre de morts</label>
+                <div class="col-sm-5">
+                    <input type="number" class="form-control" id="attack_nb_mort" placeholder="Nombre de morts" {% if match.matchResult %}value="{{ match.matchResult.matchResultTeam.0.nombreMort }}"{% endif %}>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="attack_retard" class="col-sm-4 col-form-label">Retard</label>
+                <div class="col-sm-5">
+                    <input type="number" class="form-control" id="attack_retard" placeholder="Retard" {% if match.matchResult %}value="{{ match.matchResult.matchResultTeam.0.retard }}"{% endif %}>
+                </div>
+            </div>
+
+            {% for i in 1..4 %}
+                <div class="form-group row">
+                    {% if loop.first %}
+                        <label for="attack_ini{{ i }}" class="col-sm-4 col-form-label">Initiative</label>
+                    {% endif %}
+                    <div class="col-sm-6 {% if not loop.first %}offset-sm-4{% endif %}">
+                        <select class="custom-select" id="attack_ini{{ i }}">
+                            <option selected="selected" disabled="disabled">Joueur {{ i }}</option>
+                            {% for player in match.attack.players if not player.isRemplacant %}
+                                <optgroup label="{{ player.class.name }}">
+                                    <option value="{{ player.id }}" {% if match.matchResult.matchResultTeam.0.initiative and attribute(match.matchResult.matchResultTeam.0.initiative,i) == player.id %}selected="selected"{% endif %}>{{ player.pseudo }}</option>
+                                    {% if player.remplacant %}
+                                        <option value="{{ player.remplacant.id }}" {% if match.matchResult.matchResultTeam.0.initiative and attribute(match.matchResult.matchResultTeam.0.initiative,i) == player.remplacant.id %}selected="selected"{% endif %}>{{ player.remplacant.pseudo }}</option>
+                                    {% endif %}
+                                </optgroup>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="col-md-6">
+            <h3 class="text-primary m-b-1">{{ match.defense.name }}</h3>
+
+            <div class="form-group">
+                <label class="custom-control custom-checkbox offset-sm-4">
+                    <input type="checkbox" class="custom-control-input" id="defense_forfait">
+                    <span class="custom-control-indicator"></span>
+                    <span class="custom-control-description" {% if match.matchResult and match.matchResult.matchResultTeam.1.forfait %}checked="checked"{% endif %}>Equipe forfait ?</span>
+                </label>
+            </div>
+
+            <div class="form-group row">
+                <label for="defense_nb_mort" class="col-sm-4 col-form-label">Nombre de morts</label>
+                <div class="col-sm-5">
+                    <input type="number" class="form-control" id="defense_nb_mort" placeholder="Nombre de morts" {% if match.matchResult %}value="{{ match.matchResult.matchResultTeam.1.nombreMort }}"{% endif %}>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="defense_retard" class="col-sm-4 col-form-label">Retard</label>
+                <div class="col-sm-5">
+                    <input type="number" class="form-control" id="defense_retard" placeholder="Retard" {% if match.matchResult %}value="{{ match.matchResult.matchResultTeam.1.retard }}"{% endif %}>
+                </div>
+            </div>
+
+            {% for i in 1..4 %}
+                <div class="form-group row">
+                    {% if loop.first %}
+                        <label for="defense_ini{{ i }}" class="col-sm-4 col-form-label">Initiative</label>
+                    {% endif %}
+                    <div class="col-sm-6 {% if not loop.first %}offset-sm-4{% endif %}">
+                        <select class="custom-select" id="defense_ini{{ i }}">
+                            <option selected="selected" disabled="disabled">Joueur {{ i }}</option>
+                            {% for player in match.attack.players if not player.isRemplacant %}
+                                <optgroup label="{{ player.class.name }}">
+                                    <option value="{{ player.id }}" {% if match.matchResult.matchResultTeam.1.initiative and attribute(match.matchResult.matchResultTeam.1.initiative,i) == player.id %}selected="selected"{% endif %}>{{ player.pseudo }}</option>
+                                    {% if player.remplacant %}
+                                        <option value="{{ player.remplacant.id }}" {% if match.matchResult.matchResultTeam.1.initiative and attribute(match.matchResult.matchResultTeam.1.initiative,i) == player.remplacant.id %}selected="selected"{% endif %}>{{ player.remplacant.pseudo }}</option>
+                                    {% endif %}
+                                </optgroup>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <h2>Match</h2>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group row">
+                <label for="nombre_tour" class="col-sm-2 col-form-label">Nombre de tours</label>
+                <div class="col-sm-3">
+                    <input type="number" class="form-control" id="nombre_tour" placeholder="Nombre de tours" {% if match.matchResult %}value="{{ match.matchResult.nombreTour }}"{% endif %}>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="first_team" class="col-sm-2 col-form-label">Equipe commençant</label>
+                <div class="col-sm-4">
+                    <select class="custom-select" id="first_team">
+                        <option selected="selected" disabled="disabled">Sélectionner une équipe</option>
+                        <option value="{{ match.attack.id }}" {% if match.matchResult and match.matchResult.winner == match.attack%}selected="selected"{% endif %}>{{ match.attack.name }}</option>
+                        <option value="{{ match.defense.id }}" {% if match.matchResult and match.matchResult.winner == match.defense%}selected="selected"{% endif %}>{{ match.defense.name }}</option>
+                    </select>
+                </div>
+                <div class="offset-sm-2 col-sm-10">
+                    <small class="text-muted">Equipe ayant commencé le match</small>
+                </div>
+            </div>
+
+            <button class="btn btn-primary updateFeuille" data-id="{{ match.id }}">Sauvegarder</button>
+            <a href="{{ path('admin_match') }}" class="btn btn-outline-secondary">Annuler</a>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {% javascripts output='js/compiled/admin/feuillematch.js'
+    '@AdminBundle/Resources/public/js/match.js'
+    %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}

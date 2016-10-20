@@ -262,3 +262,57 @@ $('body').on('click', '.editArbitre button[data-action="cancel"]', function(){
     });
 
 });
+
+$('.updateFeuille').on('click', function() {
+    var id = $(this).data('id');
+
+    var attack_mort = $('#attack_nb_mort').val();
+    var attack_ini = {1:$('#attack_ini1').val(),2:$('#attack_ini2').val(),3:$('#attack_ini3').val(),4:$('#attack_ini4').val()};
+    var attack_retard = $('#attack_retard').val();
+    var attack_forfait = $('#attack_forfait').is(":checked");
+
+    var defense_mort = $('#defense_nb_mort').val();
+    var defense_ini = {1:$('#defense_ini1').val(),2:$('#defense_ini2').val(),3:$('#defense_ini3').val(),4:$('#defense_ini4').val()};
+    var defense_retard = $('#defense_retard').val();
+    var defense_forfait = $('#defense_forfait').is(":checked");
+
+    var nb_tours = $('#nombre_tour').val();
+    var first_team = $('#first_team').val();
+
+    $.ajax({
+        type: 'POST',
+        url: Routing.generate('admin_match_ajax_update_feuille'),
+        data: {
+            match: JSON.stringify({
+                'id': id,
+                'nbTour':nb_tours,
+                'first_team':first_team
+            }),
+            attack: JSON.stringify({
+                'morts':attack_mort,
+                'ini':attack_ini,
+                'retard':attack_retard,
+                'forfait':attack_forfait
+            }),
+            defense: JSON.stringify({
+                'morts':defense_mort,
+                'ini':defense_ini,
+                'retard':defense_retard,
+                'forfait':defense_forfait
+            })
+        },
+        error: function (request, error) { // Info Debuggage si erreur
+            console.log("Erreur : responseText: " + request.responseText);
+        },
+        success: function (data) {
+            if (data.status == 'ok') {
+                location.href=Routing.generate('admin_match');
+            } else {
+                $('.modal-body-more-info').html(data.message);
+                $('.modal_alert_error').modal('show');
+
+                console.log(data.debug);
+            }
+        }
+    });
+});
