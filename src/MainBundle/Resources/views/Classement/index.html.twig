@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ parent() }} • Classement
+{% endblock %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+    <li class="breadcrumb-item active">Classement</li>
+{% endblock %}
+
+{% block body %}
+    <h1>Classement</h1>
+    <hr>
+
+    <table id="table_teams" class="table table-striped table-hover">
+        <thead class="thead-inverse">
+            <tr>
+                <th>#</th>
+                <th>Équipe</th>
+                <th>Nombre de match joués</th>
+                <th>Points Suisse</th>
+                <th>Points Goulta</th>
+                <th>Points Suisse Adverses</th>
+                <th>Points Goulta Adverses</th>
+            </tr>
+        </thead>
+
+        <tbody class="table_users_tbody">
+        {% for i in 0..teams.name|length-1 %}
+            <tr>
+                <td>{{ i + 1 }}</td>
+                <td>{{ teams.name[i] }}</td>
+                <td>{{ teams.nb_match[i] }}</td>
+                <td>{{ teams.pointsSuisse[i] }}</td>
+                <td>{{ teams.pointsGoulta[i] }}</td>
+                <td>{{ teams.pointsSuisseAdverse[i] }}</td>
+                <td>{{ teams.pointsGoultaAdverse[i] }}</td>
+            </tr>
+        {% else %}
+
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

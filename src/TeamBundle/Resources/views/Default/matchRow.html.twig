@@ -1,15 +1,15 @@
 <div class="col-md-4">
     <div class="card card-outline-secondary">
         <div class="card-block">
-            <b><span class="text-danger" {% if match.attack.name|length > 14 %}data-toggle="tooltip" data-trigger="hover" title="{{ match.attack.name }}"{% endif %}>{{ match.attack.name|truncate(14) }}</span></b> VS <b><span class="text-primary" {% if match.defense.name|length > 14 %}data-toggle="tooltip" data-trigger="hover" title="{{ match.defense.name }}"{% endif %}>{{ match.defense.name|truncate(14) }}</span></b>
+            <b><a href="{{ path('team_front_homepage', {'id':match.attack.id, 'slugTeam': match.attack.name|slugify}) }}" class="text-danger" {% if match.attack.name|length > 14 %}data-toggle="tooltip" data-trigger="hover" title="{{ match.attack.name }}"{% endif %}>{{ match.attack.name|truncate(14) }}</a></b> VS <b><a href="{{ path('team_front_homepage', {'id':match.defense.id, 'slugTeam': match.defense.name|slugify}) }}" class="text-primary" {% if match.defense.name|length > 14 %}data-toggle="tooltip" data-trigger="hover" title="{{ match.defense.name }}"{% endif %}>{{ match.defense.name|truncate(14) }}</a></b>
             <hr>
             <i class="fa fa-clock-o" data-toggle="tooltip" data-trigger="hover" title="Date du match"></i> {% if match.date %}{{ match.date|format_date('dd MMMM YYYY - HH:mm') }}{% else %}<i>Aucune date pour le moment</i>{% endif %}<br>
-            <i class="fa fa-user" data-toggle="tooltip" data-trigger="hover" title="Arbitre"></i> {% if match.arbitre %}{{ match.arbitre.pseudo }}{% else %}<i>Aucun arbitre pour le moment</i>{% endif %}
+            <i class="fa fa-user" data-toggle="tooltip" data-trigger="hover" title="Arbitre"></i> {% if match.arbitre %}{{ match.arbitre.username }}{% else %}<i>Aucun arbitre pour le moment</i>{% endif %}
 
-            {% if date(match.date) < date('now') %}
+            {% if match.matchResult %}
                 <hr>
-                <i class="fa fa-trophy" data-toggle="tooltip" data-trigger="hover" title="Vainqueur"></i> Vainqueur (x tours)<br>
-                <small><a href="" class="text-muted"><i class="fa fa-share"></i> Vers la feuille du match</a></small>
+                <i class="fa fa-trophy" data-toggle="tooltip" data-trigger="hover" title="Vainqueur"></i> {{ match.matchResult.winner.name }} ({{ match.matchResult.nombreTour }} tours)<br>
+                <!--<small><a href="" class="text-muted"><i class="fa fa-share"></i> Vers la feuille du match</a></small>-->
             {% endif %}
         </div>
     </div>

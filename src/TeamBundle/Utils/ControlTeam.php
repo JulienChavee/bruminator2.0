@@ -78,4 +78,31 @@ class ControlTeam {
 
         return $errors;
     }
+
+    public function getPoints( $team, $isAdversaire ) {
+        $matchs = $this->em->getRepository( 'MatchBundle:Matchs' )->findByTeam( $team->getId() );
+        $points[ 'nb_match' ] = 0;
+        $points[ 'pointsSuisse' ] = 0;
+        $points[ 'pointsGoulta' ] = 0;
+        $points[ 'pointsSuisseAdverse' ] = 0;
+        $points[ 'pointsGoultaAdverse' ] = 0;
+
+        foreach( $matchs as $k => $v ) {
+            if( count( $v->getMatchResult() ) > 0 ) {
+                $res = $v->getPoints( $team );
+                $points[ 'nb_match' ]++;
+                $points[ 'pointsSuisse' ] += $res[ 'pointsSuisse' ];
+                $points[ 'pointsGoulta' ] += $res[ 'pointsGoulta' ];
+
+                if( !$isAdversaire ) {
+                    $pointsAdversaire = $this->getPoints( $v->getAttack() == $team ? $v->getDefense() : $v->getAttack(), true);
+
+                    $points[ 'pointsSuisseAdverse' ] += $pointsAdversaire[ 'pointsSuisse' ];
+                    $points[ 'pointsGoultaAdverse' ] += $pointsAdversaire[ 'pointsGoulta' ];
+                }
+            }
+        }
+
+        return $points;
+    }
 }

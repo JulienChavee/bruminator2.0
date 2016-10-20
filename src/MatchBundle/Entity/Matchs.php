@@ -59,6 +59,21 @@ class Matchs
      */
     private $defense;
 
+    /**
+     * @var \MatchBundle\Entity\MatchResult
+     *
+     * @ORM\OneToOne(targetEntity="MatchBundle\Entity\MatchResult", mappedBy="match")
+     */
+    private $matchResult;
+
+    /**
+     * @var \MatchBundle\Entity\Map
+     *
+     * @ORM\ManyToOne(targetEntity="MatchBundle\Entity\Map")
+     * @ORM\JoinColumn(name="map", referencedColumnName="id")
+     */
+    private $map;
+
 
     /**
      * Get id
@@ -188,5 +203,97 @@ class Matchs
     public function getDefense()
     {
         return $this->defense;
+    }
+
+    /**
+     * Set map
+     *
+     * @param \MatchBundle\Entity\Map $map
+     *
+     * @return Matchs
+     */
+    public function setMap(\MatchBundle\Entity\Map $map = null)
+    {
+        $this->map = $map;
+
+        return $this;
+    }
+
+    /**
+     * Get map
+     *
+     * @return \MatchBundle\Entity\Map
+     */
+    public function getMap()
+    {
+        return $this->map;
+    }
+
+    /**
+     * Set matchResult
+     *
+     * @param \MatchBundle\Entity\MatchResult $matchResult
+     *
+     * @return Matchs
+     */
+    public function setMatchResult(\MatchBundle\Entity\MatchResult $matchResult = null)
+    {
+        $this->matchResult = $matchResult;
+
+        return $this;
+    }
+
+    /**
+     * Get matchResult
+     *
+     * @return \MatchBundle\Entity\MatchResult
+     */
+    public function getMatchResult()
+    {
+        return $this->matchResult;
+    }
+
+    public function getPoints( \TeamBundle\Entity\Team $team ) {
+        $res = array( 'pointsSuisse' => 0, 'pointsGoulta' => 0 );
+
+        if( $this->getMatchResult()->getWinner() == $team ) {
+            $res[ 'pointsSuisse' ] = 3;
+
+            $mort = $this->getMatchResult()->getWinner() == $this->getAttack() ? $this->getMatchResult()->getMatchResultTeam()[0]->getNombreMort() : $this->getMatchResult()->getMatchResultTeam()[1]->getNombreMort();
+            switch( $mort ) {
+                case '0':
+                    $res[ 'pointsGoulta' ] = 60;
+                    break;
+                case '1':
+                    $res[ 'pointsGoulta' ] = 50;
+                    break;
+                case '2':
+                    $res[ 'pointsGoulta' ] = 45;
+                    break;
+                case '3':
+                    $res[ 'pointsGoulta' ] = 40;
+                    break;
+            }
+        } else {
+            $res[ 'pointsSuisse' ] = 0;
+
+            $mort = $this->getMatchResult()->getWinner() == $this->getAttack() ? $this->getMatchResult()->getMatchResultTeam()[0]->getNombreMort() : $this->getMatchResult()->getMatchResultTeam()[1]->getNombreMort();
+            switch( $mort ) {
+                case '0':
+                    $res['pointsGoulta'] = 5;
+                    break;
+                case '1':
+                    $res['pointsGoulta'] = 15;
+                    break;
+                case '2':
+                    $res['pointsGoulta'] = 20;
+                    break;
+                case '3':
+                    $res['pointsGoulta'] = 25;
+                    break;
+            }
+        }
+
+        return $res;
     }
 }
