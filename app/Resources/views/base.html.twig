@@ -78,6 +78,27 @@
                         {% endfor %}
                     </div>
                 </li>
+                <li class="nav-item hidden-sm-down">
+                    <a class="nav-link" href="{{ 'lien_twitch'|config }}" target="_blank">
+                        {% image '@MainBundle/Resources/public/images/twitch.png' output='/images/twitch.png' %}
+                        <img alt="Logo Dofus" src="{{ asset_url }}">
+                        {% endimage %}
+                    </a>
+                </li>
+                <li class="nav-item hidden-sm-down">
+                    <a class="nav-link" href="{{ 'lien_twitter'|config }}" target="_blank">
+                        {% image '@MainBundle/Resources/public/images/twitter.png' output='/images/twitter.png' %}
+                        <img alt="Logo Dofus" src="{{ asset_url }}">
+                        {% endimage %}
+                    </a>
+                </li>
+                <li class="nav-item hidden-sm-down">
+                    <a class="nav-link" href="{{ 'lien_facebook'|config }}" target="_blank">
+                        {% image '@MainBundle/Resources/public/images/facebook.png' output='/images/facebook.png' %}
+                        <img alt="Logo Dofus" src="{{ asset_url }}">
+                        {% endimage %}
+                    </a>
+                </li>
                 <li class="nav-item hidden-sm-down m-r-2">
                     <a class="nav-link" href="{{ 'lien_dofus'|config }}" target="_blank">
                         {% image '@MainBundle/Resources/public/images/dofus.png' output='/images/dofus.png' %}

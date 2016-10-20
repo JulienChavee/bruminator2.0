@@ -316,3 +316,23 @@ $('.updateFeuille').on('click', function() {
         }
     });
 });
+
+$('.nextRonde').on('click', function(){
+    $.ajax({
+        type: 'POST',
+        url: Routing.generate('admin_match_ajax_generate'),
+        error: function (request, error) { // Info Debuggage si erreur
+            console.log("Erreur : responseText: " + request.responseText);
+        },
+        success: function (data) {
+            if (data.status == 'ok') {
+                location.reload();
+            } else {
+                $('.modal-body-more-info').html(data.message);
+                $('.modal_alert_error').modal('show');
+
+                console.log(data.debug);
+            }
+        }
+    });
+});

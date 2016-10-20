@@ -23,6 +23,14 @@
     <hr>
 
     {% if matchs|length > 0 %}
+        {% if 'type_tournoi'|config == 'ronde' and date('ronde1'|config.end_date) <= date() %}
+            <div class="alert alert-info">
+                Nous arrivons à une fin de ronde.<br>
+                Générer les matchs de la ronde suivante ?<br>
+                <button class="btn btn-primary nextRonde">Oui</button>
+            </div>
+        {% endif %}
+
         <ul class="nav nav-tabs" role="tablist">
             <li class="nav-item">
                 <a class="nav-link active" data-toggle="tab" href="#future" role="tab">Matchs à venir</a>
