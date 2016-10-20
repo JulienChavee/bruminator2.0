@@ -27,10 +27,10 @@
         </thead>
 
         <tbody class="table_users_tbody">
-        {% for i in 0..teams.name|length-1 %}
+        {% for i in 0..teams.team|length-1 %}
             <tr>
                 <td>{{ i + 1 }}</td>
-                <td>{{ teams.name[i] }}</td>
+                <td>{{ teams.team[i].name }}</td>
                 <td>{{ teams.nb_match[i] }}</td>
                 <td>{{ teams.pointsSuisse[i] }}</td>
                 <td>{{ teams.pointsGoulta[i] }}</td>
