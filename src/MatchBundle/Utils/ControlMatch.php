@@ -82,6 +82,47 @@ class ControlMatch
             }
 
             return array( 'status' => 'ok' );
+        } else {
+            try {
+                $classement = array();
+
+                foreach ($teams as $k => $v) {
+                    $res = $this->get('team.control_team')->getPoints($v, false);
+
+                    $classement['team'][$k] = $v;
+                    $classement['nb_match'][$k] = $res['nb_match'];
+                    $classement['pointsSuisse'][$k] = $res['pointsSuisse'];
+                    $classement['pointsGoulta'][$k] = $res['pointsGoulta'];
+                    $classement['pointsSuisseAdverse'][$k] = $res['pointsSuisseAdverse'];
+                    $classement['pointsGoultaAdverse'][$k] = $res['pointsGoultaAdverse'];
+                }
+                array_multisort($classement['pointsSuisse'], SORT_DESC, $classement['pointsGoulta'], SORT_DESC, $classement['pointsSuisseAdverse'], SORT_DESC, $classement['pointsGoultaAdverse'], SORT_DESC, $classement['nb_match'], SORT_DESC, $classement['team'], SORT_DESC);
+
+                $i = 0;
+
+                while ($i < count($teams)) {
+                    $match = new Matchs();
+                    $match->setAttack($teams[$i]);
+                    $match->setDefense($teams[$i + 1]);
+                    $match->setDate(NULL);
+                    $match->setArbitre(NULL);
+                    $match->setType('Ronde ' . ($rondes[ 'ronde_actuelle' ] + 1) );
+
+                    $this->em->persist($match);
+
+                    $i += 2;
+                }
+
+                $rondes['ronde_actuelle'] = 2;
+                $config->setValue(json_encode($rondes));
+
+                $this->em->flush();
+            }
+            catch( \Exception $e ) {
+                return array( 'status' => 'ko', 'message' => 'Une erreur inconnue s\'est produite', 'debug' => $e->getMessage() );
+            }
+
+            return array( 'status' => 'ok' );
         }
     }
 
