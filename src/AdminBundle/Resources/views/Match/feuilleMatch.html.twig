@@ -95,7 +95,7 @@
                     <div class="col-sm-6 {% if not loop.first %}offset-sm-4{% endif %}">
                         <select class="custom-select" id="defense_ini{{ i }}">
                             <option selected="selected" disabled="disabled">Joueur {{ i }}</option>
-                            {% for player in match.attack.players if not player.isRemplacant %}
+                            {% for player in match.defense.players if not player.isRemplacant %}
                                 <optgroup label="{{ player.class.name }}">
                                     <option value="{{ player.id }}" {% if match.matchResult.matchResultTeam.1.initiative and attribute(match.matchResult.matchResultTeam.1.initiative,i) == player.id %}selected="selected"{% endif %}>{{ player.pseudo }}</option>
                                     {% if player.remplacant %}
