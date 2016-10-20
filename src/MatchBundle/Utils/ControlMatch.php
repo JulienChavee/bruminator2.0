@@ -4,15 +4,18 @@ namespace MatchBundle\Utils;
 
 use Doctrine\ORM\EntityManager;
 use MatchBundle\Entity\Matchs;
+use TeamBundle\Utils\ControlTeam;
 
 class ControlMatch
 {
     protected $em;
+    protected $controlTeam;
     private $typeTournoi;
 
-    public function __construct( EntityManager $em ) {
+    public function __construct( EntityManager $em, ControlTeam $controlTeam ) {
         $this->em = $em;
         $this->typeTournoi = $this->em->getRepository( 'AdminBundle:Config' )->getOneBy( array( 'name' => 'type_tournoi' ) );
+        $this->controlTeam = $controlTeam;
     }
 
     public function matchCreated() {
@@ -87,7 +90,7 @@ class ControlMatch
                 $classement = array();
 
                 foreach ($teams as $k => $v) {
-                    $res = $this->get('team.control_team')->getPoints($v, false);
+                    $res = $this->controlTeam->getPoints($v, false);
 
                     $classement['team'][$k] = $v;
                     $classement['nb_match'][$k] = $res['nb_match'];

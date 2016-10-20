@@ -47,4 +47,4 @@ services:
 
     match.control_match:
         class: MatchBundle\Utils\ControlMatch
-        arguments: ['@doctrine.orm.entity_manager']
+        arguments: ['@doctrine.orm.entity_manager', '@team.control_team']
