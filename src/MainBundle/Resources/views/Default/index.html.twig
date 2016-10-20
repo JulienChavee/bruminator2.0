@@ -37,31 +37,11 @@
             </div>
 
             <div class="col-md-4 offset-md-1 m-t-1">
-                <h3>Dernières teams <small class="text-muted">{{ teams|length }}/{{ 'max_total_team'|config }}</small></h3>
-                <hr>
-
-                {% for team in teams|slice(0, 5) %}
-                    <div>
-                        <h4 {% if team.name|length > 20 %}data-toggle="tooltip" data-trigger="hover" title="{{ team.name }}"{% endif %}>{{ team.name|truncate(20) }}</h4>
-                        <div class="text-muted p-b-1">
-                            <i class="fa fa-clock-o"></i> {{ team.inscriptionDate|time_diff }} - <a href="{{ path('team_front_homepage', {'id':team.id, 'slugTeam': team.name|slugify}) }}" class="text-muted">Vers l'équipe <i class="fa fa-share"></i></a>
-                        </div>
-
-                        {% for player in team.players if not player.isRemplacant%}
-                            <div style="margin-bottom:3px;">
-                                <img src="{{ asset('bundles/main/images/class/'~player.class.shortName|lower|remove_accent~'1.png' ) }}" alt="{{ player.class.name }}" data-toggle="tooltip" data-trigger="hover" title="{{ player.class.name }}"> {{ player.pseudo }}
-                            </div>
-                        {% endfor %}
-
-                        {% if not loop.last %}
-                            <hr>
-                        {% endif %}
-                    </div>
+                {% if date('inscription_end'|config) > date() %}
+                    {% include 'MainBundle:Default:lastTeam.html.twig' %}
                 {% else %}
-                    <div class="m-t-2 alert alert-info" role="alert">
-                        Aucune team inscrite pour le moment
-                    </div>
-                {% endfor %}
+                    {% include 'MainBundle:Default:lastMatch.html.twig' %}
+                {% endif %}
             </div>
         </div>
         <div class="tab-pane" id="informations" role="tabpanel">
