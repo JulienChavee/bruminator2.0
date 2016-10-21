@@ -7,7 +7,7 @@
 
     <title>{% block title %}Bruminator{% endblock %}</title>
     {% block stylesheets %}
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.4/css/bootstrap.min.css" integrity="sha384-2hfp1SzUoho7/TsGGGDaFdsuuDL0LX2hnUp6VkX3CUQ2K4K+xjboZdsXyp4oUHZj" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css" integrity="sha384-AysaV+vQoT3kOAXZkl02PThvDr8HYKPZhNT5h/CXfBThSRXQ6jW5DO2ekP5ViFdi" crossorigin="anonymous">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
 
         {% stylesheets '@MainBundle/Resources/public/css/sticky-footer.css' %}
@@ -30,10 +30,8 @@
 <body>
 {% block menu %}
     <nav class="navbar navbar-light bg-faded navbar-full navbar-static-top">
-        <button class="navbar-toggler hidden-sm-up" type="button" data-toggle="collapse" data-target="#navCollapsing" aria-controls="exCollapsingNavbar2" aria-expanded="false" aria-label="Toggle navigation">
-            &#9776;
-        </button>
-        <div class="container collapse navbar-toggleable-xs" id="navCollapsing">
+        <button class="navbar-toggler hidden-lg-up" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"></button>
+        <div class="container collapse navbar-toggleable-md" id="navbarResponsive">
             <a class="navbar-brand" href="{{ path('homepage') }}">Bruminator</a>
 
             <ul class="nav navbar-nav">
@@ -67,7 +65,7 @@
                 </li>
             </ul>
 
-            <ul class="nav navbar-nav pull-xs-right">
+            <ul class="nav navbar-nav float-lg-right">
                 <li class="nav-item dropdown hidden-sm-down">
                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Sponsors</a>
                     <div class="dropdown-menu">
@@ -78,28 +76,28 @@
                         {% endfor %}
                     </div>
                 </li>
-                <li class="nav-item hidden-sm-down">
+                <li class="nav-item hidden-md-down">
                     <a class="nav-link" href="{{ 'lien_twitch'|config }}" target="_blank">
                         {% image '@MainBundle/Resources/public/images/twitch.png' output='/images/twitch.png' %}
                         <img alt="Logo Dofus" src="{{ asset_url }}">
                         {% endimage %}
                     </a>
                 </li>
-                <li class="nav-item hidden-sm-down">
+                <li class="nav-item hidden-md-down">
                     <a class="nav-link" href="{{ 'lien_twitter'|config }}" target="_blank">
                         {% image '@MainBundle/Resources/public/images/twitter.png' output='/images/twitter.png' %}
                         <img alt="Logo Dofus" src="{{ asset_url }}">
                         {% endimage %}
                     </a>
                 </li>
-                <li class="nav-item hidden-sm-down">
+                <li class="nav-item hidden-md-down">
                     <a class="nav-link" href="{{ 'lien_facebook'|config }}" target="_blank">
                         {% image '@MainBundle/Resources/public/images/facebook.png' output='/images/facebook.png' %}
                         <img alt="Logo Dofus" src="{{ asset_url }}">
                         {% endimage %}
                     </a>
                 </li>
-                <li class="nav-item hidden-sm-down m-r-2">
+                <li class="nav-item hidden-md-down mr-2">
                     <a class="nav-link" href="{{ 'lien_dofus'|config }}" target="_blank">
                         {% image '@MainBundle/Resources/public/images/dofus.png' output='/images/dofus.png' %}
                             <img alt="Logo Dofus" src="{{ asset_url }}">
@@ -133,7 +131,7 @@
     </nav>
 {% endblock %}
 
-<div class="container m-t-1">
+<div class="container mt-1">
     {% block alert_sucess %}
         <div class="modal fade modal_alert_success" tabindex="-1" role="dialog" aria-labelledby="modalAlertSuccess" aria-hidden="true">
             <div class="modal-dialog modal-sm">
@@ -254,7 +252,7 @@
         <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
 
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.4/js/bootstrap.min.js" integrity="sha384-VjEeINv9OSwtWFLAtmc4JCtEJXXBub00gtSnszmspDLCtC0I4z4nqz7rEFbIZLLU" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/js/bootstrap.min.js" integrity="sha384-BLiI7JTZm+JWlgKa0M0kGRpJbF2J8q+qreVrKBC47e3K6BW78kGLrCkeRX6I9RoK" crossorigin="anonymous"></script>
 
     <script>
         $(function () {

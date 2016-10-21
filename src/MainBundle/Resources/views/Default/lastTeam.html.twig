@@ -4,7 +4,7 @@
 {% for team in teams|slice(0, 5) %}
     <div>
         <h4 {% if team.name|length > 20 %}data-toggle="tooltip" data-trigger="hover" title="{{ team.name }}"{% endif %}>{{ team.name|truncate(20) }}</h4>
-        <div class="text-muted p-b-1">
+        <div class="text-muted pb-1">
             <i class="fa fa-clock-o"></i> {{ team.inscriptionDate|time_diff }} - <a href="{{ path('team_front_homepage', {'id':team.id, 'slugTeam': team.name|slugify}) }}" class="text-muted">Vers l'équipe <i class="fa fa-share"></i></a>
         </div>
 
@@ -19,7 +19,7 @@
         {% endif %}
     </div>
 {% else %}
-    <div class="m-t-2 alert alert-info" role="alert">
+    <div class="mt-2 alert alert-info" role="alert">
         Aucune team inscrite pour le moment
     </div>
 {% endfor %}

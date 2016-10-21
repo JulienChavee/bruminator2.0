@@ -2,7 +2,7 @@
     <div class="card {% if match.matchResult %}card-outline-success{% else %}card-outline-danger{% endif %} matchCard">
         <div class="card-header">
             <span class="text-danger">{{ match.attack.name }}</span> <b>VS</b> <span class="text-primary">{{ match.defense.name }}</span>
-            <span class="pull-xs-right">
+            <span class="float-xs-right">
                 <a href="{{ path('admin_match_feuille', {'id':match.id}) }}"><i class="fa fa-file-text" data-toggle="tooltip" data-trigger="hover" title="Editer la feuille de match" role="button"></i></a>
             </span>
         </div>
