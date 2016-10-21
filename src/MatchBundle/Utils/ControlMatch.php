@@ -116,7 +116,7 @@ class ControlMatch
                     $i += 2;
                 }
 
-                $rondes['ronde_actuelle'] = 2;
+                $rondes['ronde_actuelle'] += 1;
                 $config->setValue(json_encode($rondes));
 
                 $this->em->flush();
