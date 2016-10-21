@@ -79,7 +79,7 @@
                     <b>Initiative :</b><br>
 
                     {% for id in match.matchResult.matchResultTeam.1.initiative %}
-                        {% for player in match.attack.players if player.id == id %}
+                        {% for player in match.defense.players if player.id == id %}
                             <span class="pr-1">
                                 <img src="{{ asset('bundles/main/images/class/'~ player.class.shortName|lower|remove_accent ~'1.png') }}" data-toggle="tooltip" data-trigger="hover" title="{{ player.class.name }} {{ player.level }}"> {{ player.pseudo }}
                             </span>
