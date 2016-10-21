@@ -20,9 +20,9 @@
                 {% set collapse = false %}
 
                 {% if loop.first and startDow != 0 %}
-                    <td colspan="{{ startDow }}" class="table-inverse"></td>
+                    <td colspan="{{ startDow }}" class="table-active"></td>
                 {% endif %}
-                <td {% if day < time|date('d') %}class="table-active"{% endif %} height="85px">
+                <td height="85px">
                     <div>
                         <div>
                             <span class="float-xs-left tag {% if time|date('d') == day %}tag-danger{% else %}tag-default{% endif %}">{{ day }}</span>
@@ -41,9 +41,9 @@
                                 {% if not loop.first %}
                                     <hr>
                                 {% endif %}
-                                <span><a href="{{ path('team_front_homepage', {'id':match.attack.id, 'slugTeam': match.attack.name|slugify}) }}" class="text-danger">{{ match.attack.name }}</a></span><br>
+                                <div class="text-truncate text-danger"><a href="{{ path('team_front_homepage', {'id':match.attack.id, 'slugTeam': match.attack.name|slugify}) }}" class="text-danger">{{ match.attack.name }}</a></div>
                                 <small><b>{{ match.date|date('H:i') }}</b></small><br>
-                                <span><a href="{{ path('team_front_homepage', {'id':match.defense.id, 'slugTeam': match.defense.name|slugify}) }}" class="text-primary">{{ match.defense.name }}</a></span>
+                                <div class="text-truncate text-primary"><a href="{{ path('team_front_homepage', {'id':match.defense.id, 'slugTeam': match.defense.name|slugify}) }}" class="text-primary">{{ match.defense.name }}</a></div>
                             {% endfor %}
 
                             {% if collapse %}
@@ -53,7 +53,7 @@
                     </div>
                 </td>
                 {% if loop.last and dow != 6 %}
-                    <td colspan="{{ 6 - dow }}" class="table-inverse"></td>
+                    <td colspan="{{ 6 - dow }}" class="table-active"></td>
                 {% endif %}
                 {% if dow == 6 %}
                     {% set dow = 0 %}

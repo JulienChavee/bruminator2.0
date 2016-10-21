@@ -1,5 +1,5 @@
 <div class="col-md-4">
-    <div class="card card-outline-secondary">
+    <div class="card card-outline-{% if match.matchResult %}{% if match.matchResult.winner == team %}success{% else %}danger{% endif %}{% else %}secondary{% endif %}">
         <div class="card-block">
             <b><a href="{{ path('team_front_homepage', {'id':match.attack.id, 'slugTeam': match.attack.name|slugify}) }}" class="text-danger" {% if match.attack.name|length > 14 %}data-toggle="tooltip" data-trigger="hover" title="{{ match.attack.name }}"{% endif %}>{{ match.attack.name|truncate(14) }}</a></b> VS <b><a href="{{ path('team_front_homepage', {'id':match.defense.id, 'slugTeam': match.defense.name|slugify}) }}" class="text-primary" {% if match.defense.name|length > 14 %}data-toggle="tooltip" data-trigger="hover" title="{{ match.defense.name }}"{% endif %}>{{ match.defense.name|truncate(14) }}</a></b>
             <hr>
@@ -9,7 +9,7 @@
             {% if match.matchResult %}
                 <hr>
                 <i class="fa fa-trophy" data-toggle="tooltip" data-trigger="hover" title="Vainqueur"></i> {{ match.matchResult.winner.name }} ({{ match.matchResult.nombreTour }} tours)<br>
-                <!--<small><a href="" class="text-muted"><i class="fa fa-share"></i> Vers la feuille du match</a></small>-->
+                <small><a href="{{ path('match_informations', {'id':match.id}) }}" class="text-muted"><i class="fa fa-share"></i> Vers la feuille du match</a></small>
             {% endif %}
         </div>
     </div>
