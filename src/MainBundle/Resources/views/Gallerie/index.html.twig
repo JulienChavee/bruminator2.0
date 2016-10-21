@@ -24,7 +24,7 @@
     <div class="tab-content">
         {% for key, edition in res %}
             <div class="tab-pane {% if loop.last %}active{% endif %}" id="brumi{{ key }}" role="tabpanel">
-                <h3 class="m-t-1">Notre top 3</h3>
+                <h3 class="mt-1">Notre top 3</h3>
                 <hr>
                 <div class="row">
                     {% for winner in edition.winners %}
@@ -46,7 +46,7 @@
                     {% endfor %}
                 </div>
 
-                <h3 class="m-t-1">Les autres participations</h3>
+                <h3 class="mt-1">Les autres participations</h3>
                 <hr>
                 <div class="row">
                     {% for participation in edition.participations %}

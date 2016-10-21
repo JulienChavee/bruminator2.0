@@ -16,7 +16,7 @@
     <hr>
 
     <div class="row">
-        <div class="col-md-6 m-t-1">
+        <div class="col-md-6 mt-1">
             <fieldset class="form-group row">
                 <label class="col-sm-4 col-form-label">Nom de l'équipe</label>
                 <div class="col-sm-8">
@@ -30,7 +30,7 @@
         </div>
     </div>
 
-    <div class="card-group m-t-2">
+    <div class="card-group mt-2">
         {% for i in 1..4 %}
             <div class="card card-outline-secondary col-md-3">
                 <div class="card-block">
@@ -59,13 +59,13 @@
 
                     <hr>
 
-                    <fieldset class="form-group m-t-1">
+                    <fieldset class="form-group mt-1">
                         <label>Remplaçant <small class="text-muted">(optionnel)</small></label>
                         <input id="player_remplacant_{{ i }}" type="text" class="form-control" placeholder="Pseudo du remplaçant {{ i }}">
                         <div class="form-control-feedback"></div>
                     </fieldset>
 
-                    <fieldset class="form-group m-t-1">
+                    <fieldset class="form-group mt-1">
                         <label>Niveau <small class="text-muted">(optionnel)</small></label>
                         <input id="player_remplacant_level_{{ i }}" type="text" class="form-control" placeholder="Niveau du remplaçant {{ i }}">
                         <div class="form-control-feedback"></div>
@@ -75,7 +75,7 @@
         {% endfor %}
     </div>
 
-    <div class="row m-t-2">
+    <div class="row mt-2">
         <div class="col-md-6">
             <fieldset class="form-group">
                 <label>Disponibilités <sup class="text-danger"><i class="fa fa-asterisk" aria-hidden="true"></i></sup></label>

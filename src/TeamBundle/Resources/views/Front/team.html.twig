@@ -23,7 +23,7 @@
                     {% if team.valid %}<i class="fa fa-check text-success"></i> Équipe validée{% else %}<i class="fa fa-remove text-danger"></i> Équipe non validée{% endif %}<br>
                 </p>
                 {% for player in team.players if not player.isRemplacant %}
-                    <span class="p-r-1">
+                    <span class="pr-1">
                         <img src="{{ asset('bundles/main/images/class/'~ player.class.shortName|lower|remove_accent ~'1.png') }}" data-toggle="tooltip" data-trigger="hover" title="{{ player.pseudo }}, {{ player.class.name }} {{ player.level }}">
                     </span>
                 {% endfor %}
@@ -52,7 +52,7 @@
     </div>
 
     <h2>Matchs</h2>
-    <div class="m-t-1 row">
+    <div class="mt-1 row">
         {{ render(controller('TeamBundle:Team:frontViewTeamMatchs', { 'id': team.id })) }}
     </div>
 {% endblock %}

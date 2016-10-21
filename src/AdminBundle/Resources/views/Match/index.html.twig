@@ -41,14 +41,14 @@
         </ul>
 
         <div class="tab-content">
-            <div class="tab-pane active m-t-1" id="future" role="tabpanel">
+            <div class="tab-pane active mt-1" id="future" role="tabpanel">
                 {% for match in matchs if not match.date or match.date > date() %}
                     {% include 'AdminBundle:Match:matchRow.html.twig' %}
                 {% else %}
                     <i>Aucun match à venir</i>
                 {% endfor %}
             </div>
-            <div class="tab-pane m-t-1" id="ended" role="tabpanel">
+            <div class="tab-pane mt-1" id="ended" role="tabpanel">
                 {% for match in matchs if match.date and match.date < date() %}
                     {% include 'AdminBundle:Match:matchRowEnded.html.twig' %}
                 {% else %}
@@ -67,7 +67,7 @@
                 Il y a {{ nbTeamValid }} team <b>validées</b> sur {{ nbTeam }} <b>inscrites</b><br>
                 <br>
                 Voulez-vous générer les matchs ?<br>
-                <button class="btn btn-primary" data-action="generateMatch">Oui</button><button class="btn btn-outline-danger m-l-1">Non</button>
+                <button class="btn btn-primary" data-action="generateMatch">Oui</button><button class="btn btn-outline-danger ml-1">Non</button>
             </div>
         {% endif %}
     {% endif %}

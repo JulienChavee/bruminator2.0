@@ -23,11 +23,11 @@
                 <td height="85px">
                     <div>
                         <div>
-                            <span class="pull-xs-left tag {% if time|date('d') == day %}tag-danger{% else %}tag-default{% endif %}">{{ day }}</span>
-                            <!--<span class="pull-xs-right">nb matchs</span>-->
+                            <span class="float-xs-left tag {% if time|date('d') == day %}tag-danger{% else %}tag-default{% endif %}">{{ day }}</span>
+                            <!--<span class="float-xs-right">nb matchs</span>-->
                         </div>
                         <div class="clearfix"></div>
-                        <div class="text-xs-center m-t-1">
+                        <div class="text-xs-center mt-1">
                             {% for match in matchs if match.date and match.date|date('d') == day %}
                                 {% if not loop.first %}
                                     <hr>
