@@ -1,1 +1,107 @@
-Hello World!
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ parent() }} • Informations sur le match
+{% endblock %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+    <li class="breadcrumb-item active">Informations sur le match</li>
+{% endblock %}
+
+{% block body %}
+    <h1>Informations sur le match</h1>
+    <hr>
+
+    <div class="row">
+        <div class="col-md-6">
+            <h2 class="text-danger">{{ match.attack.name }}</h2>
+
+            <div>
+                <b>Composition :</b><br>
+                {% for player in match.attack.players if not player.isRemplacant %}
+                    <span class="pr-1">
+                        <img src="{{ asset('bundles/main/images/class/'~ player.class.shortName|lower|remove_accent ~'1.png') }}" data-toggle="tooltip" data-trigger="hover" title="{{ player.class.name }} {{ player.level }}"> {{ player.pseudo }} {% if player.remplacant %}(Remplaçant : {{ player.remplacant.pseudo }}){% endif %}
+                    </span>
+                    <br>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <h2 class="text-primary">{{ match.defense.name }}</h2>
+
+            <div>
+                <b>Composition :</b><br>
+                {% for player in match.defense.players if not player.isRemplacant %}
+                    <span class="pr-1">
+                        <img src="{{ asset('bundles/main/images/class/'~ player.class.shortName|lower|remove_accent ~'1.png') }}" data-toggle="tooltip" data-trigger="hover" title="{{ player.class.name }} {{ player.level }}"> {{ player.pseudo }} {% if player.remplacant %}(Remplaçant : {{ player.remplacant.pseudo }}){% endif %}
+                    </span>
+                    <br>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="col-md-12 mt-2">
+            <b><i class="fa fa-calendar"></i> Date :</b> {{ match.date|format_date('dd MMMM YYYY - HH:mm') }}<br>
+            <b><i class="fa fa-user"></i> Arbitre :</b> {{ match.arbitre.username }}
+        </div>
+    </div>
+
+    {% if match.matchResult %}
+        <hr>
+
+        <h2>Résultats du match</h2>
+        <div class="row">
+            <div class="col-md-6">
+                <div>
+                    <b>Initiative :</b><br>
+
+                    {% for id in match.matchResult.matchResultTeam.0.initiative %}
+                        {% for player in match.attack.players if player.id == id %}
+                            <img src="{{ asset('bundles/main/images/class/'~ player.class.shortName|lower|remove_accent ~'1.png') }}" data-toggle="tooltip" data-trigger="hover" title="{{ player.class.name }} {{ player.level }}"> {{ player.pseudo }}
+                            <br>
+                        {% endfor %}
+                    {% endfor %}
+                    {% if match.matchResult.first == match.attack %}
+                        <i class="fa fa-check text-success"></i> Cette équipe a commencé le match
+                    {% endif %}
+                </div>
+
+                <div class="mt-1">
+                    <b>Calcul des points :</b><br>
+                    <i>A venir</i>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div>
+                    <b>Initiative :</b><br>
+
+                    {% for id in match.matchResult.matchResultTeam.1.initiative %}
+                        {% for player in match.attack.players if player.id == id %}
+                            <span class="pr-1">
+                                <img src="{{ asset('bundles/main/images/class/'~ player.class.shortName|lower|remove_accent ~'1.png') }}" data-toggle="tooltip" data-trigger="hover" title="{{ player.class.name }} {{ player.level }}"> {{ player.pseudo }}
+                            </span>
+                            <br>
+                        {% endfor %}
+                    {% endfor %}
+
+                    {% if match.matchResult.first == match.defense %}
+                        <i class="fa fa-check text-success"></i> Cette équipe a commencé le match
+                    {% endif %}
+                </div>
+
+                <div class="mt-1">
+                    <b>Calcul des points :</b><br>
+                    <i>A venir</i>
+                </div>
+            </div>
+
+            <div class="col-md-12 mt-2">
+                <b>Nombre de tours : </b>{{ match.matchResult.nombreTour }}<br>
+                <b><i class="fa fa-trophy"></i> Vainqueur : </b> {{ match.matchResult.winner.name }}
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
