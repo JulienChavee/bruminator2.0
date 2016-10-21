@@ -20,10 +20,9 @@
             <div>
                 <b>Composition :</b><br>
                 {% for player in match.attack.players if not player.isRemplacant %}
-                    <span class="pr-1">
+                    <div class="pb-1">
                         <img src="{{ asset('bundles/main/images/class/'~ player.class.shortName|lower|remove_accent ~'1.png') }}" data-toggle="tooltip" data-trigger="hover" title="{{ player.class.name }} {{ player.level }}"> {{ player.pseudo }} {% if player.remplacant %}(Remplaçant : {{ player.remplacant.pseudo }}){% endif %}
-                    </span>
-                    <br>
+                    </div>
                 {% endfor %}
             </div>
         </div>
@@ -34,10 +33,9 @@
             <div>
                 <b>Composition :</b><br>
                 {% for player in match.defense.players if not player.isRemplacant %}
-                    <span class="pr-1">
+                    <div class="pb-1">
                         <img src="{{ asset('bundles/main/images/class/'~ player.class.shortName|lower|remove_accent ~'1.png') }}" data-toggle="tooltip" data-trigger="hover" title="{{ player.class.name }} {{ player.level }}"> {{ player.pseudo }} {% if player.remplacant %}(Remplaçant : {{ player.remplacant.pseudo }}){% endif %}
-                    </span>
-                    <br>
+                    </d>
                 {% endfor %}
             </div>
         </div>
@@ -59,8 +57,9 @@
 
                     {% for id in match.matchResult.matchResultTeam.0.initiative %}
                         {% for player in match.attack.players if player.id == id %}
-                            <img src="{{ asset('bundles/main/images/class/'~ player.class.shortName|lower|remove_accent ~'1.png') }}" data-toggle="tooltip" data-trigger="hover" title="{{ player.class.name }} {{ player.level }}"> {{ player.pseudo }}
-                            <br>
+                            <div class="pb-1">
+                                <img src="{{ asset('bundles/main/images/class/'~ player.class.shortName|lower|remove_accent ~'1.png') }}" data-toggle="tooltip" data-trigger="hover" title="{{ player.class.name }} {{ player.level }}"> {{ player.pseudo }}
+                            </div>
                         {% endfor %}
                     {% endfor %}
                     {% if match.matchResult.first == match.attack %}
@@ -80,10 +79,9 @@
 
                     {% for id in match.matchResult.matchResultTeam.1.initiative %}
                         {% for player in match.defense.players if player.id == id %}
-                            <span class="pr-1">
+                            <div class="pb-1">
                                 <img src="{{ asset('bundles/main/images/class/'~ player.class.shortName|lower|remove_accent ~'1.png') }}" data-toggle="tooltip" data-trigger="hover" title="{{ player.class.name }} {{ player.level }}"> {{ player.pseudo }}
-                            </span>
-                            <br>
+                            </div>
                         {% endfor %}
                     {% endfor %}
 
