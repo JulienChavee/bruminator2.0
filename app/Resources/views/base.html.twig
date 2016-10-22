@@ -76,33 +76,26 @@
                         {% endfor %}
                     </div>
                 </li>
-                <li class="nav-item hidden-md-down">
-                    <a class="nav-link" href="{{ 'lien_twitch'|config }}" target="_blank">
-                        {% image '@MainBundle/Resources/public/images/twitch.png' output='/images/twitch.png' %}
-                        <img alt="Logo Dofus" src="{{ asset_url }}">
-                        {% endimage %}
-                    </a>
-                </li>
-                <li class="nav-item hidden-md-down">
-                    <a class="nav-link" href="{{ 'lien_twitter'|config }}" target="_blank">
-                        {% image '@MainBundle/Resources/public/images/twitter.png' output='/images/twitter.png' %}
-                        <img alt="Logo Dofus" src="{{ asset_url }}">
-                        {% endimage %}
-                    </a>
-                </li>
-                <li class="nav-item hidden-md-down">
-                    <a class="nav-link" href="{{ 'lien_facebook'|config }}" target="_blank">
-                        {% image '@MainBundle/Resources/public/images/facebook.png' output='/images/facebook.png' %}
-                        <img alt="Logo Dofus" src="{{ asset_url }}">
-                        {% endimage %}
-                    </a>
-                </li>
-                <li class="nav-item hidden-md-down mr-2">
-                    <a class="nav-link" href="{{ 'lien_dofus'|config }}" target="_blank">
-                        {% image '@MainBundle/Resources/public/images/dofus.png' output='/images/dofus.png' %}
-                            <img alt="Logo Dofus" src="{{ asset_url }}">
-                        {% endimage %}
-                    </a>
+
+                <li class="nav-item dropdown hidden-sm-down">
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Réseaux sociaux</a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="{{ 'lien_twitch'|config.url }}" target="_blank">
+                            <i class="fa fa-twitch fa-fw"></i> {{ 'lien_twitch'|config.name }}
+                        </a>
+                        <a class="dropdown-item" href="{{ 'lien_twitter'|config.url }}" target="_blank">
+                            <i class="fa fa-twitter fa-fw"></i> {{ 'lien_twitter'|config.name }}
+                        </a>
+                        <a class="dropdown-item" href="{{ 'lien_facebook'|config.url }}" target="_blank">
+                            <i class="fa fa-facebook fa-fw"></i> {{ 'lien_facebook'|config.name }}
+                        </a>
+                        <a class="dropdown-item" href="{{ 'lien_dofus'|config.url }}" target="_blank">
+                            {% image '@MainBundle/Resources/public/images/dofus.png' output='/images/dofus.png' %}
+                                <img alt="Logo Dofus" src="{{ asset_url }}" width="16px" height="16px">
+                            {% endimage %}
+                            {{ 'lien_dofus'|config.name }}
+                        </a>
+                    </div>
                 </li>
                 {% if app.user %}
                     <li class="nav-item {% if app.request.attributes.get('_route') matches '{^user_.*$}' %}active{% endif %} dropdown">
