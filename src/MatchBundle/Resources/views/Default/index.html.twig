@@ -35,7 +35,7 @@
                 {% for player in match.defense.players if not player.isRemplacant %}
                     <div class="pb-1">
                         <img src="{{ asset('bundles/main/images/class/'~ player.class.shortName|lower|remove_accent ~'1.png') }}" data-toggle="tooltip" data-trigger="hover" title="{{ player.class.name }} {{ player.level }}"> {{ player.pseudo }} {% if player.remplacant %}(Remplaçant : {{ player.remplacant.pseudo }}){% endif %}
-                    </d>
+                    </div>
                 {% endfor %}
             </div>
         </div>
@@ -64,12 +64,35 @@
                     {% endfor %}
                     {% if match.matchResult.first == match.attack %}
                         <i class="fa fa-check text-success"></i> Cette équipe a commencé le match
+                    {% else %}
+                        <br>
                     {% endif %}
                 </div>
 
                 <div class="mt-1">
                     <b>Calcul des points :</b><br>
-                    <i>A venir</i>
+                    {% for points in match.points(match.attack).details.pointsGoulta %}
+                        <div class="row">
+                            <div class="col-md-5">
+                                {% if points.nb >= 0 %}<i class="fa fa-plus text-success"></i>{% else %}<i class="fa fa-minus text-danger"></i>{% endif %} {{ points.explication }}
+                            </div>
+                            <div class="col-md-2">
+                                : {{ points.nb }}
+                            </div>
+
+                            {% if loop.last %}
+                                <hr class="col-md-7">
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                    <div class="row">
+                        <div class="col-md-5">
+                            <i class="fa fa-calculator"></i> Total
+                        </div>
+                        <div class="col-md-2">
+                            : {{ match.points(match.attack).pointsGoulta }}
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -87,16 +110,39 @@
 
                     {% if match.matchResult.first == match.defense %}
                         <i class="fa fa-check text-success"></i> Cette équipe a commencé le match
+                    {% else %}
+                        <br>
                     {% endif %}
                 </div>
 
                 <div class="mt-1">
                     <b>Calcul des points :</b><br>
-                    <i>A venir</i>
+                    {% for points in match.points(match.defense).details.pointsGoulta %}
+                        <div class="row">
+                            <div class="col-md-5">
+                                {% if points.nb >= 0 %}<i class="fa fa-plus text-success"></i>{% else %}<i class="fa fa-minus text-danger"></i>{% endif %} {{ points.explication }}
+                            </div>
+                            <div class="col-md-2">
+                                : {{ points.nb }}
+                            </div>
+
+                            {% if loop.last %}
+                                <hr class="col-md-7">
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                    <div class="row">
+                        <div class="col-md-5">
+                            <i class="fa fa-calculator"></i> Total
+                        </div>
+                        <div class="col-md-2">
+                            : {{ match.points(match.defense).pointsGoulta }}
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div class="col-md-12 mt-2">
+            <div class="col-md-12 mt-3">
                 <b>Nombre de tours : </b>{{ match.matchResult.nombreTour }}<br>
                 <b><i class="fa fa-trophy"></i> Vainqueur : </b> {{ match.matchResult.winner.name }}
             </div>
