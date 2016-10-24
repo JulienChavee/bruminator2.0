@@ -52,22 +52,24 @@
         <h2>Résultats du match</h2>
         <div class="row">
             <div class="col-md-6">
-                <div>
-                    <b>Initiative :</b><br>
+                {% if not match.matchResult.matchResultTeam.0.forfait and not match.matchResult.matchResultTeam.1.forfait %}
+                    <div>
+                        <b>Initiative :</b><br>
 
-                    {% for id in match.matchResult.matchResultTeam.0.initiative %}
-                        {% for player in match.attack.players if player.id == id %}
-                            <div class="pb-1">
-                                <img src="{{ asset('bundles/main/images/class/'~ player.class.shortName|lower|remove_accent ~'1.png') }}" data-toggle="tooltip" data-trigger="hover" title="{{ player.class.name }} {{ player.level }}"> {{ player.pseudo }}
-                            </div>
+                        {% for id in match.matchResult.matchResultTeam.0.initiative %}
+                            {% for player in match.attack.players if player.id == id %}
+                                <div class="pb-1">
+                                    <img src="{{ asset('bundles/main/images/class/'~ player.class.shortName|lower|remove_accent ~'1.png') }}" data-toggle="tooltip" data-trigger="hover" title="{{ player.class.name }} {{ player.level }}"> {{ player.pseudo }}
+                                </div>
+                            {% endfor %}
                         {% endfor %}
-                    {% endfor %}
-                    {% if match.matchResult.first == match.attack %}
-                        <i class="fa fa-check text-success"></i> Cette équipe a commencé le match
-                    {% else %}
-                        <br>
-                    {% endif %}
-                </div>
+                        {% if match.matchResult.first == match.attack %}
+                            <i class="fa fa-check text-success"></i> Cette équipe a commencé le match
+                        {% else %}
+                            <br>
+                        {% endif %}
+                    </div>
+                {% endif %}
 
                 <div class="mt-1">
                     <b>Calcul des points :</b><br>
@@ -97,23 +99,25 @@
             </div>
 
             <div class="col-md-6">
-                <div>
-                    <b>Initiative :</b><br>
+                {% if not match.matchResult.matchResultTeam.0.forfait and not match.matchResult.matchResultTeam.1.forfait %}
+                    <div>
+                        <b>Initiative :</b><br>
 
-                    {% for id in match.matchResult.matchResultTeam.1.initiative %}
-                        {% for player in match.defense.players if player.id == id %}
-                            <div class="pb-1">
-                                <img src="{{ asset('bundles/main/images/class/'~ player.class.shortName|lower|remove_accent ~'1.png') }}" data-toggle="tooltip" data-trigger="hover" title="{{ player.class.name }} {{ player.level }}"> {{ player.pseudo }}
-                            </div>
+                        {% for id in match.matchResult.matchResultTeam.1.initiative %}
+                            {% for player in match.defense.players if player.id == id %}
+                                <div class="pb-1">
+                                    <img src="{{ asset('bundles/main/images/class/'~ player.class.shortName|lower|remove_accent ~'1.png') }}" data-toggle="tooltip" data-trigger="hover" title="{{ player.class.name }} {{ player.level }}"> {{ player.pseudo }}
+                                </div>
+                            {% endfor %}
                         {% endfor %}
-                    {% endfor %}
 
-                    {% if match.matchResult.first == match.defense %}
-                        <i class="fa fa-check text-success"></i> Cette équipe a commencé le match
-                    {% else %}
-                        <br>
-                    {% endif %}
-                </div>
+                        {% if match.matchResult.first == match.defense %}
+                            <i class="fa fa-check text-success"></i> Cette équipe a commencé le match
+                        {% else %}
+                            <br>
+                        {% endif %}
+                    </div>
+                {% endif %}
 
                 <div class="mt-1">
                     <b>Calcul des points :</b><br>
@@ -143,7 +147,9 @@
             </div>
 
             <div class="col-md-12 mt-3">
-                <b>Nombre de tours : </b>{{ match.matchResult.nombreTour }}<br>
+                {% if not match.matchResult.matchResultTeam.0.forfait and not match.matchResult.matchResultTeam.1.forfait %}
+                    <b>Nombre de tours : </b>{{ match.matchResult.nombreTour }}<br>
+                {% endif %}
                 <b><i class="fa fa-trophy"></i> Vainqueur : </b> {{ match.matchResult.winner.name }}
             </div>
         </div>
