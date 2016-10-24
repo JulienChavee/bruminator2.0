@@ -1,2 +1,32 @@
 <h3>Les derniers matchs</h3>
-<i>A venir</i>
+{% for match in matchs %}
+    <div>
+        {% if match.matchResult %}
+            {% if match.matchResult.winner == match.attack %}
+                <span class="tag tag-success">Victoire</span>
+            {% else %}
+                <span class="tag tag-danger">Défaite</span>
+            {% endif %}
+        {% else %}
+            <span class="tag tag-default">En attente des résultats</span>
+        {% endif %}
+        <small>{{ match.date|format_date('dd MMMM YYYY - hh:mm') }}</small><br>
+        <a href="{{ path('team_front_homepage', {'id':match.attack.id, 'slugTeam': match.attack.name|slugify}) }}" class="text-danger">{{ match.attack.name }}</a>
+        <b>
+            {% if match.matchResult %}
+                {% if match.matchResult.winner == match.attack %}
+                    s'est imposé contre
+                {% else %}
+                   s'est incliné face à
+                {% endif %}
+            {% else %}
+                VS
+            {% endif %}
+        </b>
+        <a href="{{ path('team_front_homepage', {'id':match.defense.id, 'slugTeam': match.defense.name|slugify}) }}" class="text-primary">{{ match.defense.name }}</a>
+    </div>
+
+    {% if not loop.last %}
+        <hr>
+    {% endif %}
+{% endfor %}
