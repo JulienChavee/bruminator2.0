@@ -263,6 +263,14 @@
             $('.modal-body-more-info').empty();
         });
 
+        $( document ).ready(function() {
+            var isMobile = window.matchMedia("only screen and (max-width: 768px)");
+
+            if (isMobile.matches) {
+                $('.editable_content').find('.editable_tool').removeClass('invisible');
+            }
+        });
+
         $('body').on('mouseover', '.editable_content', function() {
             $(this).find('.editable_tool').removeClass('invisible');
         }).on('mouseleave', '.editable_content', function() {
