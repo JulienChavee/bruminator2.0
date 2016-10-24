@@ -66,7 +66,7 @@
             </ul>
 
             <ul class="nav navbar-nav float-lg-right">
-                <li class="nav-item dropdown hidden-sm-down">
+                <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Sponsors</a>
                     <div class="dropdown-menu">
                         {% for key, sponsor in 'sponsor'|config %}
@@ -77,7 +77,7 @@
                     </div>
                 </li>
 
-                <li class="nav-item dropdown hidden-sm-down">
+                <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Réseaux sociaux</a>
                     <div class="dropdown-menu">
                         <a class="dropdown-item" href="{{ 'lien_twitch'|config.url }}" target="_blank">
@@ -88,6 +88,9 @@
                         </a>
                         <a class="dropdown-item" href="{{ 'lien_facebook'|config.url }}" target="_blank">
                             <i class="fa fa-facebook fa-fw"></i> {{ 'lien_facebook'|config.name }}
+                        </a>
+                        <a class="dropdown-item" href="{{ 'lien_youtube'|config.url }}" target="_blank">
+                            <i class="fa fa-youtube-play fa-fw"></i> {{ 'lien_youtube'|config.name }}
                         </a>
                         <a class="dropdown-item" href="{{ 'lien_dofus'|config.url }}" target="_blank">
                             {% image '@MainBundle/Resources/public/images/dofus.png' output='/images/dofus.png' %}
