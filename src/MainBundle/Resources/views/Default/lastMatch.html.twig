@@ -10,7 +10,7 @@
         {% else %}
             <span class="tag tag-default">En attente des résultats</span>
         {% endif %}
-        <small>{{ match.date|format_date('dd MMMM YYYY - hh:mm') }}</small><br>
+        <small>{{ match.date|format_date('dd MMMM YYYY - HH:mm') }}</small><br>
         <a href="{{ path('team_front_homepage', {'id':match.attack.id, 'slugTeam': match.attack.name|slugify}) }}" class="text-danger">{{ match.attack.name }}</a>
         <b>
             {% if match.matchResult %}
