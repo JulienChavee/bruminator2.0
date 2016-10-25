@@ -256,16 +256,17 @@ class Matchs
     public function getPoints( \TeamBundle\Entity\Team $team ) {
         $res = array( 'pointsSuisse' => 0, 'pointsGoulta' => 0, 'detail' => array() );
 
+        $forfait = $this->getMatchResult()->getMatchResultTeam()[0]->getForfait || $this->getMatchResult()->getMatchResultTeam()[1]->getForfait();
+
         if( $this->getMatchResult()->getWinner() == $team ) {
             $res[ 'pointsSuisse' ] = 3;
             $res[ 'details' ][ 'pointsSuisse' ][] = array( 'nb' => 3, 'explication' => 'Victoire' );
 
-            $matchResultTeam = $this->getMatchResult()->getWinner() == $this->getAttack() ? $this->getMatchResult()->getMatchResultTeam()[0] : $this->getMatchResult()->getMatchResultTeam()[1];
-            if( $matchResultTeam->getForfait() ){
+            if( $forfait ){
                 $res['pointsGoulta'] = 60;
                 $res['details']['pointsGoulta'][] = array('nb' => 60, 'explication' => 'Victoire par forfait');
             } else {
-                $mort = $matchResultTeam->getNombreMort();
+                $mort = $this->getMatchResult()->getWinner() == $this->getAttack() ? $this->getMatchResult()->getMatchResultTeam()[0] : $this->getMatchResult()->getMatchResultTeam()[1];
                 switch ($mort) {
                     case '0':
                         $res['pointsGoulta'] = 60;
@@ -294,9 +295,7 @@ class Matchs
             $res[ 'pointsSuisse' ] = 0;
             $res[ 'details' ][ 'pointsSuisse' ][] = array( 'nb' => 0, 'explication' => 'Défaite' );
 
-            $matchResultTeam = $this->getMatchResult()->getWinner() == $this->getAttack() ? $this->getMatchResult()->getMatchResultTeam()[0] : $this->getMatchResult()->getMatchResultTeam()[1];
-
-            if( $matchResultTeam->getForfait() ) {
+            if( $forfait ) {
                 $res['pointsGoulta'] = -10;
                 $res['details']['pointsGoulta'][] = array('nb' => -10, 'explication' => 'Forfait');
             } else {
