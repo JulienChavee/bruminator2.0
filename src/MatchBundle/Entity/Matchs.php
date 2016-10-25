@@ -256,7 +256,7 @@ class Matchs
     public function getPoints( \TeamBundle\Entity\Team $team ) {
         $res = array( 'pointsSuisse' => 0, 'pointsGoulta' => 0, 'detail' => array() );
 
-        $forfait = $this->getMatchResult()->getMatchResultTeam()[0]->getForfait || $this->getMatchResult()->getMatchResultTeam()[1]->getForfait();
+        $forfait = $this->getMatchResult()->getMatchResultTeam()[0]->getForfait() || $this->getMatchResult()->getMatchResultTeam()[1]->getForfait();
 
         if( $this->getMatchResult()->getWinner() == $team ) {
             $res[ 'pointsSuisse' ] = 3;
