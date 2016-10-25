@@ -266,7 +266,7 @@ class Matchs
                 $res['pointsGoulta'] = 60;
                 $res['details']['pointsGoulta'][] = array('nb' => 60, 'explication' => 'Victoire par forfait');
             } else {
-                $mort = $this->getMatchResult()->getWinner() == $this->getAttack() ? $this->getMatchResult()->getMatchResultTeam()[0] : $this->getMatchResult()->getMatchResultTeam()[1];
+                $mort = $this->getMatchResult()->getWinner() == $this->getAttack() ? $this->getMatchResult()->getMatchResultTeam()[0]->getNombreMort() : $this->getMatchResult()->getMatchResultTeam()[1]->getNombreMort();
                 switch ($mort) {
                     case '0':
                         $res['pointsGoulta'] = 60;
