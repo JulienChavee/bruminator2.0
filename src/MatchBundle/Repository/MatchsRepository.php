@@ -24,36 +24,44 @@ class MatchsRepository extends \Doctrine\ORM\EntityRepository
         return $qb->getQuery()->getResult();
     }
 
-    function findByDate( \DateTime $time, $order = array(), $limit = null ) {
+    function findByDate( \DateTime $time, $order = array(), $limit = null, $null = true, $withTime = false ) {
         $qb = $this->createQueryBuilder( 'm' );
-        $qb->where( $qb->expr()->orX()
-            ->add( 'm.date >= ?1' )
-            ->add( 'm.date IS NULL')
-        );
+        if( $null ) {
+            $qb->where($qb->expr()->orX()
+                ->add( 'm.date >= ?1' )
+                ->add( 'm.date IS NULL' )
+            );
+        } else {
+            $qb->where( 'm.date >= ?1' );
+        }
         if( !empty( $order ) )
             $qb->orderBy( 'm.'.$order[ 'field' ], $order[ 'type' ] );
 
         if( $limit )
             $qb->setMaxResults( $limit );
 
-        $qb->setParameter( '1', $time->format( 'Y-m-d' ) );
+        $qb->setParameter( '1', $time->format( $withTime ? 'Y-m-d H:i' : 'Y-m-d' ) );
 
         return $qb->getQuery()->getResult();
     }
 
-    function findByDateInf( \DateTime $time, $order = array(), $limit = null ) {
+    function findByDateInf( \DateTime $time, $order = array(), $limit = null, $null = true, $withTime = false ) {
         $qb = $this->createQueryBuilder( 'm' );
-        $qb->where( $qb->expr()->orX()
-            ->add( 'm.date <= ?1' )
-            ->add( 'm.date IS NULL')
-        );
+        if( $null ) {
+            $qb->where($qb->expr()->orX()
+                ->add( 'm.date <= ?1' )
+                ->add( 'm.date IS NULL' )
+            );
+        } else {
+            $qb->where( 'm.date <= ?1' );
+        }
         if( !empty( $order ) )
             $qb->orderBy( 'm.'.$order[ 'field' ], $order[ 'type' ] );
 
         if( $limit )
             $qb->setMaxResults( $limit );
 
-        $qb->setParameter( '1', $time->format( 'Y-m-d' ) );
+        $qb->setParameter( '1', $time->format( $withTime? 'Y-m-d H:i' : 'Y-m-d' ) );
 
         return $qb->getQuery()->getResult();
     }

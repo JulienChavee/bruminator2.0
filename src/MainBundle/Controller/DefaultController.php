@@ -18,7 +18,7 @@ class DefaultController extends Controller
 
         $teams = $em->getRepository( 'TeamBundle:Team' )->findBy( array(), array( 'inscriptionDate' => 'DESC' ));
 
-        $matchs = $em->getRepository( 'MatchBundle:Matchs' )->findByDateInf( new \DateTime(), array( 'field' => 'date', 'type' => 'DESC' ), 5 );
+        $matchs = $em->getRepository( 'MatchBundle:Matchs' )->findByDateInf( new \DateTime(), array( 'field' => 'date', 'type' => 'DESC' ), 5, false, true );
 
         return $this->render('MainBundle:Default:index.html.twig', array( 'news' => $news, 'teams' => $teams, 'matchs' => $matchs ) );
     }
