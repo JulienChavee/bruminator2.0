@@ -67,9 +67,9 @@
 
             <div class="form-group">
                 <label class="custom-control custom-checkbox offset-sm-4">
-                    <input type="checkbox" class="custom-control-input" id="defense_forfait">
+                    <input type="checkbox" class="custom-control-input" id="defense_forfait" {% if match.matchResult and match.matchResult.matchResultTeam.1.forfait %}checked="checked"{% endif %}>
                     <span class="custom-control-indicator"></span>
-                    <span class="custom-control-description" {% if match.matchResult and match.matchResult.matchResultTeam.1.forfait %}checked="checked"{% endif %}>Equipe forfait ?</span>
+                    <span class="custom-control-description">Equipe forfait ?</span>
                 </label>
             </div>
 
@@ -125,8 +125,8 @@
                 <div class="col-sm-4">
                     <select class="custom-select" id="first_team">
                         <option selected="selected" disabled="disabled">Sélectionner une équipe</option>
-                        <option value="{{ match.attack.id }}" {% if match.matchResult and match.matchResult.winner == match.attack%}selected="selected"{% endif %}>{{ match.attack.name }}</option>
-                        <option value="{{ match.defense.id }}" {% if match.matchResult and match.matchResult.winner == match.defense%}selected="selected"{% endif %}>{{ match.defense.name }}</option>
+                        <option value="{{ match.attack.id }}" {% if match.matchResult and match.matchResult.first == match.attack%}selected="selected"{% endif %}>{{ match.attack.name }}</option>
+                        <option value="{{ match.defense.id }}" {% if match.matchResult and match.matchResult.first == match.defense%}selected="selected"{% endif %}>{{ match.defense.name }}</option>
                     </select>
                 </div>
                 <div class="offset-sm-2 col-sm-10">
