@@ -29,7 +29,7 @@
                 Générer les matchs de la ronde suivante ?<br>
                 <button class="btn btn-primary nextRonde">Oui</button>
             </div>
-        {% elseif  'type_tournoi'|config == 'ronde' and ((date('ronde3'|config.end_date) <= date() %}
+        {% elseif  'type_tournoi'|config == 'ronde' and date('ronde3'|config.end_date) <= date() %}
             <div class="alert alert-info">
                 Nous arrivons à une fin de ronde.<br>
                 Générer les matchs de qualification ?<br>
