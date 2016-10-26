@@ -11,27 +11,34 @@ class ControlMatch
     protected $em;
     protected $controlTeam;
     private $typeTournoi;
+    private $rondes;
 
     public function __construct( EntityManager $em, ControlTeam $controlTeam ) {
         $this->em = $em;
         $this->typeTournoi = $this->em->getRepository( 'AdminBundle:Config' )->getOneBy( array( 'name' => 'type_tournoi' ) );
         $this->controlTeam = $controlTeam;
+        $this->rondes = json_decode( $this->em->getRepository( 'AdminBundle:Config' )->getOneBy( array( 'name' => 'rondes' ) ), true );
     }
 
     public function matchCreated() {
         if( $this->typeTournoi == 'ronde' ) {
-            $rondes = json_decode( $this->em->getRepository( 'AdminBundle:Config' )->getOneBy( array( 'name' => 'rondes' ) ), true );
-
-            if( $rondes['ronde_actuelle'] === 0 )
+            if( $this->rondes['ronde_actuelle'] === 0 )
                 return false;
             else
                 return true;
+        } else {
+            // TODO Si le tournoi n'est pas à ronde
         }
     }
 
     public function generateMatch() {
         if( $this->typeTournoi == 'ronde' ) {
-            return $this->generateNextRonde();
+            if( $this->rondes[ 'ronde_actuelle' ] == $this->rondes[ 'ronde_total' ] )
+                return $this->generatePhaseFinale();
+            else
+                return $this->generateNextRonde();
+        } else {
+            // TODO Si le tournoi n'est pas à ronde
         }
     }
 
@@ -147,5 +154,43 @@ class ControlMatch
         $teams = array_slice( $teams, 0, count( $teams ) - 3 );
 
         return array( 'match' => $match, 'teams' => $teams );
+    }
+
+    private function generatePhaseFinale() {
+        $teams = $this->em->getRepository( 'TeamBundle:Team' )->findBy( array( 'valid' => true ) );
+
+        $classement = array();
+
+        foreach( $teams as $k => $v ) {
+            $res = $this->controlTeam->getPoints( $v, false );
+
+            $classement[ 'team' ][ $k ] = $v;
+            $classement[ 'nb_match' ][ $k ] = $res[ 'nb_match' ];
+            $classement[ 'pointsSuisse' ][ $k ] = $res[ 'pointsSuisse' ];
+            $classement[ 'pointsGoulta' ][ $k ] = $res[ 'pointsGoulta' ];
+            $classement[ 'pointsSuisseAdverse' ][ $k ] = $res[ 'pointsSuisseAdverse' ];
+            $classement[ 'pointsGoultaAdverse' ][ $k ] = $res[ 'pointsGoultaAdverse' ];
+        }
+        array_multisort( $classement[ 'pointsSuisse' ], SORT_DESC, $classement[ 'pointsGoulta' ], SORT_DESC, $classement[ 'pointsSuisseAdverse' ], SORT_DESC, $classement[ 'pointsGoultaAdverse' ], SORT_DESC, $classement[ 'nb_match' ], SORT_DESC, $classement[ 'team' ], SORT_DESC);
+
+        try {
+            for ($i = 0; $i < 4; $i++) {
+                $match = new Matchs();
+                $match->setAttack( $classement[ 'team' ][ $i ] );
+                $match->setDefense( $classement[ 'team' ][ ( 7 - $i ) ] );
+                $match->setDate( NULL );
+                $match->setArbitre( NULL );
+                $match->setType( 'Quart de finale' );
+
+                $this->em->persist( $match );
+            }
+
+            $this->em->flush();
+        }
+        catch( \Exception $e ) {
+            return array( 'status' => 'ko', 'message' => 'Une erreur inconnue s\'est produite', 'debug' => $e->getMessage() );
+        }
+
+        return array( 'status' => 'ok' );
     }
 }
