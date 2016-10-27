@@ -8,7 +8,7 @@
 
             {% if match.matchResult %}
                 <hr>
-                <i class="fa fa-trophy" data-toggle="tooltip" data-trigger="hover" title="Vainqueur"></i> {{ match.matchResult.winner.name }} ({{ match.matchResult.nombreTour }} tours)<br>
+                <i class="fa fa-trophy" data-toggle="tooltip" data-trigger="hover" title="Vainqueur"></i> {{ match.matchResult.winner.name }} ({% if match.matchResult.matchResultTeam.0.forfait or  match.matchResult.matchResultTeam.1.forfait %}forfait{% else %}{{ match.matchResult.nombreTour }} tours{% endif %})<br>
                 <small><a href="{{ path('match_informations', {'id':match.id}) }}" class="text-muted"><i class="fa fa-share"></i> Vers la feuille du match</a></small>
             {% endif %}
         </div>
