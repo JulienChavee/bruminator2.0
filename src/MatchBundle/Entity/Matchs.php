@@ -322,22 +322,34 @@ class Matchs
         }
 
         if( $team == $this->getAttack() )
-            $retard = $this->getMatchResult()->getMatchResultTeam()[0]->getRetard();
+            $matchResult = $this->getMatchResult()->getMatchResultTeam()[0];
         else
-            $retard = $this->getMatchResult()->getMatchResultTeam()[1]->getRetard();
+            $matchResult = $this->getMatchResult()->getMatchResultTeam()[1];
 
-        if( $retard == 30 ) {
+        if( $matchResult->getRetard() == 30 ) {
             $res['pointsGoulta'] -= 20;
             $res[ 'details' ][ 'pointsGoulta' ][] = array( 'nb' => -20, 'explication' => 'Retard (30 minutes)' );
-        } else if( $retard >=25 ) {
+        } else if( $matchResult->getRetard() >=25 ) {
             $res['pointsGoulta'] -= 15;
             $res[ 'details' ][ 'pointsGoulta' ][] = array( 'nb' => -15, 'explication' => 'Retard (25 minutes)' );
-        } else if( $retard >= 20) {
+        } else if( $matchResult->getRetard() >= 20) {
             $res['pointsGoulta'] -= 10;
             $res[ 'details' ][ 'pointsGoulta' ][] = array( 'nb' => -10, 'explication' => 'Retard (20 minutes)' );
-        }else if( $retard >= 15 ) {
+        }else if( $matchResult->getRetard() >= 15 ) {
             $res['pointsGoulta'] -= 5;
             $res[ 'details' ][ 'pointsGoulta' ][] = array( 'nb' => -5, 'explication' => 'Retard (15 minutes)' );
+        }
+
+        if( $penalite = $matchResult->getPenalite() ) {
+            if( $penalite[ 'suisse' ] > 0 ) {
+                $res[ 'pointsSuisse' ] -= $penalite[ 'suisse' ];
+                $res[ 'details' ][ 'pointsSuisse' ][] = array( 'nb' => -1 * $penalite[ 'suisse' ], 'explication' => $penalite[ 'raison' ] );
+            }
+
+            if( $penalite[ 'goulta' ] > 0 ) {
+                $res[ 'pointsGoulta' ] -= $penalite[ 'goulta'];
+                $res[ 'details' ][ 'pointsGoulta' ][] = array( 'nb' => -1 * $penalite[ 'goulta' ], 'explication' => $penalite[ 'raison' ] );
+            }
         }
 
         return $res;

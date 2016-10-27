@@ -222,6 +222,7 @@ class MatchController extends Controller
                 $feuilleTeamAttack->setInitiative( $forfait ? null : $teamAttackData[ 'ini' ] );
                 $feuilleTeamAttack->setRetard( $teamAttackData[ 'retard' ] );
                 $feuilleTeamAttack->setForfait( $teamAttackData[ 'forfait' ] );
+                $feuilleTeamAttack->setPenalite( $teamAttackData[ 'penalite' ] );
 
                 $feuilleTeamDefense->setMatchResult( $feuille );
                 $feuilleTeamDefense->setTeam( $match->getDefense() );
@@ -229,6 +230,7 @@ class MatchController extends Controller
                 $feuilleTeamDefense->setInitiative( $forfait ? null : $teamDefenseData[ 'ini' ] );
                 $feuilleTeamDefense->setRetard( $teamDefenseData[ 'retard' ] );
                 $feuilleTeamDefense->setForfait( $teamDefenseData[ 'forfait' ] );
+                $feuilleTeamDefense->setPenalite( $teamDefenseData[ 'penalite' ] );
 
                 if( $newFeuille ) {
                     $em->persist( $feuille );

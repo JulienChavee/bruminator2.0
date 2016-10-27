@@ -60,6 +60,27 @@
                     </div>
                 </div>
             {% endfor %}
+
+            <div class="form-group row">
+                <label for="attack_penalite_suisse" class="col-sm-4 col-form-label">Pénalité points suisse</label>
+                <div class="col-sm-5">
+                    <input type="number" class="form-control" id="attack_penalite_suisse" placeholder="Pénalité points suisse" {% if match.matchResult and match.matchResult.matchResultTeam.0.penalite %}value="{{ match.matchResult.matchResultTeam.0.penalite.suisse }}"{% endif %}>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="attack_penalite_goulta" class="col-sm-4 col-form-label">Pénalité points goulta</label>
+                <div class="col-sm-5">
+                    <input type="number" class="form-control" id="attack_penalite_goulta" placeholder="Pénalité points goulta" {% if match.matchResult and match.matchResult.matchResultTeam.0.penalite %}value="{{ match.matchResult.matchResultTeam.0.penalite.goulta }}"{% endif %}>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="attack_penalite_raison" class="col-sm-4 col-form-label">Raison</label>
+                <div class="col-sm-5">
+                    <input type="text" class="form-control" id="attack_penalite_raison" placeholder="Raison" {% if match.matchResult and match.matchResult.matchResultTeam.0.penalite %}value="{{ match.matchResult.matchResultTeam.0.penalite.raison }}"{% endif %}>
+                </div>
+            </div>
         </div>
 
         <div class="col-md-6">
@@ -107,6 +128,27 @@
                     </div>
                 </div>
             {% endfor %}
+
+            <div class="form-group row">
+                <label for="defense_penalite_suisse" class="col-sm-4 col-form-label">Pénalité points suisse</label>
+                <div class="col-sm-5">
+                    <input type="number" class="form-control" id="defense_penalite_suisse" placeholder="Pénalité points suisse" {% if match.matchResult and match.matchResult.matchResultTeam.1.penalite %}value="{{ match.matchResult.matchResultTeam.1.penalite.suisse }}"{% endif %}>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="defense_penalite_goulta" class="col-sm-4 col-form-label">Pénalité points goulta</label>
+                <div class="col-sm-5">
+                    <input type="number" class="form-control" id="defense_penalite_goulta" placeholder="Pénalité points goulta" {% if match.matchResult and match.matchResult.matchResultTeam.1.penalite %}value="{{ match.matchResult.matchResultTeam.1.penalite.goulta }}"{% endif %}>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="defense_penalite_raison" class="col-sm-4 col-form-label">Raison</label>
+                <div class="col-sm-5">
+                    <input type="text" class="form-control" id="defense_penalite_raison" placeholder="Raison" {% if match.matchResult and match.matchResult.matchResultTeam.1.penalite %}value="{{ match.matchResult.matchResultTeam.1.penalite.raison }}"{% endif %}>
+                </div>
+            </div>
         </div>
     </div>
 
