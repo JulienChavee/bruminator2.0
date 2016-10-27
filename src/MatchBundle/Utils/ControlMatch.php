@@ -33,7 +33,7 @@ class ControlMatch
 
     public function generateMatch() {
         if( $this->typeTournoi == 'ronde' ) {
-            if( $this->rondes[ 'ronde_actuelle' ] == $this->rondes[ 'ronde_total' ] )
+            if( $this->rondes[ 'ronde_actuelle' ] == $this->rondes[ 'total' ] )
                 return $this->generatePhaseFinale();
             else
                 return $this->generateNextRonde();
