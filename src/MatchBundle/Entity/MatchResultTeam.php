@@ -65,6 +65,13 @@ class MatchResultTeam
      */
     private $forfait;
 
+    /**
+     * @var array
+     *
+     * @ORM\Column(name="penalite", type="array", nullable=true)
+     */
+    private $penalite;
+
 
     /**
      * Get id
@@ -218,5 +225,29 @@ class MatchResultTeam
     public function getForfait()
     {
         return $this->forfait;
+    }
+
+    /**
+     * Set penalite
+     *
+     * @param array $penalite
+     *
+     * @return MatchResultTeam
+     */
+    public function setPenalite($penalite)
+    {
+        $this->penalite = $penalite;
+
+        return $this;
+    }
+
+    /**
+     * Get penalite
+     *
+     * @return array
+     */
+    public function getPenalite()
+    {
+        return $this->penalite;
     }
 }
