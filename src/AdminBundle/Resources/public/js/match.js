@@ -302,7 +302,7 @@ $('.updateFeuille').on('click', function() {
                 'ini':defense_ini,
                 'retard':defense_retard,
                 'forfait':defense_forfait,
-                'penalite':attack_penalite
+                'penalite':defense_penalite
             })
         },
         error: function (request, error) { // Info Debuggage si erreur
