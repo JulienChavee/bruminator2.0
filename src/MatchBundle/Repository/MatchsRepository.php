@@ -65,4 +65,20 @@ class MatchsRepository extends \Doctrine\ORM\EntityRepository
 
         return $qb->getQuery()->getResult();
     }
+
+    function findMatchsPhasesFinales() {
+        $qb = $this->createQueryBuilder( 'm' );
+
+        $qb->where($qb->expr()->orX()
+            ->add( 'm.type = ?1')
+            ->add( 'm.type = ?2')
+        );
+
+        $qb->orderBy( 'm.id' );
+
+        $qb->setParameter( '1', 'Quart de finale' );
+        $qb->setParameter( '2', 'Demi-finale' );
+
+        return $qb->getQuery()->getResult();
+    }
 }

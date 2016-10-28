@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ parent() }} • Tu es perdu ?
+{% endblock %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+    <li class="breadcrumb-item active">Tu es perdu ?</li>
+{% endblock %}
+
+{% block body %}
+    <img src="{{ asset('bundles/main/images/404.png') }}" alt="Erreur 404" class="d-block mx-auto">
+{% endblock %}
