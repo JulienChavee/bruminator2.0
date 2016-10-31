@@ -1,3 +1,9 @@
+<div class="text-xs-center mb-2">
+    <button class="btn btn-primary pull-left changeMonth" data-month="{{ time|date_modify('-1 month')|date('m') }}", data-year="{{ time|date_modify('-1 month')|date('Y') }}"><i class="fa fa-chevron-left"></i> {{ time|date_modify('-1 month')|date('F') }}</button>
+    <span class="h2">{{ time|date('F') }}</span>
+    <button class="btn btn-primary pull-right changeMonth" data-month="{{ time|date_modify('+1 month')|date('m') }}", data-year="{{ time|date_modify('+1 month')|date('Y') }}">{{ time|date_modify('+1 month')|date('F') }} <i class="fa fa-chevron-right"></i></button>
+</div>
+
 <table class="table table-bordered" style="table-layout: fixed;">
     <thead class="thead-inverse">
         <tr>
@@ -25,7 +31,7 @@
                 <td height="85px">
                     <div>
                         <div>
-                            <span class="float-xs-left tag {% if time|date('d') == day %}tag-danger{% else %}tag-default{% endif %}">{{ day }}</span>
+                            <span class="float-xs-left tag {% if timeNow|date('m') == time|date('m') and timeNow|date('d') == day %}tag-danger{% else %}tag-default{% endif %}">{{ day }}</span>
                             <!--<span class="float-xs-right">nb matchs</span>-->
                         </div>
                         <div class="clearfix"></div>
