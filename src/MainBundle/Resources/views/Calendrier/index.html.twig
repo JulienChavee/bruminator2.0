@@ -13,5 +13,17 @@
     <h1>Calendrier</h1>
     <hr>
 
-    {% include 'MainBundle:Calendrier:calendarGrid.html.twig' %}
+    <div class="calendar">
+        {% include 'MainBundle:Calendrier:calendarGrid.html.twig' %}
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {% javascripts output='js/compiled/main/calendar.js'
+    '@MainBundle/Resources/public/js/calendar.js'
+    %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
 {% endblock %}
