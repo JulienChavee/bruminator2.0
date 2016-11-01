@@ -2,8 +2,6 @@ $('body').on('click', '.changeMonth', function() {
     var month = $(this).data('month');
     var year = $(this).data('year');
 
-    console.log("coucou")
-
     $.ajax({
         type: 'POST',
         url: Routing.generate('calendrier_ajax_get'),
@@ -16,9 +14,9 @@ $('body').on('click', '.changeMonth', function() {
         },
         success: function (data) {
             if (data.status == 'ok') {
-                console.log(data.return);
                 $('.calendar').html(data.return);
                 // TODO : Ajouter un effet pendant le chargement
+                history.pushState('data.return', 'Calendrier', Routing.generate('calendrier_view', {year:year, month:month}));
             } else {
                 $('.modal-body-more-info').html(data.message);
                 $('.modal_alert_error').modal('show');
