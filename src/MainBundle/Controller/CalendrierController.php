@@ -23,6 +23,19 @@ class CalendrierController extends Controller
     }
 
     /**
+     * @Route("/calendrier/{year}/{month}", name="calendrier_view", requirements={"year":"\d+", "month":"\d+"})
+     */
+    public function indexViewAction( $year, $month )
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $timeNow = new \DateTime();
+        $time = (new \DateTime())->setTimestamp( mktime( 0, 0, 0, $month, 1, $year ) );
+        $matchs = $em->getRepository( 'MatchBundle:Matchs' )->findByDate( $time, array( 'field' => 'date', 'type' => 'ASC') );
+        return $this->render( 'MainBundle:Calendrier:index.html.twig', array( 'time' => $time, 'matchs' => $matchs, 'timeNow' => $timeNow ) );
+    }
+
+    /**
      * @Route("/arbre", name="arbre")
      */
     public function arbreAction() {
