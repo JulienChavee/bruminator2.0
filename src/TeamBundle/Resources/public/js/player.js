@@ -108,7 +108,7 @@ $('#editPlayer_Remplacant_Pseudo').on('focus', function () {
     if(previousRemplacantPseudo == "")
         previousRemplacantPseudo = $(this).val();
 }).on('keyup change paste', function(){
-    if(previousRemplacantPseudo != "")
+    if(previousRemplacantPseudo != "" && $(this).val() != "" )
         $('.editPlayerRemplacantPseudoChanged').removeClass('hidden-xs-up');
     else
         $('.editPlayerRemplacantPseudoChanged').addClass('hidden-xs-up');
