@@ -130,3 +130,19 @@ $('#editPlayer').on('hide.bs.modal', function() {
     button.find('.fa').removeClass('fa-pulse fa-spinner').addClass('fa-pencil');
     button.removeAttr('disabled');
 });
+
+$('#editPlayer_Pseudo').autocomplete({
+    source: Routing.generate('team_player_ajax_search'),
+    minLength: 2,
+    select: function(event, ui) {
+
+    }
+});
+
+$('#editPlayer_Remplacant_Pseudo').autocomplete({
+    source: Routing.generate('team_player_ajax_search'),
+    minLength: 2,
+    select: function(event, ui) {
+
+    }
+});

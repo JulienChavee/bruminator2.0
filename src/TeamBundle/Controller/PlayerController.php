@@ -45,6 +45,29 @@ class PlayerController extends Controller
     }
 
     /**
+     * @Route("/player/ajax/search", name="team_player_ajax_search")
+     */
+    public function ajaxSearchAction( Request $request ) {
+        if( $request->isXmlHttpRequest() ) {
+            $em = $this->getDoctrine()->getManager();
+
+            $res = $em->getRepository( 'TeamBundle:Player' )->findByPseudoLike( $request->get( 'term' ), false );
+
+            $pseudos = array();
+            foreach( $res as $k => $v ) {
+                $pseudos[] = $v['pseudo'];
+            }
+
+            $response = new Response( json_encode( $pseudos ) );
+            $response->headers->set( 'Content-Type', 'application/json' );
+            return $response;
+        }
+        $response = new Response( json_encode( array( 'status' => 'ko', 'message' => 'Accès refusé', 'debug' => 'Bad request' ) ) );
+        $response->headers->set( 'Content-Type', 'application/json') ;
+        return $response;
+    }
+
+    /**
      * @Route("/player/ajax/edit", name="team_player_ajax_edit")
      */
     public function ajaxEditAction( Request $request ) {

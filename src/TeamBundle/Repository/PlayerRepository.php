@@ -10,4 +10,16 @@ namespace TeamBundle\Repository;
  */
 class PlayerRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function findByPseudoLike( $pseudo, $inTeam = false ) {
+        $qb = $this->createQueryBuilder( 'p' );
+        $qb->select( 'p.pseudo' );
+        $qb->where($qb->expr()->andX()
+            ->add( 'p.pseudo LIKE ?1')
+            ->add( $inTeam ? 'p.team IS NOT NULL OR p.team IS NULL' : 'p.team IS NULL' )
+        );
+
+        $qb->setParameter( '1', '%'.$pseudo.'%' );
+
+        return $qb->getQuery()->getScalarResult();
+    }
 }
