@@ -21,7 +21,8 @@ $('body').on('click', '.playerCard i[data-action="edit"]', function() {
                 if(data.player.remplacant) {
                     modal.find('#editPlayer_Remplacant_Pseudo').val(data.player.remplacant.pseudo);
                     modal.find('#editPlayer_Remplacant_Level').val(data.player.remplacant.level);
-                }
+                } else
+                    modal.find('.inversePlayer').addClass('hidden-xs-up');
 
                 modal.find('.editPlayer').data('id', id);
                 modal.modal('show');
@@ -138,6 +139,7 @@ $('#editPlayer').on('hide.bs.modal', function() {
     $(this).find('.editPlayerError').addClass('hidden-xs-up').html("");
     $(this).find('.editPlayerPseudoChanged').addClass('hidden-xs-up');
     $(this).find('.editPlayerClassChanged').addClass('hidden-xs-up');
+    $(this).find('.inversePlayer').removeClass('hidden-xs-up');
 
     button.find('.fa').removeClass('fa-pulse fa-spinner').addClass('fa-pencil');
     button.removeAttr('disabled');

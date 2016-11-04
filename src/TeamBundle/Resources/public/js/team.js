@@ -70,7 +70,7 @@ $('.disponibilites').on('click', 'i[data-action="edit"]', function() {
                 $('.disponibilites.editable_content').find('div').empty().append(
                     $('<textarea>').addClass('form-control input_disponibilite').text(data.return)
                 ).append(
-                    $('<button>').addClass('btn btn-primary m-t-1 pull-xs-right update_dispo').html('<i class="fa fa-pencil"></i> Enregistrer').data('id', id)
+                    $('<button>').addClass('btn btn-primary mt-1 pull-xs-right update_dispo').html('<i class="fa fa-pencil"></i> Enregistrer').data('id', id)
                 );
             } else {
                 $('.modal-body-more-info').html(data.message);
