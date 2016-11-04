@@ -45,6 +45,29 @@ class PlayerController extends Controller
     }
 
     /**
+     * @Route("/player/ajax/search", name="team_player_ajax_search")
+     */
+    public function ajaxSearchAction( Request $request ) {
+        if( $request->isXmlHttpRequest() ) {
+            $em = $this->getDoctrine()->getManager();
+
+            $res = $em->getRepository( 'TeamBundle:Player' )->findByPseudoLike( $request->get( 'term' ), false );
+
+            $pseudos = array();
+            foreach( $res as $k => $v ) {
+                $pseudos[] = $v['pseudo'];
+            }
+
+            $response = new Response( json_encode( $pseudos ) );
+            $response->headers->set( 'Content-Type', 'application/json' );
+            return $response;
+        }
+        $response = new Response( json_encode( array( 'status' => 'ko', 'message' => 'Accès refusé', 'debug' => 'Bad request' ) ) );
+        $response->headers->set( 'Content-Type', 'application/json') ;
+        return $response;
+    }
+
+    /**
      * @Route("/player/ajax/edit", name="team_player_ajax_edit")
      */
     public function ajaxEditAction( Request $request ) {
@@ -60,64 +83,93 @@ class PlayerController extends Controller
                     $team = $player->getTeam();
                     $remplacant = $player->getRemplacant() ? $em->getRepository( 'TeamBundle:Player' )->findOneBy( array( 'id' => $player->getRemplacant()->getId() ) ) : null;
 
-                    if( $request->get( 'newPlayer' ) == "true" ) {
-                        $oldPlayer = $player;
-                        $oldPlayer->setTeam( null );
+                    if( $request->get( 'inverse' ) ) {
+                        $player->setRemplacant( null );
+                        $player->setIsRemplacant( true );
 
-                        $player = new Player();
-                        $player->setPseudo( $request->get( 'pseudo' ) );
-                        $player->setLevel( $request->get( 'level' ) );
-                        $player->setClass( $class );
-                        $player->setIsRemplacant( false );
+                        $remplacant->setIsRemplacant( false );
+                        $remplacant->setRemplacant( $player );
 
-                        $player->setTeam( $team );
+                        $tempPlayer = $player;
 
-                        $em->persist( $player );
+                        $player = $remplacant;
+                        $remplacant = $tempPlayer;
                     } else {
-                        $player->setPseudo( $request->get( 'pseudo' ) );
-                        $player->setLevel( $request->get( 'level' ) );
-                        $player->setClass( $class );
-                    }
+                        $playerSearch = $em->getRepository('TeamBundle:Player')->findOneBy(array('pseudo' => $request->get('pseudo'), 'team' => null));
 
-                    if( !empty( $request->get( 'remplacantPseudo' ) ) && !empty( $request->get( 'remplacantLevel' ) ) ) {
-                        if( !$remplacant || $request->get( 'newRemplacant' ) == "true" ) {
-                            if( $remplacant ) {
-                                $oldRemplacant = $remplacant;
-                                $oldRemplacant->setTeam(null);
+                        if ($request->get('newPlayer') == "true") {
+                            $oldPlayer = $player;
+                            $oldPlayer->setTeam(null);
+
+                            if ($playerSearch and $playerSearch != $player) {
+                                $player = $playerSearch;
+                                $player->setRemplacant($oldPlayer->getRemplacant());
+                                $oldPlayer->setRemplacant(null);
+                            } else {
+                                $player = new Player();
+                                $player->setPseudo($request->get('pseudo'));
                             }
+                            $player->setLevel($request->get('level'));
+                            $player->setClass($class);
+                            $player->setIsRemplacant(false);
 
-                            $remplacant = new Player();
+                            $player->setTeam($team);
 
-                            $remplacant->setPseudo( $request->get( 'remplacantPseudo' ) );
-                            $remplacant->setLevel( $request->get( 'remplacantLevel' ) );
-                            $remplacant->setClass( $class );
-                            $remplacant->setIsRemplacant( true );
-                            $remplacant->setTeam( $team );
-
-                            $em->persist( $remplacant );
-
-                            $player->setRemplacant( $remplacant );
+                            $em->persist($player);
                         } else {
-                            $remplacant->setPseudo( $request->get( 'remplacantPseudo' ) );
-                            $remplacant->setLevel( $request->get( 'remplacantLevel' ) );
-                            $remplacant->setClass( $class );
+                            $player->setPseudo($request->get('pseudo'));
+                            $player->setLevel($request->get('level'));
+                            $player->setClass($class);
                         }
-                    } else {
-                        if( $remplacant ) {
-                            $player->setRemplacant( null );
-                            $remplacant->setTeam( null );
+
+                        if (!empty($request->get('remplacantPseudo')) && !empty($request->get('remplacantLevel'))) {
+                            $playerRemplacantSearch = $em->getRepository('TeamBundle:Player')->findOneBy(array('pseudo' => $request->get('remplacantPseudo'), 'team' => null));
+
+                            if (!$remplacant || $request->get('newRemplacant') == "true") {
+                                if ($remplacant) {
+                                    $oldRemplacant = $remplacant;
+                                    $oldRemplacant->setTeam(null);
+                                }
+
+                                if ($playerRemplacantSearch and $playerRemplacantSearch != $remplacant) {
+                                    $remplacant = $playerRemplacantSearch;
+                                    $player->setRemplacant($remplacant);
+                                } else {
+                                    $remplacant = new Player();
+                                    $remplacant->setPseudo($request->get('remplacantPseudo'));
+                                }
+
+                                $remplacant->setLevel($request->get('remplacantLevel'));
+                                $remplacant->setClass($class);
+                                $remplacant->setIsRemplacant(true);
+                                $remplacant->setTeam($team);
+
+                                $em->persist($remplacant);
+
+                                $player->setRemplacant($remplacant);
+                            } else {
+                                $remplacant->setPseudo($request->get('remplacantPseudo'));
+                                $remplacant->setLevel($request->get('remplacantLevel'));
+                                $remplacant->setClass($class);
+                            }
+                        } else {
+                            if ($remplacant) {
+                                $player->setRemplacant(null);
+                                $remplacant->setTeam(null);
+                            }
                         }
                     }
 
                     $errors_validator = $this->get( 'validator' )->validate( $player );
                     //$errors_teamControl = $this->get( 'team.control_team' )->checkCompo( $team->getPlayers() );
                     // TODO : Revoir le check de la composotion (voir issue #17)
+                    // TODO : Détecter les problèmes de changements de joueur si c'est un joueur qui existe déjà (et donc qui est dans une équipe)
                     if( count( $errors_validator ) == 0 /*&& count( $errors_teamControl ) == 0*/ ) {
                         $em->flush();
 
                         $response = new Response( json_encode( array( 'status' => 'ok', 'return' => $this->render('TeamBundle:Default:playerRow.html.twig', array( 'player' => $player, 'team' => $team ) )->getContent() ) ) );
                     } else
-                        $response = new Response( json_encode( array( 'status' => 'ko', 'message' => 'Impossible de modifier le joueur', 'errors' => $this->render( 'TeamBundle:Default:validation.html.twig', array( 'errors_validator' => $errors_validator, 'errors_teamControl' => $errors_teamControl ) )->getContent(), 'debug' => '' ) ) );
+                        $response = new Response( json_encode( array( 'status' => 'ko', 'message' => 'Impossible de modifier le joueur', 'errors' => $this->render( 'TeamBundle:Default:validation.html.twig', array( 'errors_validator' => $errors_validator/*, 'errors_teamControl' => $errors_teamControl*/ ) )->getContent(), 'debug' => '' ) ) );
                 } else
                     $response = new Response( json_encode( array( 'status' => 'ko', 'message' => 'Vous n\'avez pas la permission d\'éditer ce joueur', 'debug' => 'Utilisateur connecté != manager de l\'équipe du joueur' ) ) );
             }

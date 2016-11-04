@@ -70,14 +70,18 @@ class MatchsRepository extends \Doctrine\ORM\EntityRepository
         $qb = $this->createQueryBuilder( 'm' );
 
         $qb->where($qb->expr()->orX()
-            ->add( 'm.type = ?1')
-            ->add( 'm.type = ?2')
+            ->add( 'm.type = ?1' )
+            ->add( 'm.type = ?2' )
+            ->add( 'm.type = ?3' )
+            ->add( 'm.type = ?4' )
         );
 
         $qb->orderBy( 'm.id' );
 
         $qb->setParameter( '1', 'Quart de finale' );
         $qb->setParameter( '2', 'Demi-finale' );
+        $qb->setParameter( '3', 'Finale' );
+        $qb->setParameter( '4', 'Petite finale' );
 
         return $qb->getQuery()->getResult();
     }

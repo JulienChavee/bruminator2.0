@@ -45,9 +45,9 @@ $('body').on('click', '.editDate i[data-action="edit"]', function() {
                     .append(
                         $('<input>').addClass('form-control inputDate').attr('type', 'text').attr('placeholder', 'Date du match (laisser vide pour aucune date)').val(data.return != null ? moment(data.return.date).format("DD/MM/YYYY HH:mm") : '')
                     ).append(
-                        $('<button>').addClass('btn btn-primary m-t-1 m-r-1').text('Valider').attr('data-id', id).attr('data-action', 'validate')
+                        $('<button>').addClass('btn btn-primary mt-1 mr-1').text('Valider').attr('data-id', id).attr('data-action', 'validate')
                     ).append(
-                        $('<button>').addClass('btn btn-outline-secondary m-t-1').text('Annuler').attr('data-id', id).attr('data-action', 'cancel')
+                        $('<button>').addClass('btn btn-outline-secondary mt-1').text('Annuler').attr('data-id', id).attr('data-action', 'cancel')
                     );
             } else {
                 $('div[data-id="' + id + '"] .editDate')
@@ -55,9 +55,9 @@ $('body').on('click', '.editDate i[data-action="edit"]', function() {
                     .append(
                         $('<input>').addClass('form-control inputDate').attr('type', 'text').attr('placeholder', 'Date du match (laisser vide pour aucune date)')
                     ).append(
-                        $('<button>').addClass('btn btn-primary m-t-1 m-r-1').text('Valider').attr('data-id', id).attr('data-action', 'validate')
+                        $('<button>').addClass('btn btn-primary mt-1 mr-1').text('Valider').attr('data-id', id).attr('data-action', 'validate')
                     ).append(
-                        $('<button>').addClass('btn btn-outline-secondary m-t-1').text('Annuler').attr('data-id', id).attr('data-action', 'cancel')
+                        $('<button>').addClass('btn btn-outline-secondary mt-1').text('Annuler').attr('data-id', id).attr('data-action', 'cancel')
                     );
             }
 
@@ -171,9 +171,9 @@ $('body').on('click', '.editArbitre i[data-action="edit"]', function() {
                         $('<select>').addClass('custom-select selectArbitre')
                     ).append(
                         $('<div>').append(
-                            $('<button>').addClass('btn btn-primary m-t-1 m-r-1').text('Valider').attr('data-id', id).attr('data-action', 'validate')
+                            $('<button>').addClass('btn btn-primary mt-1 mr-1').text('Valider').attr('data-id', id).attr('data-action', 'validate')
                         ).append(
-                            $('<button>').addClass('btn btn-outline-secondary m-t-1').text('Annuler').attr('data-id', id).attr('data-action', 'cancel')
+                            $('<button>').addClass('btn btn-outline-secondary mt-1').text('Annuler').attr('data-id', id).attr('data-action', 'cancel')
                         )
                     );
 
