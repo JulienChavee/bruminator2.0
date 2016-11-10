@@ -108,6 +108,26 @@
                         </div>
                     </li>
 
+                    <li id="dropdown-notification" class="nav-item dropdown" data-time="{{ "now"|date("Y-m-d H:i") }}">
+                        <a id="dropdown-notification-bell" class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">{% if notification.getCountNotifications() > 0 %}<i class="fa fa-bell"></i><span class="tag tag-pill tag-danger">{{ notification.getCountNotifications() }}{% else %}<i class="fa fa-bell-o"></i>{% endif %}</span></a>
+                        <div class="dropdown-menu" style="width: 250px;max-width: 250px;">
+                            {% for notification in notification.getNotifications() %}
+                                <span class="dropdown-item" style="white-space: normal;">
+                                    <small>{% if not notification.timeRead %}<b>{% endif %}{{ notification.message }}{% if not notification.timeRead %}</b>{% endif %}</small>
+                                    <br>
+                                    <small class="text-muted"><i class="fa fa-clock-o"></i> {{ notification.timeCreated|time_diff }}</small>
+                                    {% if not loop.last %}
+                                        <hr>
+                                    {% endif %}
+                                </span>
+                            {% else %}
+                                <span class="dropdown-item" style="white-space: normal;">
+                                    <i>Aucune notification</i>
+                                </span>
+                            {% endfor %}
+                        </div>
+                    </li>
+
                     {% if is_granted("ROLE_ADMIN") %}
                         <li class="nav-item {% if app.request.attributes.get('_route') matches '{^admin_.*$}' %}active{% endif %} dropdown">
                             <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Administration</a>
@@ -279,6 +299,27 @@
 
         $('body').on('click', '*', function() {
             $('[data-toggle="tooltip"]').tooltip('hide');
+        });
+
+        $('#dropdown-notification').on('show.bs.dropdown', function(){
+            $.ajax({
+                type: 'POST',
+                url: Routing.generate('notification_ajax_setread'),
+                data: {
+                    time: $(this).data('time')
+                },
+                error: function (request, error) { // Info Debuggage si erreur
+                    console.log("Erreur : responseText: " + request.responseText);
+                },
+                success: function (data) {
+                    if (data.status == 'ok') {
+                        $('#dropdown-notification-bell .tag').fadeOut();
+                        $('#dropdown-notification-bell i').removeClass('fa-bell').addClass('fa-bell-o');
+                    } else {
+                        console.log(data.debug);
+                    }
+                }
+            });
         });
     </script>
 {% endblock %}

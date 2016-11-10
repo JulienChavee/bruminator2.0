@@ -31,7 +31,6 @@ class TeamController extends Controller
                 if( $team ) {
                     $team->setValid( !$team->getValid() );
                     $em->flush();
-                    $this->get( 'log.action_log')->Log( $this->getUser(), '{"value":"Modification de l\'état de validation de l\'équipe (de %s à %s)","parameters":{"'.var_export( !$team->getValid(), true ).'","'.var_export( $team->getPaid(), true ).'"', $_SERVER[ 'REMOTE_ADDR' ], get_class( $team ), $team );
                     $response = new Response( json_encode( array( 'status' => 'ok', 'return' => $this->render( 'AdminBundle:Team:teamRow.html.twig', array( 'team' => $team ) )->getContent() ) ) );
                 } else
                     $response = new Response( json_encode( array( 'status' => 'ko', 'message' => 'La team n\'existe pas', 'debug' => 'La team n\'existe pas' ) ) );
@@ -59,7 +58,6 @@ class TeamController extends Controller
                 if( $team ) {
                     $team->setPaid( !$team->getPaid() );
                     $em->flush();
-                    $this->get( 'log.action_log')->Log( $this->getUser(), '{"value":"Modification de l\'état du paiement de l\'équipe (de %s à %s)","parameters":{"'.var_export( !$team->getPaid(), true ).'","'.var_export( $team->getPaid(), true ).'"', $_SERVER[ 'REMOTE_ADDR' ], get_class( $team ), $team );
                     $response = new Response( json_encode( array( 'status' => 'ok', 'return' => $this->render( 'AdminBundle:Team:teamRow.html.twig', array( 'team' => $team ) )->getContent() ) ) );
                 } else
                     $response = new Response( json_encode( array( 'status' => 'ko', 'message' => 'La team n\'existe pas', 'debug' => 'La team n\'existe pas' ) ) );
