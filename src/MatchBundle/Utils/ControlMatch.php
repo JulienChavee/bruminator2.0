@@ -32,15 +32,19 @@ class ControlMatch
     }
 
     public function generateMatch() {
-        if( $this->typeTournoi == 'ronde' ) {
-            if( $this->rondes[ 'ronde_actuelle' ] == $this->rondes[ 'total' ] )
-                return $this->generatePhaseFinale();
-            else
-                return $this->generateNextRonde();
-        } else {
-            // TODO Si le tournoi n'est pas à ronde
-        }
+        if( count( $this->em->getRepository( 'MatchBundle:Matchs' )->findMatchWithoutResult() ) == 0 ) {
+            if( $this->typeTournoi == 'ronde' ) {
+                if( $this->rondes[ 'ronde_actuelle' ] == $this->rondes[ 'total' ] )
+                    return $this->generatePhaseFinale();
+                else
+                    return $this->generateNextRonde();
+            } else {
+                // TODO Si le tournoi n'est pas à ronde
+            }
+        } else
+            return array('status' => 'ko', 'message' => 'Tous les matchs n\'ont pas un résultat');
     }
+
 
     private function generateNextRonde() {
         $teams = $this->em->getRepository( 'TeamBundle:Team' )->findBy( array( 'valid' => 1 ), array( 'inscriptionDate' => 'asc' ) );
