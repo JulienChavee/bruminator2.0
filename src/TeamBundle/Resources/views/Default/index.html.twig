@@ -95,7 +95,7 @@
                         <div class="form-group row">
                             <label class="form-control-label col-md-2" for="editPlayer_Classe">Classe</label>
                             <div class="col-md-4">
-                                <select id="editPlayer_Class" class="custom-select form-control">
+                                <select id="editPlayer_Class" class="custom-select form-control" {% if date('inscription_end'|config) < date() %}{% endif %}>
                                     {% for class in classes %}
                                         <option value="{{ class.id }}">{{ class.name }}</option>
                                     {% endfor %}
