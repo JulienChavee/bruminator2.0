@@ -77,13 +77,15 @@ class PlayerController extends Controller
 
                 $em = $this->getDoctrine()->getManager();
                 $player = $em->getRepository( 'TeamBundle:Player' )->findOneBy( array( 'id' => $request->get( 'id' ) ) );
-                $class = $em->getRepository( 'TeamBundle:Classe' )->findOneBy( array( 'id' => $request->get( 'class' ) ) );
+
+                $inscription_end = \DateTime::createFromFormat( 'Y-m-d H:i:s', $em->getRepository( 'AdminBundle:Config' )->getOneBy( array( 'name' => 'inscription_end' ) ) );
+                $class = ( new \DateTime() > $inscription_end ? $player->getClass() : $em->getRepository( 'TeamBundle:Classe' )->findOneBy( array( 'id' => $request->get( 'class' ) ) ) );
 
                 if( $user->getTeam() == $player->getTeam() ) {
                     $team = $player->getTeam();
                     $remplacant = $player->getRemplacant() ? $em->getRepository( 'TeamBundle:Player' )->findOneBy( array( 'id' => $player->getRemplacant()->getId() ) ) : null;
 
-                    if( $request->get( 'inverse' ) ) {
+                    if( $request->get( 'inverse' ) === 'true' ) {
                         $player->setRemplacant( null );
                         $player->setIsRemplacant( true );
 
@@ -100,12 +102,11 @@ class PlayerController extends Controller
                         if ($request->get('newPlayer') == "true") {
                             $oldPlayer = $player;
                             $oldPlayer->setTeam(null);
+                            $oldPlayer->setRemplacant(null);
 
-                            if ($playerSearch and $playerSearch != $player) {
+                            if ($playerSearch and $playerSearch != $player)
                                 $player = $playerSearch;
-                                $player->setRemplacant($oldPlayer->getRemplacant());
-                                $oldPlayer->setRemplacant(null);
-                            } else {
+                            else {
                                 $player = new Player();
                                 $player->setPseudo($request->get('pseudo'));
                             }
@@ -131,10 +132,9 @@ class PlayerController extends Controller
                                     $oldRemplacant->setTeam(null);
                                 }
 
-                                if ($playerRemplacantSearch and $playerRemplacantSearch != $remplacant) {
+                                if ($playerRemplacantSearch and $playerRemplacantSearch != $remplacant)
                                     $remplacant = $playerRemplacantSearch;
-                                    $player->setRemplacant($remplacant);
-                                } else {
+                                else {
                                     $remplacant = new Player();
                                     $remplacant->setPseudo($request->get('remplacantPseudo'));
                                 }
@@ -151,6 +151,8 @@ class PlayerController extends Controller
                                 $remplacant->setPseudo($request->get('remplacantPseudo'));
                                 $remplacant->setLevel($request->get('remplacantLevel'));
                                 $remplacant->setClass($class);
+                                $remplacant->setTeam($team);
+                                $remplacant->setIsRemplacant(true);
                             }
                         } else {
                             if ($remplacant) {

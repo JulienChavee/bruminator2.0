@@ -41,10 +41,21 @@ services:
         class: TeamBundle\Utils\ControlTeam
         arguments: ['@doctrine.orm.entity_manager']
 
-    log.action_log:
-        class: LogBundle\Utils\Log
-        arguments: ['@doctrine.orm.entity_manager']
-
     match.control_match:
         class: MatchBundle\Utils\ControlMatch
         arguments: ['@doctrine.orm.entity_manager', '@team.control_team']
+
+    notification.notification:
+        class: NotificationBundle\Utils\NotificationService
+        arguments: ['@doctrine.orm.entity_manager', '@security.token_storage']
+
+    doctrine.listener:
+        class: MainBundle\Listener\DoctrineListener
+        arguments: ["@security.token_storage"]
+        tags:
+            - { name: doctrine.event_listener, event: preUpdate, method: preUpdate }
+            - { name: doctrine.event_listener, event: postUpdate, method: postUpdate }
+
+twig:
+    globals:
+        notification: "@notification.notification"

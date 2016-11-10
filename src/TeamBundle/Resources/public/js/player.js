@@ -136,6 +136,8 @@ $('#editPlayer').on('hide.bs.modal', function() {
     $(this).find('#editPlayer_Remplacant_Pseudo').val('');
     $(this).find('#editPlayer_Remplacant_Level').val('');
 
+    $(this).find('#editPlayer_SamePlayer').prop('checked', 'checked');
+    $(this).find('#editPlayer_RemplacantSamePlayer').prop('checked', 'checked');
     $(this).find('.editPlayerError').addClass('hidden-xs-up').html("");
     $(this).find('.editPlayerPseudoChanged').addClass('hidden-xs-up');
     $(this).find('.editPlayerClassChanged').addClass('hidden-xs-up');

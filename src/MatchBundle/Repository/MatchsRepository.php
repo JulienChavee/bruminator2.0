@@ -85,4 +85,13 @@ class MatchsRepository extends \Doctrine\ORM\EntityRepository
 
         return $qb->getQuery()->getResult();
     }
+
+    function findMatchWithoutResult() {
+        $qb = $this->createQueryBuilder( 'm' );
+
+        $qb->leftJoin( 'm.matchResult', 'mr', 'mr.match = m.id' )
+            ->where( 'mr.id IS NULL');
+
+        return $qb->getQuery()->getResult();
+    }
 }

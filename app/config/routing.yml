@@ -28,6 +28,11 @@ log:
     type:     annotation
     prefix:   /log
 
+notification:
+    resource: "@NotificationBundle/Controller/"
+    type:     annotation
+    prefix:   /notification
+
 fos_user:
     resource: "@FOSUserBundle/Resources/config/routing/all.xml"
 

@@ -65,6 +65,13 @@ class Team
      */
     private $players;
 
+    /**
+     * @var array
+     *
+     * @ORM\OneToMany(targetEntity="UserBundle\Entity\User", mappedBy="team")
+     */
+    private $managers;
+
 
     /**
      * Get id
@@ -243,5 +250,39 @@ class Team
     public function removePlayer(\TeamBundle\Entity\Player $player)
     {
         $this->players->removeElement($player);
+    }
+
+    /**
+     * Add manager
+     *
+     * @param \UserBundle\Entity\User $manager
+     *
+     * @return Team
+     */
+    public function addManager(\UserBundle\Entity\User $manager)
+    {
+        $this->managers[] = $manager;
+
+        return $this;
+    }
+
+    /**
+     * Remove manager
+     *
+     * @param \UserBundle\Entity\User $manager
+     */
+    public function removeManager(\UserBundle\Entity\User $manager)
+    {
+        $this->managers->removeElement($manager);
+    }
+
+    /**
+     * Get managers
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getManagers()
+    {
+        return $this->managers;
     }
 }

@@ -24,7 +24,7 @@ class User extends BaseUser implements EquatableInterface
     /**
      * @var \TeamBundle\Entity\Team
      *
-     * @ORM\ManyToOne(targetEntity="TeamBundle\Entity\Team")
+     * @ORM\ManyToOne(targetEntity="TeamBundle\Entity\Team", inversedBy="managers")
      * @ORM\JoinColumn(name="team", referencedColumnName="id")
      */
     private $team;
