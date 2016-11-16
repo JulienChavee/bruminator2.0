@@ -10,6 +10,6 @@
                             <img src="{{ asset('bundles/main/images/class/'~ player.class.shortName|lower|remove_accent ~'1.png') }}" data-toggle="tooltip" data-trigger="hover" title="{{ player.pseudo }}, {{ player.class.name }} {{ player.level }}">
                         </span>
         {% endfor %}
-        <a href="{{ path('team_front_homepage', {'id':team.id, 'slugTeam': team.name|slugify}) }}" class="btn btn-primary mt-1">Plus d'informations</a>
+        <a href="{{ path('team_front_team_view', {'id':team.id, 'slugTeam': team.name|slugify}) }}" class="btn btn-primary mt-1">Plus d'informations</a>
     </div>
 </div>

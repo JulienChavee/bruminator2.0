@@ -47,9 +47,9 @@
                                 {% if not loop.first %}
                                     <hr>
                                 {% endif %}
-                                <div class="text-truncate text-danger"><a href="{{ path('team_front_homepage', {'id':match.attack.id, 'slugTeam': match.attack.name|slugify}) }}" class="text-danger">{{ match.attack.name }}</a></div>
+                                <div class="text-truncate text-danger"><a href="{{ path('team_front_team_view', {'id':match.attack.id, 'slugTeam': match.attack.name|slugify}) }}" class="text-danger">{{ match.attack.name }}</a></div>
                                 <small><b>{{ match.date|date('H:i') }}</b></small><br>
-                                <div class="text-truncate text-primary"><a href="{{ path('team_front_homepage', {'id':match.defense.id, 'slugTeam': match.defense.name|slugify}) }}" class="text-primary">{{ match.defense.name }}</a></div>
+                                <div class="text-truncate text-primary"><a href="{{ path('team_front_team_view', {'id':match.defense.id, 'slugTeam': match.defense.name|slugify}) }}" class="text-primary">{{ match.defense.name }}</a></div>
                             {% endfor %}
 
                             {% if collapse %}

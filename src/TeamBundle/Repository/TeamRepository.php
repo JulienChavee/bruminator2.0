@@ -1,6 +1,7 @@
 <?php
 
 namespace TeamBundle\Repository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 /**
  * TeamRepository
@@ -26,11 +27,17 @@ class TeamRepository extends \Doctrine\ORM\EntityRepository
         for( $i = 0; $i < count( $terms ); $i++ )
             $qb->orWhere( 't.name LIKE ?'.$i );
 
-
-
-        //$qb->setParameter( 'teams', $teams );
         $qb->setParameters( $terms );
 
         return $qb->getQuery()->getResult();
+    }
+
+    public function getList( $page = 1, $maxPerPage = 9 ) {
+        $qb = $this->createQueryBuilder( 't' );
+
+        $qb->setFirstResult( ( $page - 1 ) * $maxPerPage )
+            ->setMaxResults( $maxPerPage );
+
+        return new Paginator( $qb );
     }
 }

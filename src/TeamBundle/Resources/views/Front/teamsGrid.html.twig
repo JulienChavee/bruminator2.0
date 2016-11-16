@@ -5,3 +5,9 @@
         Aucune équipe trouvée
     </div>
 {% endfor %}
+
+{% if pagination is defined %}
+    <div class="col-md-12">
+        {% include ':default:pagination.html.twig' %}
+    </div>
+{% endif %}

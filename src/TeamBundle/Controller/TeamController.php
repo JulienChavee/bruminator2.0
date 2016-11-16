@@ -225,24 +225,35 @@ class TeamController extends Controller
     }
 
     /**
-     * @Route("/view/{id}-{slugTeam}", name="team_front_homepage", defaults={"id": "", "slugTeam": ""},)
+     * @Route("/view/liste/{page}", name="team_front_homepage", defaults={"page": 1})
      */
-    public function frontIndexAction( $id, $slugTeam ) {
-        if( empty( $id ) || empty( $slugTeam ) ) {
-            $em = $this->getDoctrine()->getManager();
-            $teams = $em->getRepository( 'TeamBundle:Team' )->findAll();
-            return $this->render( 'TeamBundle:Front:index.html.twig', array( 'teams' => $teams ) );
-        } else
-            return $this->frontViewTeamAction( $id, $slugTeam );
+    public function frontIndexAction( $page ) {
+        $em = $this->getDoctrine()->getManager();
+
+        $maxTeams = 9;
+        $teams = $em->getRepository( 'TeamBundle:Team' )->getList( $page, $maxTeams );
+        $pagination = array(
+            'page' => $page,
+            'route' => 'team_front_homepage',
+            'pages_count' => ceil( $teams->count() / $maxTeams ),
+            'route_params' => array()
+        );
+
+
+        return $this->render( 'TeamBundle:Front:index.html.twig', array( 'teams' => $teams, 'pagination' => $pagination ) );
     }
 
-    private function frontViewTeamAction( $id, $slugTeam ) {
+    /**
+     * @Route("/view/{id}-{slugTeam}", name="team_front_team_view", defaults={"id": "", "slugTeam": ""})
+     */
+    public function frontTeamViewAction( $id, $slugTeam ) {
         $em = $this->getDoctrine()->getManager();
         $team = $em->getRepository( 'TeamBundle:Team' )->findOneBy( array( 'id' => $id ) );
+
         if( $this->get( 'cocur_slugify' )->slugify( $team->getName() ) == $slugTeam )
             return $this->render( 'TeamBundle:Front:team.html.twig', array( 'team' => $team ) );
         else
-            return $this->redirectToRoute( 'team_front_homepage', array( 'id' => $team->getId(), 'slugTeam' => $this->get( 'cocur_slugify' )->slugify( $team->getName() ) ) );
+            return $this->redirectToRoute( 'team_front_team_view', array( 'id' => $team->getId(), 'slugTeam' => $this->get( 'cocur_slugify' )->slugify( $team->getName() ) ) );
     }
 
     public function frontViewTeamMatchsAction( $id ) {

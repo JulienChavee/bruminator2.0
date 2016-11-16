@@ -1,0 +1,33 @@
+<nav aria-label="Navigation entre les pages">
+    <ul class="pagination">
+        <li class="page-item {% if pagination.page <= 1 %}disabled{% endif %}">
+            <a class="page-link" href="{{ path(pagination.route, pagination.route_params|merge({'page':1})) }}" aria-label="Première page">
+                <span aria-hidden="true"><i class="fa fa-angle-double-left"></i></span>
+                <span class="sr-only">Première page</span>
+            </a>
+        </li>
+        <li class="page-item {% if pagination.page <= 1 %}disabled{% endif %}">
+            <a class="page-link" href="{{ path(pagination.route, pagination.route_params|merge({'page':pagination.page - 1})) }}" aria-label="Précédent">
+                <span aria-hidden="true"><i class="fa fa-angle-left"></i></span>
+                <span class="sr-only">Précédent</span>
+            </a>
+        </li>
+
+        {% for p in range(max(pagination.page-4, 1), min(pagination.page+4, pagination.pages_count)) %}
+            <li class="page-item {% if p == pagination.page %}active{% endif %}"><a class="page-link" href="{{ path(pagination.route, pagination.route_params|merge({'page': p})) }}">{{ p }}</a></li>
+        {% endfor %}
+
+        <li class="page-item {% if pagination.page >= pagination.pages_count %}disabled{% endif %}">
+            <a class="page-link" href="{{ path(pagination.route, pagination.route_params|merge({'page':pagination.page + 1})) }}" aria-label="Suivant">
+                <span aria-hidden="true"><i class="fa fa-angle-right"></i></span>
+                <span class="sr-only">Suivant</span>
+            </a>
+        </li>
+        <li class="page-item {% if pagination.page >= pagination.pages_count %}disabled{% endif %}">
+            <a class="page-link" href="{{ path(pagination.route, pagination.route_params|merge({'page':pagination.pages_count})) }}" aria-label="Dernière page">
+                <span aria-hidden="true"><i class="fa fa-angle-double-right"></i></span>
+                <span class="sr-only">Dernière page</span>
+            </a>
+        </li>
+    </ul>
+</nav>
