@@ -20,7 +20,8 @@ class TeamRepository extends \Doctrine\ORM\EntityRepository
             $teams[] = $v->getTeam()->getId();
         }
 
-        $qb->orWhere( $qb->expr()->in( 't.id', $teams ) );
+        if( $teams )
+            $qb->orWhere( $qb->expr()->in( 't.id', $teams ) );
 
         for( $i = 0; $i < count( $terms ); $i++ )
             $qb->orWhere( 't.name LIKE ?'.$i );
