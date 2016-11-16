@@ -10,4 +10,16 @@ namespace TeamBundle\Repository;
  */
 class TeamRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function search( $terms ){
+        $qb = $this->createQueryBuilder( 't' );
+
+        $qb->join( 'TeamBundle:Player', 'p', 'p.team = t.id' );
+
+        for( $i = 0; $i < count( $terms ); $i++ )
+            $qb->orWhere( $qb->expr()->orX()->add( 't.name LIKE ?'.$i )->add( 'p.pseudo LIKE ?'.$i ) );
+
+        $qb->setParameters( $terms );
+
+        return $qb->getQuery()->getResult();
+    }
 }

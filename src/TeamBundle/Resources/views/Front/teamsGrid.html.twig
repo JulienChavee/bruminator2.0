@@ -1,0 +1,7 @@
+{% for team in teams %}
+    {% include 'TeamBundle:Front:teamRow.html.twig' %}
+{% else %}
+    <div class="alert alert-info">
+        Aucune équipe trouvée
+    </div>
+{% endfor %}

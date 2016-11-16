@@ -13,27 +13,25 @@
     <h1>Liste des équipes inscrites</h1>
     <hr>
 
-    <div class="row">
-        {% for team in teams %}
-            <div class="col-md-4">
-                <div class="card card-block">
-                    <h4 class="card-title" {% if team.name|length > 19 %}data-toggle="tooltip" data-trigger="hover" title="{{ team.name }}"{% endif %}>{{ team.name|truncate(19) }}</h4>
-                    <p class="card-text">
-                        <i class="fa fa-calendar"></i> {{ team.inscriptionDate | time_diff }}<br>
-                        {% if team.valid %}<i class="fa fa-check text-success"></i> Équipe validée{% else %}<i class="fa fa-remove text-danger"></i> Équipe non validée{% endif %}<br>
-                    </p>
-                    {% for player in team.players if not player.isRemplacant %}
-                        <span class="pr-1">
-                            <img src="{{ asset('bundles/main/images/class/'~ player.class.shortName|lower|remove_accent ~'1.png') }}" data-toggle="tooltip" data-trigger="hover" title="{{ player.pseudo }}, {{ player.class.name }} {{ player.level }}">
-                        </span>
-                    {% endfor %}
-                    <a href="{{ path('team_front_homepage', {'id':team.id, 'slugTeam': team.name|slugify}) }}" class="btn btn-primary mt-1">Plus d'informations</a>
-                </div>
-            </div>
-        {% else %}
-            <div class="alert alert-info">
-                Aucune équipe ne s'est inscrite pour le moment
-            </div>
-        {% endfor %}
+    <div class="bg-inverse text-white p-1">
+        <input id="input_search" class="form-control" type="text" placeholder="Rechercher une équipe, un personnage, ...">
+
+
+        <button id="btn_search" class="btn btn-outline-primary pull-right mt-1"><i class="fa fa-search"></i> Rechercher</button>
+        <div class="clearfix"></div>
     </div>
+
+    <div class="row mt-2 teams_grid">
+        {% include 'TeamBundle:Front:teamsGrid.html.twig' %}
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {% javascripts output='js/compiled/team/front/team.js'
+    '@TeamBundle/Resources/public/js/team.js'
+    %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
 {% endblock %}

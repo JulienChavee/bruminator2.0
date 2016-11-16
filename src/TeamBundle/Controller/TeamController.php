@@ -173,8 +173,8 @@ class TeamController extends Controller
     }
 
     /**
-     * @Route("/ajax/getdispo", name="team_ajax_get_dispo")
-     */
+ * @Route("/ajax/getdispo", name="team_ajax_get_dispo")
+ */
     public function ajaxGetDispo( Request $request ) {
         if( $request->isXmlHttpRequest() ) {
             try {
@@ -187,6 +187,31 @@ class TeamController extends Controller
                     $response = new Response( json_encode( array( 'status' => 'ok', 'return' => $team->getAvailable() ) ) );
                 } else
                     $response = new Response( json_encode( array( 'status' => 'ko', 'message' => 'Vous n\'avez pas la permission d\'éditer cette équipe', 'debug' => 'Utilisateur connecté != manager de l\'équipe' ) ) );
+            }
+            catch( \Exception $e ) {
+                $response = new Response( json_encode( array( 'status' => 'ko', 'message' => 'Une erreur inconnue s\'est produite', 'debug' => $e->getMessage() ) ) );
+            }
+            $response->headers->set( 'Content-Type', 'application/json' );
+            return $response;
+        }
+        $response = new Response( json_encode( array( 'status' => 'ko', 'message' => 'Accès non autorisé', 'debug' => 'Bad request' ) ) );
+        $response->headers->set( 'Content-Type', 'application/json') ;
+        return $response;
+    }
+
+    /**
+     * @Route("/ajax/search", name="team_ajax_search")
+     */
+    public function ajaxSearch( Request $request ) {
+        if( $request->isXmlHttpRequest() ) {
+            try {
+                $em = $this->getDoctrine()->getManager();
+
+                $terms = preg_replace( '/^(.*)+$/', '%$0%', explode( ' ', $request->get( 'search' ) ) );
+
+                $teams = $em->getRepository( 'TeamBundle:Team' )->search( $terms );
+
+                $response = new Response( json_encode( array( 'status' => 'ok', 'return' => $this->render( 'TeamBundle:Front:teamsGrid.html.twig', array( 'teams' => $teams ) )->getContent() ) ) );
             }
             catch( \Exception $e ) {
                 $response = new Response( json_encode( array( 'status' => 'ko', 'message' => 'Une erreur inconnue s\'est produite', 'debug' => $e->getMessage() ) ) );

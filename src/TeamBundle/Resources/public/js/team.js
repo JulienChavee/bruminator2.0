@@ -121,3 +121,36 @@ $('body').on('click', '.update_dispo', function() {
         }
     });
 });
+
+$('#btn_search').on('click', function(){
+    var button = $(this);
+
+    button.attr('disabled', 'disabled');
+    button.find('.fa').removeClass('fa-search').addClass('fa-spinner fa-pulse');
+
+    var search = $('#input_search').val();
+
+    $.ajax({
+        type: 'POST',
+        url: Routing.generate('team_ajax_search'),
+        data: {
+            search: search
+        },
+        error: function (request, error) { // Info Debuggage si erreur
+            console.log("Erreur : responseText: " + request.responseText);
+        },
+        success: function (data) {
+            if(data.status == 'ok') {
+                $('.teams_grid').html(data.return);
+            } else {
+                $('.modal-body-more-info').html(data.message);
+                $('.modal_alert_error').modal('show');
+
+                console.log(data.debug);
+            }
+
+            button.find('.fa').removeClass('fa-pulse fa-spinner').addClass('fa-search');
+            button.removeAttr('disabled');
+        }
+    });
+});
