@@ -13,11 +13,21 @@ class TeamRepository extends \Doctrine\ORM\EntityRepository
     public function search( $terms ){
         $qb = $this->createQueryBuilder( 't' );
 
-        $qb->join( 'TeamBundle:Player', 'p', 'p.team = t.id' );
+        $players = $this->getEntityManager()->getRepository( 'TeamBundle:Player' )->search( $terms );
+
+        $teams = array();
+        foreach( $players as $k => $v ){
+            $teams[] = $v->getTeam()->getId();
+        }
+
+        $qb->orWhere( $qb->expr()->in( 't.id', $teams ) );
 
         for( $i = 0; $i < count( $terms ); $i++ )
-            $qb->orWhere( $qb->expr()->orX()->add( 't.name LIKE ?'.$i )->add( 'p.pseudo LIKE ?'.$i ) );
+            $qb->orWhere( 't.name LIKE ?'.$i );
 
+
+
+        //$qb->setParameter( 'teams', $teams );
         $qb->setParameters( $terms );
 
         return $qb->getQuery()->getResult();
