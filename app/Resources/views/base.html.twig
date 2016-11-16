@@ -271,24 +271,23 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/js/bootstrap.min.js" integrity="sha384-BLiI7JTZm+JWlgKa0M0kGRpJbF2J8q+qreVrKBC47e3K6BW78kGLrCkeRX6I9RoK" crossorigin="anonymous"></script>
 
     <script>
-        $(function () {
-            $('[data-toggle="tooltip"]').tooltip()
-        });
+        function enableThings() {
+            $('[data-toggle="tooltip"]').tooltip();
+            $('[data-toggle="popover"]').popover();
 
-        $(function () {
-            $('[data-toggle="popover"]').popover()
-        });
-
-        $('.modal_alert').on('hide.bs.modal', function() {
-            $('.modal-body-more-info').empty();
-        });
-
-        $( document ).ready(function() {
             var isMobile = window.matchMedia("only screen and (max-width: 768px)");
 
             if (isMobile.matches) {
                 $('.editable_content').find('.editable_tool').removeClass('invisible');
             }
+        }
+
+        $( document ).ready(function() {
+            enableThings();
+        });
+
+        $('.modal_alert').on('hide.bs.modal', function() {
+            $('.modal-body-more-info').empty();
         });
 
         $('body').on('mouseover', '.editable_content', function() {
@@ -320,6 +319,10 @@
                     }
                 }
             });
+        });
+
+        $(document).ajaxComplete(function() {
+            enableThings();
         });
     </script>
 {% endblock %}

@@ -30,7 +30,7 @@
         {% for i in 0..teams.team|length-1 %}
             <tr>
                 <td>{{ i + 1 }}</td>
-                <td><a href="{{ path('team_front_homepage', {'id':teams.team[i].id, 'slugTeam': teams.team[i].name|slugify}) }}">{{ teams.team[i].name }}</a></td>
+                <td><a href="{{ path('team_front_team_view', {'id':teams.team[i].id, 'slugTeam': teams.team[i].name|slugify}) }}">{{ teams.team[i].name }}</a></td>
                 <td>{{ teams.nb_match[i] }}</td>
                 <td>{{ teams.pointsSuisse[i] }}</td>
                 <td>{{ teams.pointsGoulta[i] }}</td>

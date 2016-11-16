@@ -3,6 +3,7 @@
 namespace MainBundle\Listener;
 
 use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use LogBundle\Entity\ActionLog;
 use MatchBundle\Entity\Matchs;
@@ -23,11 +24,23 @@ class DoctrineListener
         $this->changes = $args->getEntityChangeSet();
     }
 
+    public function onFlush( OnFlushEventArgs $args ) {
+        foreach ($args->getEntityManager()->getUnitOfWork()->getScheduledEntityInsertions() as $entity) {
+            switch (true) {
+                case $entity instanceof Notification:
+                    if (!$args->getEntityManager()->getRepository( 'AdminBundle:Config' )->getOneBy( array( 'name' => 'send_notification' ) ) )
+                        $args->getEntityManager()->detach( $entity );
+                    break;
+
+            }
+        }
+    }
+
     public function postUpdate( LifecycleEventArgs $args ) {
         $entity = $args->getEntity();
         $em = $args->getEntityManager();
 
-        switch( true ){
+        switch( true ) {
             case $entity instanceof Team:
                 foreach( $this->changes as $k => $v ) {
                     $action = array(

@@ -22,4 +22,15 @@ class PlayerRepository extends \Doctrine\ORM\EntityRepository
 
         return $qb->getQuery()->getScalarResult();
     }
+
+    public function search( $terms ) {
+        $qb = $this->createQueryBuilder( 'p' );
+
+        for( $i = 0; $i < count( $terms ); $i++ )
+            $qb->orWhere( $qb->expr()->andX()->add( 'p.pseudo LIKE ?'.$i )->add( 'p.team IS NOT NULL' ) );
+
+        $qb->setParameters( $terms );
+
+        return $qb->getQuery()->getResult();
+    }
 }
