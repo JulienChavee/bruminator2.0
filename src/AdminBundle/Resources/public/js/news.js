@@ -83,7 +83,7 @@ $('.addNews').on('click', function() {
                     if ($('.table_news_tbody').find('tr td').length == 1)
                         $('.table_news_tbody').find('tr td').remove();
 
-                    $('.table_news_tbody').append(data.return);
+                    $('.table_news_tbody').prepend(data.return);
 
                     $('.modal_alert_success').modal('show');
                     setTimeout(function () {
