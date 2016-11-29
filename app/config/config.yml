@@ -68,22 +68,14 @@ doctrine:
 
 # Swiftmailer Configuration
 swiftmailer:
-    transport:            "%mailer_transport%"
-    username:             "%mailer_user%"
-    password:             "%mailer_password%"
-    host:                 "%mailer_host%"
+    transport:            %mailer_transport%
+    username:             %mailer_user%
+    password:             %mailer_password%
+    host:                 %mailer_host%
     port:                 587
     encryption:           tls
     auth_mode:            login
-    spool:
-        type:                 memory
-        #path:                 '%kernel.cache_dir%/swiftmailer/spool'
     sender_address:       contact@bruminator.eu
-    antiflood:
-        threshold:            99
-        sleep:                0
-    delivery_address:     ~
-    disable_delivery:     ~
     logging:              '%kernel.debug%'
 
 assetic:
