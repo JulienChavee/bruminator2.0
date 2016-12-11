@@ -1,0 +1,94 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ parent() }} • Pantheon
+{% endblock %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+    <li class="breadcrumb-item active">Panthéon</li>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+    <style>
+        .tag-first {
+            background-color: #fac746;
+        }
+
+        .tag-second {
+            background-color: #c0c0c0;
+        }
+
+        .tag-third {
+            background-color: #cd7f32;
+        }
+
+        .text-first {
+            color: #fac746;
+        }
+
+        .text-second {
+            color: #c0c0c0;
+        }
+
+        .text-third {
+            color: #cd7f32;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <h1>Panthéon</h1>
+    <hr>
+
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#home" role="tab">Home</a>
+        </li>
+    </ul>
+
+    <div class="tab-content">
+        <div class="tab-pane active" id="home" role="tabpanel">
+            <div class="row mt-1">
+                <div class="col-md-4">
+                    <h2><i class="fa fa-trophy text-first"></i> Team 1</h2>
+                    <hr>
+
+                    <div class="pb-1"><img src="{{ asset('bundles/main/images/class/xel1.png') }}" alt=""> Pseudo1</div>
+                    <div class="pb-1"><img src="{{ asset('bundles/main/images/class/xel1.png') }}" alt=""> Pseudo2</div>
+                    <div class="pb-1"><img src="{{ asset('bundles/main/images/class/xel1.png') }}" alt=""> Pseudo3</div>
+                    <div><img src="{{ asset('bundles/main/images/class/xel1.png') }}" alt=""> Pseudo4</div>
+                </div>
+
+                <div class="col-md-4">
+                    <h2><i class="fa fa-trophy text-second"></i> Team 2</h2>
+                    <hr>
+
+                    <div class="pb-1"><img src="{{ asset('bundles/main/images/class/xel1.png') }}" alt=""> Pseudo1</div>
+                    <div class="pb-1"><img src="{{ asset('bundles/main/images/class/xel1.png') }}" alt=""> Pseudo2</div>
+                    <div class="pb-1"><img src="{{ asset('bundles/main/images/class/xel1.png') }}" alt=""> Pseudo3</div>
+                    <div><img src="{{ asset('bundles/main/images/class/xel1.png') }}" alt=""> Pseudo4</div>
+                </div>
+
+                <div class="col-md-4">
+                    <h2><i class="fa fa-trophy text-third"></i> Team 3</h2>
+                    <hr>
+
+                    <div class="pb-1"><img src="{{ asset('bundles/main/images/class/xel1.png') }}" alt=""> Pseudo1</div>
+                    <div class="pb-1"><img src="{{ asset('bundles/main/images/class/xel1.png') }}" alt=""> Pseudo2</div>
+                    <div class="pb-1"><img src="{{ asset('bundles/main/images/class/xel1.png') }}" alt=""> Pseudo3</div>
+                    <div><img src="{{ asset('bundles/main/images/class/xel1.png') }}" alt=""> Pseudo4</div>
+                </div>
+            </div>
+
+            <div class="row mt-1">
+                <h3>Replay de la finale</h3>
+                <div class="embed-responsive embed-responsive-16by9">
+                    <iframe class="embed-responsive-item" src="//www.youtube.com/embed/zpOULjyy-n8?rel=0" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -60,6 +60,7 @@
                 <li class="nav-item {% if app.request.attributes.get('_route') matches '{^gallerie.*$}' %}active{% endif %} dropdown">
                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Autres curiosités</a>
                     <div class="dropdown-menu">
+                        <a class="dropdown-item" href="{{ path('pantheon') }}">Le panthéon</a>
                         <a class="dropdown-item" href="{{ path('gallerie') }}">Le musée</a>
                     </div>
                 </li>
@@ -135,6 +136,7 @@
                                 <a class="dropdown-item" href="{{ path('admin_news') }}">Gestion des news</a>
                                 <a class="dropdown-item" href="{{ path('admin_team') }}">Gestion des équipes</a>
                                 <a class="dropdown-item" href="{{ path('admin_match') }}">Gestion des matchs</a>
+                                <a class="dropdown-item" href="{{ path('admin_edition') }}">Gestion des éditions</a>
                             </div>
                         </li>
                     {% endif %}

@@ -1,0 +1,152 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ parent() }} • Gestion des éditions
+{% endblock %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+    <li class="breadcrumb-item"><a href="{{ path('admin_homepage') }}">Administration</a></li>
+    <li class="breadcrumb-item active">Gestion des éditions</li>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+    {% stylesheets '@MainBundle/Resources/public/css/bootstrap-datetimepicker.min.css' %}
+        <link rel="stylesheet" href="{{ asset_url }}">
+    {% endstylesheets %}
+{% endblock %}
+
+{% block body %}
+    <h1>Gestion des éditions</h1>
+    <hr>
+
+    <div class="modal fade" id="addEdition" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">Ajouter une édition</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-danger addEditionError hidden-xs-up"></div>
+
+                    <div class="form-horizontal">
+                        <div class="form-group row">
+                            <label class="form-control-label col-md-2" for="addNew_Title">Nom</label>
+                            <div class="col-md-10">
+                                <input type="text" id="addEdition_Name" placeholder="Nom de l'édition" class="form-control">
+                            </div>
+                        </div>
+
+                        <div id="edition_dates" class="form-inline">
+                            <div class="mb-1">
+                                <div class="form-group">
+                                    <label for="addEdition_InscriptionStart">Date des inscriptions : du </label>
+                                    <input type="text" id="addEdition_InscriptionStart" placeholder="Début des inscriptions" class="form-control addEdition_Date">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="addEdition_InscriptionEnd"> au </label>
+                                    <input type="text" id="addEdition_InscriptionEnd" placeholder="Fin des inscriptions" class="form-control addEdition_Date">
+                                </div>
+                            </div>
+
+                            <div class="mb-1">
+                                <div class="form-group">
+                                    <label for="addEdition_QualificationStart">Date des qualifications : du </label>
+                                    <input type="text" id="addEdition_QualificationStart" placeholder="Début des inscriptions" class="form-control addEdition_Date">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="addEdition_QualificationEnd"> au </label>
+                                    <input type="text" id="addEdition_QualificationEnd" placeholder="Fin des inscriptions" class="form-control addEdition_Date">
+                                </div>
+                            </div>
+
+                            <div class="mb-1">
+                                <div class="form-group">
+                                    <label for="addEdition_QuartStart">Date des quarts : du </label>
+                                    <input type="text" id="addEdition_QuartStart" placeholder="Début des inscriptions" class="form-control addEdition_Date">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="addEdition_QuartEnd"> au </label>
+                                    <input type="text" id="addEdition_QuartEnd" placeholder="Fin des inscriptions" class="form-control addEdition_Date">
+                                </div>
+                            </div>
+
+                            <div class="mb-1">
+                                <div class="form-group">
+                                    <label for="addEdition_DemiStart">Date des demis : du </label>
+                                    <input type="text" id="addEdition_DemiStart" placeholder="Début des inscriptions" class="form-control addEdition_Date">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="addEdition_DemiEnd"> au </label>
+                                    <input type="text" id="addEdition_DemiEnd" placeholder="Fin des inscriptions" class="form-control addEdition_Date">
+                                </div>
+                            </div>
+
+                            <div class="mb-1">
+                                <div class="form-group">
+                                    <label for="addEdition_FinaleStart">Date des finales : du </label>
+                                    <input type="text" id="addEdition_FinaleStart" placeholder="Début des inscriptions" class="form-control addEdition_Date">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="addEdition_FinaleEnd"> au </label>
+                                    <input type="text" id="addEdition_FinaleEnd" placeholder="Fin des inscriptions" class="form-control addEdition_Date">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <span class="text-muted">L'ajout d'une nouvelle édition clôture également l'édition précédente en ajoutant les données au panthéon.</span>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                    <button type="button" class="btn btn-primary addEdition"><i class="fa fa-plus"></i> Enregistrer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button type="button" class="btn btn-primary btn-lg float-right" data-toggle="modal" data-target="#addEdition"><i class="fa fa-plus"></i> Ajouter une édition</button>
+
+    <table id="table_editions" class="table table-striped table-hover mt-1">
+        <thead class="thead-inverse">
+        <tr>
+            <th>Nom</th>
+            <th>Données générées</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+
+        <tbody class="table_news_tbody">
+        {% for edition in array_editions %}
+            {% include 'AdminBundle:Edition:editionRow.html.twig' %}
+        {% else %}
+            <tr>
+                <td colspan="6"><i>Aucune édition</i></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {% javascripts output='js/compiled/admin/edition.js'
+    '@AdminBundle/Resources/public/js/edition.js'
+    '@MainBundle/Resources/public/js/moment.min.js'
+    '@MainBundle/Resources/public/js/moment-with-locales.min.js'
+    '@MainBundle/Resources/public/js/bootstrap-datetimepicker.min.js'
+    %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}

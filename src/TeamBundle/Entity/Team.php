@@ -72,6 +72,13 @@ class Team
      */
     private $managers;
 
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="registered", type="boolean", options={"default":false})
+     */
+    private $registered;
+
 
     /**
      * Get id
@@ -284,5 +291,29 @@ class Team
     public function getManagers()
     {
         return $this->managers;
+    }
+
+    /**
+     * Set registered
+     *
+     * @param boolean $registered
+     *
+     * @return Team
+     */
+    public function setRegistered($registered)
+    {
+        $this->registered = $registered;
+
+        return $this;
+    }
+
+    /**
+     * Get registered
+     *
+     * @return boolean
+     */
+    public function getRegistered()
+    {
+        return $this->registered;
     }
 }
