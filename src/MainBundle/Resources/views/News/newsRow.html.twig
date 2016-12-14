@@ -1,9 +1,15 @@
 {% if new.date < date() or is_granted("ROLE_ADMIN") %}
     <div class="mt-2">
         <div class="row">
-            <h2 class="{% if new.date > date() %}text-danger{% endif %}"> {% if new.date > date() %}<i class="fa fa-eye-slash" data-toggle="tooltip" title="News non publiée"></i> {% endif %}{{ new.title }}</h2>
+            <h2 class="{% if new.date > date() %}text-danger{% endif %}">
+                {% if new.date > date() %}
+                    <i class="fa fa-eye-slash" data-toggle="tooltip" title="News non publiée"></i>
+                {% endif %}
+
+                {{ new.title }}
+            </h2>
             <span class="text-muted">
-                <i class="fa fa-user"></i> {{ new.author }} - <i class="fa fa-clock-o"></i> {{ new.date|localizeddate('long', 'short', 'fr', 'Europe/Brussels', 'dd MMMM yyyy - HH:mm') }}
+                <i class="fa fa-user"></i> {{ new.author }} - <i class="fa fa-clock-o"></i> {{ new.date|localizeddate('long', 'short', 'fr', 'Europe/Brussels', 'dd MMMM yyyy - HH:mm') }} - <a href="{{ path('news_view', {'id':new.id, 'slugNews': new.title|slugify}) }}" class="text-muted"><i class="fa fa-share-alt"></i></a>
             </span>
             <hr class="text-danger">
         </div>

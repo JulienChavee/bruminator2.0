@@ -1,6 +1,6 @@
 {% form_theme form 'MainBundle:Form:form_errors.html.twig' %}
 
-<div class="col-xs-7">
+<div class="col-md-7 col-sm-12">
     {{ form_start(form, {'method': 'post', 'action': path('fos_user_registration_register'), 'attr': {'class': 'fos_user_registration_register'}}) }}
 
     <fieldset class="form-group row {% if form.username.vars.errors|length > 0 %}has-danger{% endif %}">
@@ -52,7 +52,7 @@
     {{ form_end(form) }}
 </div>
 
-<div class="col-xs-5">
+<div class="col-md-5 col-sm-12">
     <h3>Informations</h3>
     <hr>
 
