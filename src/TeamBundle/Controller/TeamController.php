@@ -173,8 +173,8 @@ class TeamController extends Controller
     }
 
     /**
- * @Route("/ajax/getdispo", name="team_ajax_get_dispo")
- */
+     * @Route("/ajax/getdispo", name="team_ajax_get_dispo")
+     */
     public function ajaxGetDispo( Request $request ) {
         if( $request->isXmlHttpRequest() ) {
             try {
@@ -262,6 +262,17 @@ class TeamController extends Controller
         $matchs = $em->getRepository( 'MatchBundle:Matchs' )->findByTeam( $id, true );
 
         return $this->render( 'TeamBundle:Front:matchs.html.twig', array( 'matchs' => $matchs, 'team' => $team ) );
+    }
+
+    /**
+     * @Route("/synergie", name="team_front_synergie")
+     */
+    public function frontSynergieAction() {
+        $em = $this->getDoctrine()->getManager();
+
+        $classes = $em->getRepository( 'TeamBundle:Classe' )->findAll();
+
+        return $this->render( 'TeamBundle:Front:synergie.html.twig', array( 'classes' => $classes ) );
     }
 
     private function validateTeam( $teamName, $players, $dispo ) {
