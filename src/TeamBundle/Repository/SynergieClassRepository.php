@@ -27,6 +27,41 @@ class SynergieClassRepository extends \Doctrine\ORM\EntityRepository
             ->setParameter( 'class1', $class1 )
             ->setParameter( 'class2', $class2 );
 
-        return $qb->getQuery()->getSingleResult();
+        return $qb->getQuery()->getSingleScalarResult();
+    }
+
+    public function getClass4( $class1, $class2, $class3 ) {
+        $synergie = 0;
+
+        $classRepository = $this->getEntityManager()->getRepository( 'TeamBundle:Classe' );
+
+        $synergie += $classRepository->getClassPoints( $class1 );
+        $synergie += $classRepository->getClassPoints( $class2 );
+        $synergie += $classRepository->getClassPoints( $class3 );
+
+        $synergie += $this->getSynergie( $class1, $class2 );
+        $synergie += $this->getSynergie( $class1, $class3 );
+        $synergie += $this->getSynergie( $class2, $class3 );
+
+        if( $synergie < 117 ) { // TODO : S'affranchir du total HARDCODED de synergie pour tenir de la configuration
+            $res = array();
+
+            foreach( $classRepository->getClassesNotIn( array( $class1, $class2, $class3 ) ) as $k => $v ) {
+                $temp = 0;
+                $temp += $this->getSynergie( $v->getId(), $class1 );
+                $temp += $this->getSynergie( $v->getId(), $class2 );
+                $temp += $this->getSynergie( $v->getId(), $class3 );
+
+                if( $synergie + $v->getPoints() + $temp <= 117 ) // TODO : S'affranchir du total HARDCODED de synergie pour tenir de la configuration
+                    $res[] = $v->getName();
+            }
+
+            if(count($res) > 0)
+                return $res;
+            else
+                return false;
+        } else {
+            return false;
+        }
     }
 }
