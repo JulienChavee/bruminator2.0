@@ -19,8 +19,6 @@ $('.selectClass').on('change', function() {
         if(class2 != "null") {
             getSynergie(class1, class2, updateSynergie);
 
-            console.log('test');
-
             if(class1 == class2)
                 doubleClasse = true;
         }
@@ -74,9 +72,9 @@ $('.selectClass').on('change', function() {
 
     if(class1 != "null" && class2 != "null" && class3 != "null") {
         getClass4(class1, class2, class3);
-        $('.list-group').removeClass("hidden-xs");
+        $('.list-group').removeClass("hidden-xs-up");
     } else
-        $('.list-group').addClass("hidden-xs");
+        $('.list-group').addClass("hidden-xs-up");
 });
 
 function updateSynergie(res) {
