@@ -1,0 +1,79 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ parent() }} • Gestion des classes
+{% endblock %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+    <li class="breadcrumb-item"><a href="{{ path('admin_homepage') }}">Administration</a></li>
+    <li class="breadcrumb-item active">Gestion des classes</li>
+{% endblock %}
+
+{% block body %}
+    <h1>Gestion des classes</h1>
+    <hr>
+
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#classes" role="tab">Classes</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#synergies" role="tab">Synergies</a>
+        </li>
+    </ul>
+
+    <div class="tab-content">
+        <div class="tab-pane active" id="classes" role="tabpanel">
+            <table id="table_classes" class="table table-striped table-hover mt-1">
+                <thead class="thead-inverse">
+                    <tr>
+                        <th>#</th>
+                        <th>Nom</th>
+                        <th>Nom court</th>
+                        <th>Nombre de points</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody class="table_classes_tbody">
+                    {% for class in array_classes %}
+                        {% include 'AdminBundle:Classe:classRow.html.twig' %}
+                    {% else %}
+                        <tr>
+                            <td colspan="5"><i>Aucune classes</i></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="tab-pane" id="synergies" role="tabpanel">
+            <table id="table_classes" class="table table-striped table-bordered mt-1">
+                <thead class="thead-inverse">
+                    <tr>
+                        <th></th>
+                        {% for class in array_classes %}
+                            <th>{{ class.shortName }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+
+                <tbody class="table_classes_tbody">
+                    {% for class in array_classes %}
+                        <tr>
+                            <td>{{ class.shortName }}</td>
+                            {% for class2 in array_classes %}
+                                {% if class2.id > class.id %}
+                                    {% set syn = synergie(class.id, class2.id) %}
+                                    <td>{% if syn != null %}{{ syn }}{% else %}-{% endif %}</td>
+                                {% else %}
+                                    <td class="table-active"></td>
+                                {% endif %}
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

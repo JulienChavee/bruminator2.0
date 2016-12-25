@@ -15,6 +15,13 @@ services:
         tags:
             - { name: twig.extension }
 
+    admin.twig.synergie_extension:
+        class: AdminBundle\Twig\SynergieExtension
+        arguments:
+            doctrine: "@doctrine"
+        tags:
+            - { name: twig.extension }
+
     main.twig.remove_accent_extension:
         class: MainBundle\Twig\RemoveAccentExtension
         tags:
