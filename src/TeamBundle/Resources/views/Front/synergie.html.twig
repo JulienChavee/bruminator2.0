@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ parent() }} • Calcul de synergie
+{% endblock %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+    <li class="breadcrumb-item active">Calcul de synergie</li>
+{% endblock %}
+
+{% block body %}
+    <h1>Calcul de synergie</h1>
+    <hr>
+
+    <div class="col-md-4">
+        <h2>Choix des classes</h2>
+
+        {% for i in range(1,'nb_players_team'|config()) %}
+            <div class="row pb-1">
+                <div class="col-md-6">
+                    <select id="class{{ i }}" class="custom-select selectClass">
+                        <option value="null" selected="selected"></option>
+                        {% for class in classes %}
+                            <option value="{{ class.id }}">{{ class.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+        {% endfor %}
+
+        <hr>
+        <b>Total :</b> <span id="pts_synergie" class="tag tag-success">0</span>
+    </div>
+    <div class="col-md-8">
+        <h2>4<sup>ième</sup> classes possibles</h2>
+
+        <div class="alert alert-info">
+            Lorsque vous avez sélectionné les 3 premières classes, le système calculera quelles classes peuvent être choisies afin de compléter votre équipe
+        </div>
+
+        <ul class="list-group hidden-xs-up">
+        </ul>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {% javascripts output='js/compiled/team/front/synergie.js'
+    '@TeamBundle/Resources/public/js/synergie.js'
+    %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}

@@ -10,4 +10,22 @@ namespace TeamBundle\Repository;
  */
 class ClasseRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function getClassPoints( $id ) {
+        $qb = $this->createQueryBuilder( 'c' );
+
+        $qb->select( 'c.points' )
+            ->where( 'c.id = :id' )
+            ->setParameter( 'id', $id );
+
+        return $qb->getQuery()->getSingleScalarResult();
+    }
+
+    public function getClassesNotIn( $array ) {
+        $qb = $this->createQueryBuilder( 'c' );
+
+        $qb->select()
+            ->where( $qb->expr()->notIn( 'c.id', $array ) );
+
+        return $qb->getQuery()->getResult();
+    }
 }
