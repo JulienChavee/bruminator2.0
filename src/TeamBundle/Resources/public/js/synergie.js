@@ -11,30 +11,30 @@ $('.selectClass').on('change', function() {
 
     doubleClasse = false;
 
-    // TODO : Ne pas effectuer la recherche de synergie si l'on détecte 2 classes les mêmes
+    // TODO : Arrêter le calcul dès la détection d'une double classe
 
     if(class1 != "null") {
         getClassPoints(class1, updateSynergie);
 
         if(class2 != "null") {
-            getSynergie(class1, class2, updateSynergie);
-
             if(class1 == class2)
                 doubleClasse = true;
+            else
+                getSynergie(class1, class2, updateSynergie);
         }
 
         if(class3 != "null") {
-            getSynergie(class1, class3, updateSynergie);
-
             if(class1 == class3)
                 doubleClasse = true;
+            else
+                getSynergie(class1, class3, updateSynergie);
         }
 
         if(class4 != "null") {
-            getSynergie(class1, class4, updateSynergie);
-
             if(class1 == class4)
                 doubleClasse = true;
+            else
+                getSynergie(class1, class4, updateSynergie);
         }
     }
 
@@ -42,17 +42,17 @@ $('.selectClass').on('change', function() {
         getClassPoints(class2, updateSynergie);
 
         if(class3 != "null") {
-            getSynergie(class2, class3, updateSynergie);
-
             if(class2 == class3)
                 doubleClasse = true;
+            else
+                getSynergie(class2, class3, updateSynergie);
         }
 
         if(class4 != "null") {
-            getSynergie(class2, class4, updateSynergie);
-
             if(class2 == class4)
                 doubleClasse = true;
+            else
+                getSynergie(class2, class4, updateSynergie);
         }
     }
 
@@ -60,10 +60,10 @@ $('.selectClass').on('change', function() {
         getClassPoints(class3, updateSynergie);
 
         if(class4 != "null") {
-            getSynergie(class3, class4, updateSynergie);
-
             if(class3 == class4)
                 doubleClasse = true;
+            else
+                getSynergie(class3, class4, updateSynergie);
         }
     }
 
