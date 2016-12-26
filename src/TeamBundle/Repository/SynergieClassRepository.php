@@ -2,6 +2,8 @@
 
 namespace TeamBundle\Repository;
 
+use TeamBundle\Entity\SynergieClass;
+
 /**
  * SynergieClassRepository
  *
@@ -28,6 +30,38 @@ class SynergieClassRepository extends \Doctrine\ORM\EntityRepository
             ->setParameter( 'class2', $class2 );
 
         return $qb->getQuery()->getSingleScalarResult();
+    }
+
+    public function editSynergie( $class1, $class2, $points ) {
+        $qb = $this->createQueryBuilder( 's' );
+
+        $qb->update()
+            ->set( 's.points', ':points' )
+            ->where( $qb->expr()->andX()
+                ->add( $qb->expr()->orX()
+                    ->add( 's.class1 = :class1' )
+                    ->add( 's.class2 = :class1' )
+                )
+                ->add( $qb->expr()->orX()
+                    ->add( 's.class1 = :class2' )
+                    ->add( 's.class2 = :class2' )
+                )
+            )
+            ->setParameter( 'class1', $class1 )
+            ->setParameter( 'class2', $class2 )
+            ->setParameter( ':points', $points );
+
+        if( !$qb->getQuery()->execute() ) {
+            $synergie = new SynergieClass();
+            $synergie->setClass1( $this->getEntityManager()->getRepository( 'TeamBundle:Classe' )->findOneBy( array( 'id' => $class1 ) ) );
+            $synergie->setClass2( $this->getEntityManager()->getRepository( 'TeamBundle:Classe' )->findOneBy( array( 'id' => $class2 ) ) );
+            $synergie->setPoints( $points );
+
+            $this->getEntityManager()->persist( $synergie );
+            $this->getEntityManager()->flush();
+        }
+
+        return true;
     }
 
     public function getClass4( $class1, $class2, $class3 ) {
