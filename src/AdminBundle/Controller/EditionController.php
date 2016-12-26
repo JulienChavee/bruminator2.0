@@ -36,6 +36,8 @@ class EditionController extends Controller
 
                 $em->persist( $edition );
                 $em->flush();
+                $em->getRepository( 'TeamBundle:Team' )->resetRegistration();
+                // TODO : Récupération des données des vainqueurs pour les ajouter au panthéon
                 $response = new Response( json_encode( array( 'status' => 'ok', 'return' => $this->render( 'AdminBundle:Edition:editionRow.html.twig', array( 'edition' => $edition ) )->getContent() ) ) );
             }
             catch( \Exception $e ) {

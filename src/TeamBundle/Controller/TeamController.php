@@ -173,8 +173,8 @@ class TeamController extends Controller
     }
 
     /**
- * @Route("/ajax/getdispo", name="team_ajax_get_dispo")
- */
+     * @Route("/ajax/getdispo", name="team_ajax_get_dispo")
+     */
     public function ajaxGetDispo( Request $request ) {
         if( $request->isXmlHttpRequest() ) {
             try {
@@ -262,6 +262,89 @@ class TeamController extends Controller
         $matchs = $em->getRepository( 'MatchBundle:Matchs' )->findByTeam( $id, true );
 
         return $this->render( 'TeamBundle:Front:matchs.html.twig', array( 'matchs' => $matchs, 'team' => $team ) );
+    }
+
+    /**
+     * @Route("/synergie", name="team_front_synergie")
+     */
+    public function frontSynergieAction() {
+        $em = $this->getDoctrine()->getManager();
+
+        $classes = $em->getRepository( 'TeamBundle:Classe' )->findAll();
+
+        return $this->render( 'TeamBundle:Front:synergie.html.twig', array( 'classes' => $classes ) );
+    }
+
+    /**
+     * @Route("/synergie/ajax/getSynergie", name="team_front_synergie_ajax_getsynergie")
+     */
+    public function frontSynergieAjaxGetSynergie( Request $request ) {
+        if( $request->isXmlHttpRequest() ) {
+            try {
+                $em = $this->getDoctrine()->getManager();
+
+                $synergie = $em->getRepository( 'TeamBundle:SynergieClass' )->getSynergie( $request->get( 'class1' ), $request->get( 'class2' ) );
+
+                $response = new Response( json_encode( array( 'status' => 'ok', 'return' => $synergie ) ) );
+            }
+            catch( \Exception $e ) {
+                $response = new Response( json_encode( array( 'status' => 'ko', 'message' => 'Une erreur inconnue s\'est produite', 'debug' => $e->getMessage() ) ) );
+            }
+            $response->headers->set( 'Content-Type', 'application/json' );
+            return $response;
+        }
+
+        $response = new Response( json_encode( array( 'status' => 'ko', 'message' => 'Accès non autorisé', 'debug' => 'Bad request' ) ) );
+        $response->headers->set( 'Content-Type', 'application/json') ;
+        return $response;
+    }
+
+    /**
+     * @Route("/synergie/ajax/getClassPoints", name="team_front_synergie_ajax_getclasspoints")
+     */
+    public function frontSynergieAjaxGetClassPoints( Request $request ) {
+        if( $request->isXmlHttpRequest() ) {
+            try {
+                $em = $this->getDoctrine()->getManager();
+
+                $class = $em->getRepository( 'TeamBundle:Classe' )->findOneBy( array( 'id' => $request->get( 'class' ) ) );
+
+                $response = new Response( json_encode( array( 'status' => 'ok', 'return' => $class->getPoints() ) ) );
+            }
+            catch( \Exception $e ) {
+                $response = new Response( json_encode( array( 'status' => 'ko', 'message' => 'Une erreur inconnue s\'est produite', 'debug' => $e->getMessage() ) ) );
+            }
+            $response->headers->set( 'Content-Type', 'application/json' );
+            return $response;
+        }
+
+        $response = new Response( json_encode( array( 'status' => 'ko', 'message' => 'Accès non autorisé', 'debug' => 'Bad request' ) ) );
+        $response->headers->set( 'Content-Type', 'application/json') ;
+        return $response;
+    }
+
+    /**
+     * @Route("/synergie/ajax/getClass4", name="team_front_synergie_ajax_getclass4")
+     */
+    public function frontSynergieAjaxGetClass4( Request $request ) {
+        if( $request->isXmlHttpRequest() ) {
+            try {
+                $em = $this->getDoctrine()->getManager();
+
+                $class4 = $em->getRepository( 'TeamBundle:SynergieClass' )->getClass4( $request->get( 'class1' ), $request->get( 'class2' ), $request->get( 'class3' ) );
+
+                $response = new Response( json_encode( array( 'status' => 'ok', 'return' => $class4 ) ) );
+            }
+            catch( \Exception $e ) {
+                $response = new Response( json_encode( array( 'status' => 'ko', 'message' => 'Une erreur inconnue s\'est produite', 'debug' => $e->getTraceAsString() ) ) );
+            }
+            $response->headers->set( 'Content-Type', 'application/json' );
+            return $response;
+        }
+
+        $response = new Response( json_encode( array( 'status' => 'ko', 'message' => 'Accès non autorisé', 'debug' => 'Bad request' ) ) );
+        $response->headers->set( 'Content-Type', 'application/json') ;
+        return $response;
     }
 
     private function validateTeam( $teamName, $players, $dispo ) {

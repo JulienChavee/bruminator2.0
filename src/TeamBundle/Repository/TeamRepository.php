@@ -11,7 +11,7 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
  */
 class TeamRepository extends \Doctrine\ORM\EntityRepository
 {
-    public function search( $terms ){
+    public function search( $terms ) {
         $qb = $this->createQueryBuilder( 't' );
 
         $players = $this->getEntityManager()->getRepository( 'TeamBundle:Player' )->search( $terms );
@@ -39,5 +39,14 @@ class TeamRepository extends \Doctrine\ORM\EntityRepository
             ->setMaxResults( $maxPerPage );
 
         return new Paginator( $qb );
+    }
+
+    public function resetRegistration() {
+        $qb = $this->createQueryBuilder( 't' );
+
+        $qb->update();
+        $qb->set( 't.registered', '0' );
+
+        return $qb->getQuery()->execute();
     }
 }

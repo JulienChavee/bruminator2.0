@@ -1,0 +1,158 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ parent() }} • Gestion des classes
+{% endblock %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+    <li class="breadcrumb-item"><a href="{{ path('admin_homepage') }}">Administration</a></li>
+    <li class="breadcrumb-item active">Gestion des classes</li>
+{% endblock %}
+
+{% block body %}
+    <h1>Gestion des classes</h1>
+    <hr>
+
+    <div class="modal fade" id="editSynergie" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">Modifier une synergie</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-danger editSynergieError hidden-xs-up"></div>
+
+                    <div class="form-group row">
+                        <label for="editClasse_Synergie" class="col-xs-3 col-form-label">Synergie</label>
+                        <div class="col-xs-9">
+                            <input id="editClasse_Synergie" class="form-control" type="number" placeholder="Synergie">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                    <button type="button" class="btn btn-primary editSynergie"><i class="fa fa-pencil"></i> Modifier</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="editClasse" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">Modifier une classe</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-danger editClasseError hidden-xs-up"></div>
+
+                    <div class="form-group row">
+                        <label for="editClasse_Nom" class="col-xs-3 col-form-label">Nom</label>
+                        <div class="col-xs-9">
+                            <input id="editClasse_Nom" class="form-control" type="text" placeholder="Nom">
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="editClasse_Nom" class="col-xs-3 col-form-label">Nom court</label>
+                        <div class="col-xs-9">
+                            <input id="editClasse_NomCourt" class="form-control" type="text" placeholder="Nom court">
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="editClasse_Points" class="col-xs-3 col-form-label">Points</label>
+                        <div class="col-xs-9">
+                            <input id="editClasse_Points" class="form-control" type="number" placeholder="Points">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                    <button type="button" class="btn btn-primary editClasse"><i class="fa fa-pencil"></i> Modifier</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#classes" role="tab">Classes</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#synergies" role="tab">Synergies</a>
+        </li>
+    </ul>
+
+    <div class="tab-content">
+        <div class="tab-pane active" id="classes" role="tabpanel">
+            <table id="table_classes" class="table table-striped table-hover mt-1">
+                <thead class="thead-inverse">
+                    <tr>
+                        <th>#</th>
+                        <th>Nom</th>
+                        <th>Nom court</th>
+                        <th>Nombre de points</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody class="table_classes_tbody">
+                    {% for class in array_classes %}
+                        {% include 'AdminBundle:Classe:classRow.html.twig' %}
+                    {% else %}
+                        <tr>
+                            <td colspan="5"><i>Aucune classes</i></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="tab-pane" id="synergies" role="tabpanel">
+            <table id="table_classes" class="table table-striped table-bordered mt-1">
+                <thead class="thead-inverse">
+                    <tr>
+                        <th></th>
+                        {% for class in array_classes %}
+                            <th>{{ class.shortName }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+
+                <tbody class="table_classes_tbody">
+                    {% for class in array_classes %}
+                        <tr>
+                            <td>{{ class.shortName }}</td>
+                            {% for class2 in array_classes %}
+                                {% if class2.id > class.id %}
+                                    {% set syn = synergie(class.id, class2.id) %}
+                                    {% set rand = syn + (class.id * class2.id * random()) %}
+                                    <td class="editable_content" data-rand="{{ rand }}">{% if syn != null %}{{ syn }}{% else %}-{% endif %} <i class="fa fa-pencil editable_tool invisible" data-toggle="tooltip" data-trigger="hover" title="Modifier la synergie" role="button" data-action="edit" data-class1="{{ class.id }}" data-class2="{{ class2.id }}" data-rand="{{ rand }}"></i></td>
+                                {% else %}
+                                    <td class="table-active"></td>
+                                {% endif %}
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {% javascripts output='js/compiled/admin/classes.js'
+    '@AdminBundle/Resources/public/js/classes.js'
+    %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
