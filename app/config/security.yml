@@ -52,7 +52,7 @@ security:
         - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/admin/, role: ROLE_ADMIN }
-        - { path: ^/team/(?!view), role: ROLE_USER }
+        - { path: ^/team/(?!(view|synergie)), role: ROLE_USER }
 
     access_decision_manager:
         # Strategy can be: affirmative, unanimous or consensus
