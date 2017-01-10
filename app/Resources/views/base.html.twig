@@ -44,7 +44,6 @@
                             {% else %}
                                 <a class="dropdown-item" href="{{ path('team_registration') }}">Inscription</a>
                             {% endif %}
-                            <a class="dropdown-item" href="{{ path('team_front_synergie') }}">Calcul de synergie</a>
                         </div>
                     </li>
                 {% endif %}
@@ -55,13 +54,14 @@
                         <a class="dropdown-item" href="{{ path('team_front_homepage') }}">Liste des équipes</a>
                         <a class="dropdown-item" href="{{ path('calendrier') }}">Calendrier</a>
                         <a class="dropdown-item" href="{{ path('classement') }}">Classement</a>
+                        <a class="dropdown-item" href="{{ path('team_front_synergie') }}">Calcul de synergie</a>
                     </div>
                 </li>
 
                 <li class="nav-item {% if app.request.attributes.get('_route') matches '{^gallerie.*$}' %}active{% endif %} dropdown">
                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Autres curiosités</a>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="{{ path('pantheon') }}">Le panthéon</a>
+                        <!--<a class="dropdown-item" href="{{ path('pantheon') }}">Le panthéon</a>-->
                         <a class="dropdown-item" href="{{ path('gallerie') }}">Le musée</a>
                     </div>
                 </li>
@@ -80,7 +80,7 @@
                 </li>
 
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Réseaux sociaux</a>
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Liens</a>
                     <div class="dropdown-menu">
                         <a class="dropdown-item" href="{{ 'lien_twitch'|config.url }}" target="_blank">
                             <i class="fa fa-twitch fa-fw"></i> {{ 'lien_twitch'|config.name }}
