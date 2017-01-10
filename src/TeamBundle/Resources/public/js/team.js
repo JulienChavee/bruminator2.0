@@ -154,3 +154,8 @@ $('#btn_search').on('click', function(){
         }
     });
 });
+
+$('.input_player').autocomplete({
+    source: Routing.generate('team_player_ajax_search'),
+    minLength: 2
+});
