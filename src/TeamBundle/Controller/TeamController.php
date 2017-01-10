@@ -85,7 +85,10 @@ class TeamController extends Controller
                         $players = json_decode( $request->get( 'players' ), true );
 
                         foreach( $players as $k => $v ) {
-                            $player = new Player();
+                            if( $em->getRepository( 'TeamBundle:Player' )->findOneBy( array( 'pseudo' => $v[ 'name' ] ) ) )
+                                $player = $em->getRepository( 'TeamBundle:Player' )->findOneBy( array( 'pseudo' => $v[ 'name' ] ) );
+                            else
+                                $player = new Player();
 
                             $class = $em->getRepository( 'TeamBundle:Classe' )->findOneBy( array( 'id' => $v[ 'class' ] ) );
 
@@ -94,19 +97,24 @@ class TeamController extends Controller
                             $player->setClass( $class );
                             $player->setIsRemplacant( false );
                             $player->setTeam( $team );
+                            $player->setRemplacant( null );
 
                             $em->persist( $player );
 
                             if ( !empty( $v[ 'remplacant' ][ 'name' ] ) && !empty( $v[ 'remplacant' ][ 'level' ] ) ) {
-                                $player = new Player();
+                                if( $em->getRepository( 'TeamBundle:Player' )->findOneBy( array( 'pseudo' => $v[ 'name' ] ) ) )
+                                    $remplacant = $em->getRepository( 'TeamBundle:Player' )->findOneBy( array( 'pseudo' => $v[ 'name' ] ) );
+                                else
+                                    $remplacant = new Player();
 
-                                $player->setPseudo( $v[ 'remplacant' ][ 'name' ] );
-                                $player->setLevel( $v[ 'remplacant' ][ 'level' ]);
-                                $player->setClass( $class );
-                                $player->setIsRemplacant( true );
-                                $player->setTeam( $team );
+                                $remplacant->setPseudo( $v[ 'remplacant' ][ 'name' ] );
+                                $remplacant->setLevel( $v[ 'remplacant' ][ 'level' ]);
+                                $remplacant->setClass( $class );
+                                $remplacant->setIsRemplacant( true );
+                                $remplacant->setTeam( $team );
+                                $player->setRemplacant( $remplacant );
 
-                                $em->persist( $player );
+                                $em->persist( $remplacant );
                             }
                         }
 
