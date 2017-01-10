@@ -77,7 +77,7 @@ class SynergieClassRepository extends \Doctrine\ORM\EntityRepository
         $synergie += $this->getSynergie( $class1, $class3 );
         $synergie += $this->getSynergie( $class2, $class3 );
 
-        if( $synergie < 117 ) { // TODO : S'affranchir du total HARDCODED de synergie pour tenir de la configuration
+        if( $synergie < $this->getEntityManager()->getRepository( 'AdminBundle:Config' )->getOneBy( array( 'name' => 'synergie_max' ) ) ) {
             $res = array();
 
             foreach( $classRepository->getClassesNotIn( array( $class1, $class2, $class3 ) ) as $k => $v ) {
@@ -86,7 +86,7 @@ class SynergieClassRepository extends \Doctrine\ORM\EntityRepository
                 $temp += $this->getSynergie( $v->getId(), $class2 );
                 $temp += $this->getSynergie( $v->getId(), $class3 );
 
-                if( $synergie + $v->getPoints() + $temp <= 117 ) // TODO : S'affranchir du total HARDCODED de synergie pour tenir de la configuration
+                if( $synergie + $v->getPoints() + $temp <= $this->getEntityManager()->getRepository( 'AdminBundle:Config' )->getOneBy( array( 'name' => 'synergie_max' ) ) )
                     $res[] = $v->getName();
             }
 

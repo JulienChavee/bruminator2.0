@@ -47,6 +47,11 @@
 {% block javascripts %}
     {{ parent() }}
 
+    <script>
+        var TWIG = {}
+        TWIG.synergieMax = {{ 'synergie_max'|config }}
+    </script>
+
     {% javascripts output='js/compiled/team/front/synergie.js'
     '@TeamBundle/Resources/public/js/synergie.js'
     %}

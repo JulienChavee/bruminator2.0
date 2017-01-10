@@ -81,7 +81,7 @@ function updateSynergie(res) {
     synergie += parseInt(res);
 
     if(!doubleClasse) {
-        if(synergie > 117) // TODO : S'affrinchir de la limite manuelle de synergie pour tenir compte de la limite configuration
+        if(synergie > TWIG.synergieMax)
             $('#pts_synergie').fadeOut(function() {
                 $(this).removeClass("tag-success").addClass("tag-danger").text(synergie).fadeIn()
             });
