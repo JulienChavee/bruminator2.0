@@ -355,6 +355,7 @@ class TeamController extends Controller
         $bannedClass = 0;
         $levelTotal = 0;
         $classes = array();
+        $synergieTotale = 0;
 
         if( empty( $teamName ) )
             $errors[] = "Le nom de l'équipe ne peut pas être vide";
@@ -386,6 +387,13 @@ class TeamController extends Controller
 
                 $tempClassBanned = json_decode( $class->getBannedClass() );
 
+                foreach( $players as $k2 => $v2 ) {
+                    if( $k != $k2 )
+                        $synergieTotale += $em->getRepository( 'TeamBundle:SynergieClass' )->getSynergie( $class->getId(), $v2['class'] );
+                }
+
+                $synergieTotale += $class->getPoints();
+
                 if( !is_null( $tempClassBanned ) ) {
                     foreach ($tempClassBanned as $k2 => $v2) {
                         $temp = $em->getRepository('TeamBundle:Classe')->findOneBy(array('id' => $v2));
@@ -400,11 +408,15 @@ class TeamController extends Controller
         if( count( array_unique( $classes, SORT_REGULAR ) ) < count( $classes ) )
             $errors[] = "Vous ne pouvez pas avoir de classe doublon";
 
-        if( $pilliers > 1 )
+        // TODO : Meilleure gestion des contraintes liées au type de tournoi
+        /*if( $pilliers > 1 )
             $errors[] = "Vous ne pouvez pas avoir plus d'une classe pillier";
 
         if( $bannedClass > 0 )
-            $errors[] = "Vous avez des classes ne pouvant pas être jouées ensemble";
+            $errors[] = "Vous avez des classes ne pouvant pas être jouées ensemble";*/
+
+        if( $synergieTotale > $em->getRepository( 'AdminBundle:Config' )->getOneBy( array( 'name' => 'synergie_max' ) ) )
+            $errors[] = "Votre composition a une synergie trop forte";
 
         if( empty( $dispo ) )
             $errors[] = "Vous devez indiquer vos disponibilités";
