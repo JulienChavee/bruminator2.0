@@ -35,14 +35,18 @@ $('.addTeam').on('click', function() {
             if (data.status == 'ok') {
                 location.href = Routing.generate('team_homepage');
             } else {
-                $.each(data.message, function(i, item) {
-                    $('.modal-body-more-info').append(
-                        $('<span>').addClass("text-danger").append(
-                            $('<i>').addClass('fa fa-circle')
-                        ).append(" " + item)
-                            .append($('<br>'))
-                    )
-                });
+                if($.isArray(data.message)) {
+                    $.each(data.message, function (i, item) {
+                        $('.modal-body-more-info').append(
+                            $('<span>').addClass("text-danger").append(
+                                $('<i>').addClass('fa fa-circle')
+                            ).append(" " + item)
+                                .append($('<br>'))
+                        )
+                    });
+                } else
+                    $('.modal-body-more-info').html(data.message);
+
                 $('.modal_alert_error').modal('show');
                 console.log(data.debug);
 
