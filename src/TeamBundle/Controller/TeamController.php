@@ -396,7 +396,7 @@ class TeamController extends Controller
                 $tempClassBanned = json_decode( $class->getBannedClass() );
 
                 foreach( $players as $k2 => $v2 ) {
-                    if( $k != $k2 )
+                    if( $k < $k2 )
                         $synergieTotale += $em->getRepository( 'TeamBundle:SynergieClass' )->getSynergie( $class->getId(), $v2['class'] );
                 }
 
@@ -424,7 +424,7 @@ class TeamController extends Controller
             $errors[] = "Vous avez des classes ne pouvant pas être jouées ensemble";*/
 
         if( $synergieTotale > $em->getRepository( 'AdminBundle:Config' )->getOneBy( array( 'name' => 'synergie_max' ) ) )
-            $errors[] = "Votre composition a une synergie trop forte";
+            $errors[] = "Votre composition a une synergie trop forte ($synergieTotale)";
 
         if( empty( $dispo ) )
             $errors[] = "Vous devez indiquer vos disponibilités";

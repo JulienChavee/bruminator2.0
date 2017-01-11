@@ -16,7 +16,7 @@ class DefaultController extends Controller
 
         $news = $em->getRepository( 'MainBundle:News' )->findBy( array(), array( 'date' => 'DESC' ) );
 
-        $teams = $em->getRepository( 'TeamBundle:Team' )->findBy( array(), array( 'inscriptionDate' => 'DESC' ));
+        $teams = $em->getRepository( 'TeamBundle:Team' )->findBy( array( 'valid' => true ), array( 'inscriptionDate' => 'DESC' ));
 
         $matchs = $em->getRepository( 'MatchBundle:Matchs' )->findByDateInf( new \DateTime(), array( 'field' => 'date', 'type' => 'DESC' ), 5, false, true );
 
