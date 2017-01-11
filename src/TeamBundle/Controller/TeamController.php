@@ -82,6 +82,7 @@ class TeamController extends Controller
                         $team->setPaid( false );
                         $team->setValid( false );
                         $team->setAvailable( $request->get( 'dispo' ) );
+                        $team->setRegistered( true );
                         $players = json_decode( $request->get( 'players' ), true );
 
                         foreach( $players as $k => $v ) {
