@@ -10,6 +10,7 @@ use MatchBundle\Entity\Matchs;
 use NotificationBundle\Entity\Notification;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use TeamBundle\Entity\Team;
+use TeamBundle\Entity\Player;
 
 class DoctrineListener
 {
@@ -84,6 +85,18 @@ class DoctrineListener
                                 break;
                         }
                     }
+
+                    $em->flush();
+                }
+                break;
+
+            case $entity instanceof Player:
+                foreach( $this->changes as $k => $v ) {
+                    $action = array(
+                        'value' => 'Modification de "%s" (de %s à %s)',
+                        'parameters' => array( $k, $v[0], $v[1] )
+                    );
+                    $em->persist( $this->createLog( $action, $entity ) );
 
                     $em->flush();
                 }
