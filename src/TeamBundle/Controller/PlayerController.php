@@ -163,15 +163,20 @@ class PlayerController extends Controller
                     }
 
                     $errors_validator = $this->get( 'validator' )->validate( $player );
-                    //$errors_teamControl = $this->get( 'team.control_team' )->checkCompo( $team->getPlayers() );
-                    // TODO : Revoir le check de la composotion (voir issue #17)
                     // TODO : Détecter les problèmes de changements de joueur si c'est un joueur qui existe déjà (et donc qui est dans une équipe)
-                    if( count( $errors_validator ) == 0 /*&& count( $errors_teamControl ) == 0*/ ) {
+                    if( count( $errors_validator ) == 0 ) {
+                        $em->getConnection()->beginTransaction();
                         $em->flush();
-
-                        $response = new Response( json_encode( array( 'status' => 'ok', 'return' => $this->render('TeamBundle:Default:playerRow.html.twig', array( 'player' => $player, 'team' => $team ) )->getContent() ) ) );
+                        $errors_teamControl = $this->get( 'team.control_team' )->checkCompo( $team->getPlayers() );
+                        if(count( $errors_teamControl ) == 0) {
+                            $em->getConnection()->commit();
+                            $response = new Response( json_encode( array( 'status' => 'ok', 'return' => $this->render('TeamBundle:Default:playerRow.html.twig', array( 'player' => $player, 'team' => $team ) )->getContent() ) ) );
+                        } else {
+                            $em->getConnection()->rollBack();
+                            $response = new Response( json_encode( array( 'status' => 'ko', 'message' => 'Impossible de modifier le joueur', 'errors' => $this->render( 'TeamBundle:Default:validation.html.twig', array( 'errors_validator' => $errors_teamControl ) )->getContent(), 'debug' => '' ) ) );
+                        }
                     } else
-                        $response = new Response( json_encode( array( 'status' => 'ko', 'message' => 'Impossible de modifier le joueur', 'errors' => $this->render( 'TeamBundle:Default:validation.html.twig', array( 'errors_validator' => $errors_validator/*, 'errors_teamControl' => $errors_teamControl*/ ) )->getContent(), 'debug' => '' ) ) );
+                        $response = new Response( json_encode( array( 'status' => 'ko', 'message' => 'Impossible de modifier le joueur', 'errors' => $this->render( 'TeamBundle:Default:validation.html.twig', array( 'errors_validator' => $errors_validator ) )->getContent(), 'debug' => '' ) ) );
                 } else
                     $response = new Response( json_encode( array( 'status' => 'ko', 'message' => 'Vous n\'avez pas la permission d\'éditer ce joueur', 'debug' => 'Utilisateur connecté != manager de l\'équipe du joueur' ) ) );
             }

@@ -14,9 +14,12 @@ class ControlTeam {
     public function checkCompo( $players ) {
         $errors = array();
 
-        $errors = array_merge( $errors, $this->checkPillier( $players ) );
-        $errors = array_merge( $errors, $this->checkBannedClass( $players ) );
+        // TODO : Tenir compte du type de tournoi pour faire les check automatiquement
+        //$errors = array_merge( $errors, $this->checkPillier( $players ) );
+        //$errors = array_merge( $errors, $this->checkBannedClass( $players ) );
         $errors = array_merge( $errors, $this->checkDoublon( $players ) );
+        if( count( $errors ) == 0 )
+            $errors = array_merge( $errors, $this->checkSynergie( $players ) );
 
         return $errors;
     }
@@ -60,6 +63,27 @@ class ControlTeam {
 
         if( $bannedClass > 0 )
             $errors[][ 'message' ] = "Vous avez des classes ne pouvant pas être jouées ensemble";
+
+        return $errors;
+    }
+
+    private function checkSynergie( $players ) {
+        $errors = array();
+        $synergieTotale = 0;
+
+        foreach( $players as $k => $v ) {
+            $class = $v->getClass();
+
+            foreach( $players as $k2 => $v2 ) {
+                if( $k < $k2 )
+                    $synergieTotale += $this->em->getRepository( 'TeamBundle:SynergieClass' )->getSynergie( $class->getId(), $v2->getClass() );
+            }
+
+            $synergieTotale += $class->getPoints();
+        }
+
+        if( $synergieTotale > $this->em->getRepository( 'AdminBundle:Config' )->getOneBy( array( 'name' => 'synergie_max' ) ) )
+            $errors[]['message'] = "Votre composition a une synergie trop forte ($synergieTotale)";
 
         return $errors;
     }
