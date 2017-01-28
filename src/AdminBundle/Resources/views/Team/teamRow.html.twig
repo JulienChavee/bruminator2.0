@@ -20,10 +20,11 @@
         {% endif %}
     </td>
     <td class="text-xs-center">
-        {% if checkCompo(team) %}
+        {% set errors = checkCompo(team) %}
+        {% if errors|length == 0 %}
             <i class="fa fa-check text-success"></i>
         {% else %}
-            <i class="fa fa-times text-danger"></i>
+            <i class="fa fa-times text-danger" data-toggle="popover" title="Liste des erreurs" data-content="{% for error in errors %}{{ error.message }}{% endfor %}" data-trigger="hover"></i>
         {% endif %}
     </td>
     <td>

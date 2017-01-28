@@ -27,7 +27,7 @@ class TeamExtension extends \Twig_Extension {
         try {
             $errors = $this->controlTeam->checkCompo( $team->getPlayers() );
 
-            return count( $errors ) == 0 ? true : false;
+            return $errors;
         } catch( \Exception $e ) {
             return null;
         }

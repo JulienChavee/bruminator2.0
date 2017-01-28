@@ -76,7 +76,7 @@ class ControlTeam {
 
             foreach( $players as $k2 => $v2 ) {
                 if( $k < $k2 )
-                    $synergieTotale += $this->em->getRepository( 'TeamBundle:SynergieClass' )->getSynergie( $class->getId(), $v2->getClass() );
+                    $synergieTotale += $this->em->getRepository( 'TeamBundle:SynergieClass' )->getSynergie( $class->getId(), $v2->getClass()->getId() );
             }
 
             $synergieTotale += $class->getPoints();
