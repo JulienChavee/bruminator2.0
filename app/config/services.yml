@@ -22,6 +22,14 @@ services:
         tags:
             - { name: twig.extension }
 
+    admin.twig.team:
+        class: AdminBundle\Twig\TeamExtension
+        arguments:
+            doctrine: "@doctrine"
+            controlTeam: "@team.control_team"
+        tags:
+            - { name: twig.extension }
+
     main.twig.remove_accent_extension:
         class: MainBundle\Twig\RemoveAccentExtension
         tags:

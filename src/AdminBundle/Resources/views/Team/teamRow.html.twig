@@ -19,6 +19,13 @@
             <i class="fa fa-times text-danger"></i>
         {% endif %}
     </td>
+    <td class="text-xs-center">
+        {% if checkCompo(team) %}
+            <i class="fa fa-check text-success"></i>
+        {% else %}
+            <i class="fa fa-times text-danger"></i>
+        {% endif %}
+    </td>
     <td>
         <div class="btn-toolbar" role="toolbar" aria-label="Outils">
             <div class="btn-group btn-group-sm" role="group" aria-label="Edition">
