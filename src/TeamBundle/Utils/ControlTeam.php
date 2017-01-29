@@ -72,6 +72,11 @@ class ControlTeam {
         $synergieTotale = 0;
 
         foreach( $players as $k => $v ) {
+            if( $v->getIsRemplacant() )
+                unset( $players[$k] );
+        }
+
+        foreach( $players as $k => $v ) {
             $class = $v->getClass();
 
             foreach( $players as $k2 => $v2 ) {
