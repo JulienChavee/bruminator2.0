@@ -90,7 +90,7 @@ class DoctrineListener
                 }
                 break;
 
-            case $entity instanceof Player:
+            /*case $entity instanceof Player:
                 foreach( $this->changes as $k => $v ) {
                     $action = array(
                         'value' => 'Modification de "%s" (de %s à %s)',
@@ -100,7 +100,7 @@ class DoctrineListener
 
                     $em->flush();
                 }
-                break;
+                break;*/
         }
     }
 
