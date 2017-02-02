@@ -10,12 +10,17 @@ namespace MatchBundle\Repository;
  */
 class MatchsRepository extends \Doctrine\ORM\EntityRepository
 {
-    function findByTeam( $id, $ordered = false ) {
+    function findByTeam( $id, $ordered = false, $onlyThisEdition = false ) {
         $qb = $this->createQueryBuilder( 'm' );
         $qb->where( $qb->expr()->orX()
             ->add( 'm.attack = ?1' )
             ->add( 'm.defense = ?2' )
         );
+        if( $onlyThisEdition ) {
+            $qb->andWhere( 'm.date >= ?3' );
+            $date = $this->getEntityManager()->getRepository( 'AdminBundle:Config' )->getOneBy( array( 'name' => 'inscription_end' ) );
+            $qb->setParameter( '3', $date );
+        }
         if( $ordered )
             $qb->orderBy( 'm.date ', 'DESC');
         $qb->setParameter( '1', $id );

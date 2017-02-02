@@ -22,7 +22,7 @@
     <h1>Gestion des matchs</h1>
     <hr>
 
-    {% if matchs|length > 0 %}
+    {% if 'rondes'|config['ronde_actuelle'] > 0 %}
         {% if 'type_tournoi'|config == 'ronde' and ((date('ronde1'|config.end_date) <= date() and 'rondes'|config['ronde_actuelle'] < 2) or (date('ronde2'|config.end_date) <= date() and 'rondes'|config['ronde_actuelle'] < 3)) %}
             <div class="alert alert-info">
                 Nous arrivons à une fin de ronde.<br>
