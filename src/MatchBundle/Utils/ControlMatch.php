@@ -61,17 +61,17 @@ class ControlMatch
 
                     $this->em->persist( $return[ 'match' ] );
 
-                    $total = count( $teams );
+                    $total = count( $teams ) - 1;
                 }
 
                 $teamsSelected = array();
                 for ( $i = 0; $i < $total / 2; $i++ ) {
                     do {
-                        $attack = rand( 0, ($total - 1) );
+                        $attack = rand( 0, $total );
                     } while ( in_array( $attack, $teamsSelected ) );
 
                     do {
-                        $def = rand( 0, ($total - 1) );
+                        $def = rand( 0, $total );
                     } while ( in_array( $def, $teamsSelected ) || $def == $attack );
 
                     $match = new Matchs();
@@ -86,13 +86,23 @@ class ControlMatch
                     array_push( $teamsSelected, $attack, $def );
                 }
 
+                $missingTeam = array_values(array_diff(  range( 0, $total ), $teamsSelected ) );
+
+                $match = new Matchs();
+                $match->setAttack( $teams[ $missingTeam[ 0 ] ] );
+                $match->setDefense( NULL );
+                $match->setDate( NULL );
+                $match->setArbitre( NULL );
+                $match->setType( 'Ronde 1' );
+                $this->em->persist( $match );
+
                 $rondes[ 'ronde_actuelle'] = 1;
                 $config->setValue( json_encode( $rondes ) );
 
                 $this->em->flush();
             }
             catch( \Exception $e ) {
-                return array( 'status' => 'ko', 'message' => 'Une erreur inconnue s\'est produite', 'debug' => $e->getMessage() );
+                return array( 'status' => 'ko', 'message' => 'Une erreur inconnue s\'est produite', 'debug' => $e->__toString() );
             }
 
             return array( 'status' => 'ok' );
@@ -155,7 +165,7 @@ class ControlMatch
         $match->setArbitre( NULL );
         $match->setType( 'Match de barrage' );
 
-        $teams = array_slice( $teams, 0, count( $teams ) - 3 );
+        $teams = array_slice( $teams, 0, count( $teams ) - 2 );
 
         return array( 'match' => $match, 'teams' => $teams );
     }

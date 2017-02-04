@@ -99,4 +99,12 @@ class MatchsRepository extends \Doctrine\ORM\EntityRepository
 
         return $qb->getQuery()->getResult();
     }
+
+    function findMatchAfterBarrage() {
+        $qb = $this->createQueryBuilder( 'm' );
+
+        $qb->where('m.defense is null' );
+
+        return $qb->getQuery()->getSingleResult();
+    }
 }

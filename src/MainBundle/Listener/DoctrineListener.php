@@ -8,6 +8,7 @@ use Doctrine\ORM\Event\PreUpdateEventArgs;
 use LogBundle\Entity\ActionLog;
 use MatchBundle\Entity\Matchs;
 use NotificationBundle\Entity\Notification;
+use MatchBundle\Entity\MatchResult;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use TeamBundle\Entity\Team;
 use TeamBundle\Entity\Player;
@@ -29,10 +30,24 @@ class DoctrineListener
         foreach ($args->getEntityManager()->getUnitOfWork()->getScheduledEntityInsertions() as $entity) {
             switch (true) {
                 case $entity instanceof Notification:
-                    if (!$args->getEntityManager()->getRepository( 'AdminBundle:Config' )->getOneBy( array( 'name' => 'send_notification' ) ) )
+                    if( !$args->getEntityManager()->getRepository( 'AdminBundle:Config' )->getOneBy( array( 'name' => 'send_notification' ) ) )
                         $args->getEntityManager()->detach( $entity );
                     break;
 
+                case $entity instanceof MatchResult:
+                    if( $entity->getMatch()->getType() == 'Match de barrage' ) {
+                        $args->getEntityManager()->getEventManager()->removeEventListener( 'onFlush', $this ); // Evite une infinite loop à cause du flush() plus tard
+
+                        $match = $args->getEntityManager()->getRepository( 'MatchBundle:Matchs' )->findMatchAfterBarrage();
+
+                        if( $match->getAttack() == null )
+                            $match->setAttack( $entity->getWinner() );
+                        else
+                            $match->setDefense( $entity->getWinner() );
+
+                        $args->getEntityManager()->flush();
+                    }
+                    break;
             }
         }
     }
