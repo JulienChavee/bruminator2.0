@@ -52,8 +52,11 @@
                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Tournoi</a>
                     <div class="dropdown-menu">
                         <a class="dropdown-item" href="{{ path('team_front_homepage') }}">Liste des équipes</a>
-                        <a class="dropdown-item" href="{{ path('calendrier') }}">Calendrier</a>
                         <a class="dropdown-item" href="{{ path('classement') }}">Classement</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="{{ path('calendrier') }}">Calendrier</a>
+                        <a class="dropdown-item" href="{{ path('map_view') }}">Liste des maps</a>
+                        <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="{{ path('team_front_synergie') }}">Calcul de synergie</a>
                     </div>
                 </li>

@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ parent() }} • Liste des maps
+{% endblock %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+    <li class="breadcrumb-item active">Liste des maps</li>
+{% endblock %}
+
+{% block body %}
+    <h1>Liste des maps</h1>
+    <hr>
+
+    <div class="col-md-10">
+        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+            <ol class="carousel-indicators">
+                {% for key in maps|keys %}
+                    <li data-target="#carouselExampleIndicators" data-slide-to="{{ key }}" {% if loop.first %}class="active"{% endif %}></li>
+                {% endfor %}
+            </ol>
+            <div class="carousel-inner" role="listbox">
+                {% for map in maps %}
+                    <div class="carousel-item {% if loop.first %}active{% endif %}">
+                        {#{% image '@MainBundle/Resources/public/images/maps/1.png' %}
+                            <img class="d-block img-fluid" src="{{ asset_url }}" alt="Third slide">
+                        {% endimage %}#}
+
+                        <img class="d-block img-fluid" src="{{ asset('bundles/main/images/maps/'~map.id~'.png') }}" alt="{{ map.name }}">
+                    </div>
+                {% endfor %}
+            </div>
+            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                <span class="fa fa-chevron-left" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                <span class="fa fa-chevron-right" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+    </div>
+
+    <div class="col-md-2">
+        <ul class="list-group">
+            {% for key,map in maps %}
+                <li role="button" class="list-group-item list-group-item-action changemap {% if loop.first %}active{% endif %}" data-id="{{ key }}">{{ map.name }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {% javascripts output='js/compiled/main/map.js'
+    '@MainBundle/Resources/public/js/map.js'
+    %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
