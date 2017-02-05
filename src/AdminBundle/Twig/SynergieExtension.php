@@ -30,7 +30,7 @@ class SynergieExtension extends \Twig_Extension {
         } catch( \Exception $e ) {
             return null;
         }
-}
+    }
 
     public function getName() {
         return 'synergie_extension';

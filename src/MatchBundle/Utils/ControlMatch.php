@@ -68,11 +68,11 @@ class ControlMatch
                 for ( $i = 0; $i < $total / 2; $i++ ) {
                     do {
                         $attack = rand( 0, $total );
-                    } while ( in_array( $attack, $teamsSelected ) );
+                    } while( in_array( $attack, $teamsSelected ) );
 
                     do {
                         $def = rand( 0, $total );
-                    } while ( in_array( $def, $teamsSelected ) || $def == $attack );
+                    } while( in_array( $def, $teamsSelected ) || $def == $attack );
 
                     $match = new Matchs();
                     $match->setAttack( $teams[ $attack ] );
@@ -108,6 +108,19 @@ class ControlMatch
             return array( 'status' => 'ok' );
         } else {
             try {
+                // Si nombre d'équipe impair, on enlève l'équipe ayant perdu le match de barrage
+                if( count( $teams ) % 2 > 0 ) {
+                    $match = $this->em->getRepository( 'MatchBundle:Matchs' )->findOneBy( array( 'type' => 'Match de barrage' ) );
+
+                    if( $match->getMatchResult()->getWinner() == $match->getAttack() )
+                        $looser = $match->getDefense();
+                    else
+                        $looser = $match->getAttack();
+
+                    unset( $teams[ array_search( $looser, $teams ) ] );
+                    $teams = array_values( $teams );
+                }
+
                 $classement = array();
 
                 foreach ($teams as $k => $v) {
@@ -122,19 +135,38 @@ class ControlMatch
                 }
                 array_multisort($classement['pointsSuisse'], SORT_DESC, $classement['pointsGoulta'], SORT_DESC, $classement['pointsSuisseAdverse'], SORT_DESC, $classement['pointsGoultaAdverse'], SORT_DESC, $classement['nb_match'], SORT_DESC, $classement['team'], SORT_DESC);
 
-                $i = 0;
+                while ( count( $classement[ 'team' ] ) > 0 ) {
+                    $teamsSelected = $this->selectTeamWithSamePoints( $classement );
+                    $nbTeams = count( $teamsSelected );
 
-                while ($i < count($teams)) {
-                    $match = new Matchs();
-                    $match->setAttack($classement[ 'team' ][$i]);
-                    $match->setDefense($classement[ 'team' ][$i + 1]);
-                    $match->setDate(NULL);
-                    $match->setArbitre(NULL);
-                    $match->setType('Ronde ' . ($rondes[ 'ronde_actuelle' ] + 1) );
+                    for( $i = 0; $i < $nbTeams / 2; $i++ ) {
+                        $attack = rand( 0, count( $teamsSelected ) - 1 );
 
-                    $this->em->persist($match);
+                        do {
+                            $defense = rand( 0, count( $teamsSelected ) - 1 );
+                        } while( $defense == $attack );
 
-                    $i += 2;
+                        $match = new Matchs();
+                        $match->setAttack( $teamsSelected[ $attack ][ 'team' ] );
+                        $match->setDefense( $teamsSelected[ $defense ][ 'team' ] );
+                        $match->setDate(NULL);
+                        $match->setArbitre(NULL);
+                        $match->setType('Ronde ' . ($rondes[ 'ronde_actuelle' ] + 1) );
+
+                        $this->em->persist($match);
+
+                        unset( $classement[ 'team' ][ $teamsSelected[ $attack ][ 'key' ] ] );
+                        unset( $classement[ 'pointsSuisse' ][ $teamsSelected[ $attack ][ 'key' ] ] );
+                        unset( $classement[ 'team' ][ $teamsSelected[ $defense ][ 'key' ] ] );
+                        unset( $classement[ 'pointsSuisse' ][ $teamsSelected[ $defense ][ 'key' ] ] );
+                        unset( $teamsSelected[ $attack ] );
+                        unset( $teamsSelected[ $defense ] );
+
+                        $teamsSelected = array_values( $teamsSelected );
+                    }
+
+                    $classement[ 'team' ] = array_values( $classement[ 'team' ] );
+                    $classement[ 'pointsSuisse' ] = array_values( $classement[ 'pointsSuisse' ] );
                 }
 
                 $rondes['ronde_actuelle'] += 1;
@@ -148,6 +180,34 @@ class ControlMatch
 
             return array( 'status' => 'ok' );
         }
+    }
+
+    private function selectTeamWithSamePoints( $teams, $nombrePaireEquipe = true ) {
+        $points = $teams[ 'pointsSuisse' ][ 0 ];
+        $return = array();
+
+        $teams_temp = $teams;
+
+        for( $i = 0; $i < count( $teams ); $i++ ) {
+            if( $teams[ 'pointsSuisse' ][ $i ] == $points ) {
+                $return[] = array( 'team' => $teams[ 'team' ][ $i ], 'key' => $i );
+                unset( $teams_temp[ 'team' ][ $i ] );
+                unset( $teams_temp[ 'pointsSuisse' ][ $i ] );
+            } else
+                break;
+        }
+
+        if( $nombrePaireEquipe and count( $return ) % 2 > 0 ) {
+            $teams_temp[ 'team' ] = array_values( $teams_temp[ 'team' ] );
+            $teams_temp[ 'pointsSuisse' ] = array_values( $teams_temp[ 'pointsSuisse' ] );
+            $teams_temp = $this->selectTeamWithSamePoints( $teams_temp, false );
+
+            $rand = rand( 0, count( $teams_temp ) -1 );
+
+            $return[] = array( 'team' => $teams[ 'team' ][ $i + $rand ], 'key' => ($i + $rand) );
+        }
+
+        return $return;
     }
 
     private function generateMatchBarrage( $teams ) {
