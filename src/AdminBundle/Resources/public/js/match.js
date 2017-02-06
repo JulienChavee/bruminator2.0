@@ -310,7 +310,7 @@ $('.updateFeuille').on('click', function() {
         },
         success: function (data) {
             if (data.status == 'ok') {
-                location.href=Routing.generate('admin_match');
+                location.href=Routing.generate('admin_match',{tab:'finished'});
             } else {
                 $('.modal-body-more-info').html(data.message);
                 $('.modal_alert_error').modal('show');

@@ -22,7 +22,8 @@ class MatchController extends Controller
 
         $nbTeam = count($em->getRepository( 'TeamBundle:Team' )->findAll());
         $nbTeamValid = count($em->getRepository( 'TeamBundle:Team' )->findBy( array( 'valid' => 1 ) ) );
-        $matchs = $em->getRepository( 'MatchBundle:Matchs' )->findBy( array(), array( 'date' => 'ASC' ) );
+        $date = \DateTime::createFromFormat( 'Y-m-d H:i:s', $em->getRepository( 'AdminBundle:Config' )->getOneBy( array( 'name' => 'inscription_end' ) ) );
+        $matchs = $em->getRepository( 'MatchBundle:Matchs' )->findByDate( $date, array( 'field' => 'date', 'type' => 'DESC' ), null, false );
 
         return $this->render( 'AdminBundle:Match:index.html.twig', array( 'matchs' => $matchs, 'nbTeam' => $nbTeam, 'nbTeamValid' => $nbTeamValid ) );
     }
