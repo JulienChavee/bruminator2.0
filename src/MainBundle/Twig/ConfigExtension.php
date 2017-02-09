@@ -3,14 +3,17 @@
 namespace MainBundle\Twig;
 
 use Symfony\Bridge\Doctrine\RegistryInterface;
+use Symfony\Component\HttpKernel\Kernel;
 
 class ConfigExtension extends \Twig_Extension {
 
     protected $doctrine;
+    protected $kernel;
 
-    public function __construct( RegistryInterface $doctrine )
+    public function __construct( RegistryInterface $doctrine, Kernel $kernel )
     {
         $this->doctrine = $doctrine;
+        $this->kernel = $kernel;
     }
 
     public function getFilters() {
@@ -22,7 +25,8 @@ class ConfigExtension extends \Twig_Extension {
     public function getFunctions() {
         return array(
             new \Twig_SimpleFunction( 'isEndRonde', array( $this, 'isEndRonde' ) ),
-            new \Twig_SimpleFunction( 'startFinal', array( $this, 'startFinal' ) )
+            new \Twig_SimpleFunction( 'startFinal', array( $this, 'startFinal' ) ),
+            new \Twig_SimpleFunction( 'streamOn', array( $this, 'streamOn' ) )
         );
     }
 
@@ -73,6 +77,41 @@ class ConfigExtension extends \Twig_Extension {
                 return false;
         } else
             return false;
+    }
+
+    public function streamOn() {
+        $fileTwitch = $this->kernel->getCacheDir().'/twitch.tmp';
+        if( !file_exists( $fileTwitch ) )
+            file_put_contents( $this->get('kernel')->getCacheDir().'/twitch.tmp', '' );
+
+        $channel = null;
+
+        if( time() - filemtime( $fileTwitch > 60 ) || filesize( $fileTwitch ) == 0 ) {
+            $channelsApi = 'https://api.twitch.tv/kraken/streams/';
+            $channelName = 'bruminator_officiel';
+            $clientId = '74dease2xl8ecabhx0ocfbonno2toq';
+            $ch = curl_init();
+
+            curl_setopt_array($ch, array(
+                CURLOPT_HTTPHEADER => array(
+                    'Client-ID:'.$clientId
+                ),
+                CURLOPT_SSL_VERIFYPEER=>false,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_URL => $channelsApi.$channelName
+            ));
+
+            $channel = curl_exec($ch);
+            curl_close($ch);
+
+            file_put_contents( $fileTwitch, $channel );
+        } else {
+            $channel = file_get_contents( $fileTwitch );
+        }
+
+        $channel = json_decode( $channel );
+
+        return !is_null( $channel ) && !is_null( $channel->stream );
     }
 
     public function getName() {
