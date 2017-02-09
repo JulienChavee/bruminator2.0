@@ -82,7 +82,7 @@ class ConfigExtension extends \Twig_Extension {
     public function streamOn() {
         $fileTwitch = $this->kernel->getCacheDir().'/twitch.tmp';
         if( !file_exists( $fileTwitch ) )
-            file_put_contents( $this->get('kernel')->getCacheDir().'/twitch.tmp', '' );
+            file_put_contents( $this->kernel->getCacheDir().'/twitch.tmp', '' );
 
         $channel = null;
 
