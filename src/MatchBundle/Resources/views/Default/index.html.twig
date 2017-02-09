@@ -151,14 +151,14 @@
                 {% endif %}
 
                 {% if match.type != 'Match de barrage' %}
-                    {% if points.nb >= 0 %}<i class="fa fa-plus text-success"></i>{% else %}<i class="fa fa-minus text-danger"></i>{% endif %} {{ points.explication }}
-
                     <div class="mt-1">
                         <div>
                             <b>Calcul des points suisse :</b><br>
                             {% for points in match.points(match.defense).details.pointsSuisse %}
                                 <div class="row">
-                                    <div class="col-md-5"></div>
+                                    <div class="col-md-5">
+                                        {% if points.nb >= 0 %}<i class="fa fa-plus text-success"></i>{% else %}<i class="fa fa-minus text-danger"></i>{% endif %} {{ points.explication }}
+                                    </div>
                                     <div class="col-md-2">
                                         : {{ points.nb }}
                                     </div>
