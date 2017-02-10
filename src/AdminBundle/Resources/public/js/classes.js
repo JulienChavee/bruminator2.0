@@ -60,7 +60,7 @@ $('.editSynergie').on('click', function() {
             if (data.status == 'ok') {
                 modal.modal('hide');
 
-                var line = $('td[data-rand="' + rand + '"]');
+                var line = $('td[data-rand="' + rand + '"] span.synergie_value');
                 line.text(data.return);
                 line = $('td[data-rand="' + rand + '"]');
                 line.effect("highlight", {color: '#c9c9c9'}, 5000);
