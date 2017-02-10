@@ -381,7 +381,7 @@
             enableThings();
         });
 
-        var streamOn = {{ streamOn() }};
+        var streamOn = {% if streamOn() %}true{% else %}false{% endif %};
 
         if(streamOn && (typeof(Cookies.get("live_viewed")) == "undefined" || !Cookies.get("live_viewed")) && window.location.pathname != Routing.generate('twitch')) {
             $('#modalLive').modal('show');
