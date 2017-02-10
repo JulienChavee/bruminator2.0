@@ -29,14 +29,14 @@
             <div class="form-group row">
                 <label for="attack_nb_mort" class="col-sm-4 col-form-label">Nombre de morts</label>
                 <div class="col-sm-5">
-                    <input type="number" class="form-control" id="attack_nb_mort" placeholder="Nombre de morts" {% if match.matchResult %}value="{{ match.matchResult.matchResultTeam.0.nombreMort }}"{% endif %}>
+                    <input type="number" class="form-control" id="attack_nb_mort" min="0" max="4" value="{% if match.matchResult %}{{ match.matchResult.matchResultTeam.0.nombreMort }}{% else %}0{% endif %}" placeholder="Nombre de morts">
                 </div>
             </div>
 
             <div class="form-group row">
                 <label for="attack_retard" class="col-sm-4 col-form-label">Retard</label>
                 <div class="col-sm-5">
-                    <input type="number" class="form-control" id="attack_retard" placeholder="Retard" {% if match.matchResult %}value="{{ match.matchResult.matchResultTeam.0.retard }}"{% endif %}>
+                    <input type="number" class="form-control" id="attack_retard" min="0" max="30" value="{% if match.matchResult %}{{ match.matchResult.matchResultTeam.0.retard }}{% else %}0{% endif %}" placeholder="Retard">
                 </div>
             </div>
 
@@ -97,14 +97,14 @@
             <div class="form-group row">
                 <label for="defense_nb_mort" class="col-sm-4 col-form-label">Nombre de morts</label>
                 <div class="col-sm-5">
-                    <input type="number" class="form-control" id="defense_nb_mort" placeholder="Nombre de morts" {% if match.matchResult %}value="{{ match.matchResult.matchResultTeam.1.nombreMort }}"{% endif %}>
+                    <input type="number" class="form-control" id="defense_nb_mort" min="0" max="4" value="{% if match.matchResult %}{{ match.matchResult.matchResultTeam.1.nombreMort }}{% else %}0{% endif %}" placeholder="Nombre de morts">
                 </div>
             </div>
 
             <div class="form-group row">
                 <label for="defense_retard" class="col-sm-4 col-form-label">Retard</label>
                 <div class="col-sm-5">
-                    <input type="number" class="form-control" id="defense_retard" placeholder="Retard" {% if match.matchResult %}value="{{ match.matchResult.matchResultTeam.1.retard }}"{% endif %}>
+                    <input type="number" class="form-control" id="defense_retard" min="0" max="30" value="{% if match.matchResult %}{{ match.matchResult.matchResultTeam.1.retard }}{% else %}0{% endif %}" placeholder="Retard">
                 </div>
             </div>
 
