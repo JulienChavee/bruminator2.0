@@ -25,6 +25,11 @@
         </b>
         <a href="{{ path('team_front_team_view', {'id':match.defense.id, 'slugTeam': match.defense.name|slugify}) }}" class="text-primary">{{ match.defense.name }}</a>
     </div>
+    <div>
+        {% if match.matchResult %}
+            <small><a href="{{ path('match_informations', {'id':match.id}) }}" class="text-muted"><i class="fa fa-share"></i> Vers la feuille du match</a></small>
+        {% endif %}
+    </div>
 
     {% if not loop.last %}
         <hr>
