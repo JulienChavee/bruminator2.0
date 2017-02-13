@@ -69,7 +69,7 @@ class ConfigExtension extends \Twig_Extension {
             $now = new \DateTime( 'now' );
             $endRonde = \DateTime::createFromFormat( 'Y-m-d', $ronde->end_date );
 
-            $matchs = $em->getRepository( 'MatchBundle:Matchs' )->getBy( array( 'type' => 'Quart de finale' ) );
+            $matchs = $em->getRepository( 'MatchBundle:Matchs' )->findBy( array( 'type' => 'Quart de finale' ) );
 
             if ( $now >= $endRonde && count( $matchs ) == 0 )
                 return true;
