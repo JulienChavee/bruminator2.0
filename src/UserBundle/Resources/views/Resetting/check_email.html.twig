@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ parent() }} • Mot de passe oublié
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+    {% stylesheets output='css/signin.css' '@UserBundle/Resources/public/css/signin.css' %}
+    <link rel="stylesheet" href="{{ asset_url }}">
+    {% endstylesheets %}
+{% endblock %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+    <li class="breadcrumb-item active">Mot de passe oublié</li>
+{% endblock %}
+
+{% block body %}
+    {% trans_default_domain 'FOSUserBundle' %}
+    <div class="form-signin">
+        {{ 'resetting.check_email'|trans({'%tokenLifetime%': tokenLifetime})|nl2br }}
+    </div>
+{% endblock %}

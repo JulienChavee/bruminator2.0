@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ parent() }} • Mon profil
+{% endblock %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+    <li class="breadcrumb-item active">Mon profil</li>
+{% endblock %}
+
+{% block body %}
+    <h1>Mon profil</h1>
+    <hr>
+
+    <div class="row">
+        <div class="col-md-12">
+            <i class="fa fa-user"></i> {{ user.username }}<br>
+            <i class="fa fa-envelope"></i> {{ user.email }}<br>
+            <i class="fa fa-key"></i> <a href="{{ path('fos_user_change_password') }}">Modifier mon mot de passe</a>
+        </div>
+    </div>
+{% endblock %}

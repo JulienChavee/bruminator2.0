@@ -114,6 +114,7 @@
                     <li class="nav-item {% if app.request.attributes.get('_route') matches '{^user_.*$}' %}active{% endif %} dropdown">
                         <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user"></i> {{ app.user.username }}</a>
                         <div class="dropdown-menu">
+                            <a class="dropdown-item" href="{{ path('fos_user_profile_show') }}">Gérer mon compte</a>
                             <a class="dropdown-item" href="{{ path('fos_user_security_logout') }}">Se déconnecter</a>
                         </div>
                     </li>
@@ -286,6 +287,16 @@
     </ol>
 
     {% block alert %}
+        {% if app.request.hasPreviousSession %}
+            {% for type, messages in app.session.flashbag.all() %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ type }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endfor %}
+        {% endif %}
+
         {% for flashType in app.session.flashBag.keys %}
             <div class="alert alert-{{ flashType }}">
                 {% for flashMessage in app.session.flashBag.get(flashType) %}

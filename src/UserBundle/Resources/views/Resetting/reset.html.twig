@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ parent() }} • Mot de passe oublié
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+    {% stylesheets output='css/signin.css' '@UserBundle/Resources/public/css/signin.css' %}
+    <link rel="stylesheet" href="{{ asset_url }}">
+    {% endstylesheets %}
+{% endblock %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+    <li class="breadcrumb-item active">Mot de passe oublié</li>
+{% endblock %}
+
+{% block body %}
+    {% if error %}
+        <div class="alert alert-danger">
+            {{ error.messageKey|replace({"Invalid credentials": "Pseudo et/ou mot de passe incorrect"}) }}
+        </div>
+    {% endif %}
+
+    <form action="{{ path("fos_user_resetting_reset",{'token':token}) }}" class="form-signin" method="post">
+        <h2 class="form-signin-heading">Réinitialisation</h2>
+
+        {{ form_widget(form._token) }}
+
+        <input type="password" id="fos_user_resetting_form_plainPassword_first" name="fos_user_resetting_form[plainPassword][first]" class="form-control" placeholder="Nouveau mot de passe" required="required" />
+
+        <input type="password" id="fos_user_resetting_form_plainPassword_second" name="fos_user_resetting_form[plainPassword][second]" class="form-control" placeholder="Répéter" required="required" />
+
+        <input type="submit" id="submit" name="submit" class="mt-1 btn btn-lg btn-primary btn-block" value="Valider" />
+    </form>
+{% endblock %}
