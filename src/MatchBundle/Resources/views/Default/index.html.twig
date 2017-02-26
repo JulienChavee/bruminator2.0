@@ -14,61 +14,42 @@
     <hr>
 
     <div class="row">
-        <div class="col-md-6">
-            <h2 class="text-danger">{{ match.attack.name }}</h2>
-
-            <div>
-                <b>Composition :</b><br>
-                {% for player in match.attack.players if not player.isRemplacant %}
-                    <div class="pb-1">
-                        <img src="{{ asset('bundles/main/images/class/'~ player.class.shortName|lower|remove_accent ~'1.png') }}" data-toggle="tooltip" data-trigger="hover" title="{{ player.class.name }} {{ player.level }}"> {{ player.pseudo }} {% if player.remplacant %}(Remplaçant : {{ player.remplacant.pseudo }}){% endif %}
-                    </div>
-                {% endfor %}
+        <div class="mb-2">
+            <div class="col-md-3 bg-inverse text-white p-2 text-xs-center">
+                <i class="fa fa-calendar"></i> {{ match.date|format_date('dd MMMM YYYY - HH:mm') }}
             </div>
-        </div>
 
-        <div class="col-md-6">
-            <h2 class="text-primary">{{ match.defense.name }}</h2>
-
-            <div>
-                <b>Composition :</b><br>
-                {% for player in match.defense.players if not player.isRemplacant %}
-                    <div class="pb-1">
-                        <img src="{{ asset('bundles/main/images/class/'~ player.class.shortName|lower|remove_accent ~'1.png') }}" data-toggle="tooltip" data-trigger="hover" title="{{ player.class.name }} {{ player.level }}"> {{ player.pseudo }} {% if player.remplacant %}(Remplaçant : {{ player.remplacant.pseudo }}){% endif %}
-                    </div>
-                {% endfor %}
+            <div class="col-md-3 bg-inverse text-white p-2 text-xs-center">
+                <i class="fa fa-user"></i> {% if match.arbitre %}{{ match.arbitre.username }}{% else %}Aucun arbitre désigné{% endif %}
             </div>
-        </div>
 
-        <div class="col-md-12 mt-2">
-            <b><i class="fa fa-calendar"></i> Date :</b> {{ match.date|format_date('dd MMMM YYYY - HH:mm') }}<br>
-            <b><i class="fa fa-user"></i> Arbitre :</b> {% if match.arbitre %}{{ match.arbitre.username }}{% else %}Aucun arbitre désigné{% endif %}<br>
-            <b><i class="fa fa-wrench"></i> Type :</b> {{ match.type }}
+            <div class="col-md-3 bg-inverse text-white p-2 text-xs-center">
+                <i class="fa fa-info"></i> {{ match.type }}
+            </div>
+
+            <div class="col-md-3 bg-inverse text-white p-2 text-xs-center">
+                <i class="fa fa-trophy"></i> {% if match.matchResult %}<span {% if match.matchResult.winner.name|length > 14 %}data-toggle="tooltip" data-trigger="hover" title="{{ match.matchResult.winner.name }}"{% endif %}>{{ match.matchResult.winner.name|truncate(14) }}</span> - {% if not match.matchResult.matchResultTeam.0.forfait and not match.matchResult.matchResultTeam.1.forfait %}{{ match.matchResult.nombreTour }} tours{% endif %}{% else %}<i>En attente des résultats</i>{% endif %}
+            </div>
+
+            <div class="clearfix"></div>
         </div>
     </div>
 
     {% if match.matchResult %}
-        <hr>
-
         <h2>Résultats du match</h2>
         <div class="row">
             <div class="col-md-6">
+                <h2 class="text-danger">{{ match.attack.name }}</h2>
                 {% if not match.matchResult.matchResultTeam.0.forfait and not match.matchResult.matchResultTeam.1.forfait %}
                     <div>
-                        <b>Initiative :</b><br>
+                        <b>Initiative :</b> {% if match.matchResult.first == match.attack %}<i class="fa fa-check text-success"></i> Cette équipe a commencé le match{% endif %}<br>
 
                         {% for id in match.matchResult.matchResultTeam.0.initiative %}
-                            {% for player in match.attack.players if player.id == id %}
+                                {% set player = getPlayer(id) %}
                                 <div class="pb-1">
                                     <img src="{{ asset('bundles/main/images/class/'~ player.class.shortName|lower|remove_accent ~'1.png') }}" data-toggle="tooltip" data-trigger="hover" title="{{ player.class.name }} {{ player.level }}"> {{ player.pseudo }}
                                 </div>
-                            {% endfor %}
                         {% endfor %}
-                        {% if match.matchResult.first == match.attack %}
-                            <i class="fa fa-check text-success"></i> Cette équipe a commencé le match
-                        {% else %}
-                            <br>
-                        {% endif %}
                     </div>
                 {% endif %}
 
@@ -130,9 +111,10 @@
             </div>
 
             <div class="col-md-6">
+                <h2 class="text-primary">{{ match.defense.name }}</h2>
                 {% if not match.matchResult.matchResultTeam.0.forfait and not match.matchResult.matchResultTeam.1.forfait %}
                     <div>
-                        <b>Initiative :</b><br>
+                        <b>Initiative :</b> {% if match.matchResult.first == match.defense %}<i class="fa fa-check text-success"></i> Cette équipe a commencé le match{% endif %}<br>
 
                         {% for id in match.matchResult.matchResultTeam.1.initiative %}
                             {% for player in match.defense.players if player.id == id %}
@@ -141,12 +123,6 @@
                                 </div>
                             {% endfor %}
                         {% endfor %}
-
-                        {% if match.matchResult.first == match.defense %}
-                            <i class="fa fa-check text-success"></i> Cette équipe a commencé le match
-                        {% else %}
-                            <br>
-                        {% endif %}
                     </div>
                 {% endif %}
 
@@ -204,13 +180,6 @@
                         </div>
                     </div>
                 {% endif %}
-            </div>
-
-            <div class="col-md-12 mt-3">
-                {% if not match.matchResult.matchResultTeam.0.forfait and not match.matchResult.matchResultTeam.1.forfait %}
-                    <b>Nombre de tours : </b>{{ match.matchResult.nombreTour }}<br>
-                {% endif %}
-                <b><i class="fa fa-trophy"></i> Vainqueur : </b> {{ match.matchResult.winner.name }}
             </div>
         </div>
     {% endif %}

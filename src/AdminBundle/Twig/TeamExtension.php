@@ -20,6 +20,7 @@ class TeamExtension extends \Twig_Extension {
     {
         return array(
             new \Twig_SimpleFunction( 'checkCompo', array( $this, 'checkCompo' ) ),
+            new \Twig_SimpleFunction( 'getPlayer', array( $this, 'getPlayer' ) ),
         );
     }
 
@@ -31,6 +32,14 @@ class TeamExtension extends \Twig_Extension {
         } catch( \Exception $e ) {
             return null;
         }
+    }
+
+    public function getPlayer( $id ) {
+        $em = $this->doctrine->getManager();
+
+        $value = $em->getRepository( 'TeamBundle:Player' )->findOneBy( array( 'id' => $id ) );
+
+        return $value;
     }
 
     public function getName() {
