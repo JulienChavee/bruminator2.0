@@ -121,19 +121,7 @@ class ControlMatch
                     $teams = array_values( $teams );
                 }
 
-                $classement = array();
-
-                foreach ($teams as $k => $v) {
-                    $res = $this->controlTeam->getPoints($v, false);
-
-                    $classement['team'][$k] = $v;
-                    $classement['nb_match'][$k] = $res['nb_match'];
-                    $classement['pointsSuisse'][$k] = $res['pointsSuisse'];
-                    $classement['pointsGoulta'][$k] = $res['pointsGoulta'];
-                    $classement['pointsSuisseAdverse'][$k] = $res['pointsSuisseAdverse'];
-                    $classement['pointsGoultaAdverse'][$k] = $res['pointsGoultaAdverse'];
-                }
-                array_multisort($classement['pointsSuisse'], SORT_DESC, $classement['pointsGoulta'], SORT_DESC, $classement['pointsSuisseAdverse'], SORT_DESC, $classement['pointsGoultaAdverse'], SORT_DESC, $classement['nb_match'], SORT_DESC, $classement['team'], SORT_DESC);
+                $classement = $this->controlTeam->getClassement( $teams );
 
                 while ( count( $classement[ 'team' ] ) > 0 ) {
                     $teamsSelected = $this->selectTeamWithSamePoints( $classement );
@@ -233,19 +221,7 @@ class ControlMatch
     private function generatePhaseFinale() {
         $teams = $this->em->getRepository( 'TeamBundle:Team' )->findBy( array( 'valid' => true ) );
 
-        $classement = array();
-
-        foreach( $teams as $k => $v ) {
-            $res = $this->controlTeam->getPoints( $v, false );
-
-            $classement[ 'team' ][ $k ] = $v;
-            $classement[ 'nb_match' ][ $k ] = $res[ 'nb_match' ];
-            $classement[ 'pointsSuisse' ][ $k ] = $res[ 'pointsSuisse' ];
-            $classement[ 'pointsGoulta' ][ $k ] = $res[ 'pointsGoulta' ];
-            $classement[ 'pointsSuisseAdverse' ][ $k ] = $res[ 'pointsSuisseAdverse' ];
-            $classement[ 'pointsGoultaAdverse' ][ $k ] = $res[ 'pointsGoultaAdverse' ];
-        }
-        array_multisort( $classement[ 'pointsSuisse' ], SORT_DESC, $classement[ 'pointsGoulta' ], SORT_DESC, $classement[ 'pointsSuisseAdverse' ], SORT_DESC, $classement[ 'pointsGoultaAdverse' ], SORT_DESC, $classement[ 'nb_match' ], SORT_DESC, $classement[ 'team' ], SORT_DESC);
+        $classement = $this->controlTeam->getClassement( $teams );
 
         try {
             for ($i = 0; $i < 4; $i++) {

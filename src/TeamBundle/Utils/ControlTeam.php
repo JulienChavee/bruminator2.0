@@ -134,4 +134,22 @@ class ControlTeam {
 
         return $points;
     }
+
+    public function getClassement( $teams ) {
+        $classement = array();
+
+        foreach( $teams as $k => $v ) {
+            $res = $this->getPoints( $v, false );
+
+            $classement[ 'team' ][ $k ] = $v;
+            $classement[ 'nb_match' ][ $k ] = $res[ 'nb_match' ];
+            $classement[ 'pointsSuisse' ][ $k ] = $res[ 'pointsSuisse' ];
+            $classement[ 'pointsGoulta' ][ $k ] = $res[ 'pointsGoulta' ];
+            $classement[ 'pointsSuisseAdverse' ][ $k ] = $res[ 'pointsSuisseAdverse' ];
+            $classement[ 'pointsGoultaAdverse' ][ $k ] = $res[ 'pointsGoultaAdverse' ];
+        }
+        array_multisort( $classement[ 'pointsSuisse' ], SORT_DESC, $classement[ 'pointsGoulta' ], SORT_DESC, $classement[ 'pointsSuisseAdverse' ], SORT_DESC, $classement[ 'pointsGoultaAdverse' ], SORT_DESC, $classement[ 'nb_match' ], SORT_DESC, $classement[ 'team' ], SORT_DESC);
+
+        return $classement;
+    }
 }
