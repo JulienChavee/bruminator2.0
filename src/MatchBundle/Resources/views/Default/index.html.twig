@@ -117,11 +117,10 @@
                         <b>Initiative :</b> {% if match.matchResult.first == match.defense %}<i class="fa fa-check text-success"></i> Cette équipe a commencé le match{% endif %}<br>
 
                         {% for id in match.matchResult.matchResultTeam.1.initiative %}
-                            {% for player in match.defense.players if player.id == id %}
-                                <div class="pb-1">
-                                    <img src="{{ asset('bundles/main/images/class/'~ player.class.shortName|lower|remove_accent ~'1.png') }}" data-toggle="tooltip" data-trigger="hover" title="{{ player.class.name }} {{ player.level }}"> {{ player.pseudo }}
-                                </div>
-                            {% endfor %}
+                            {% set player = getPlayer(id) %}
+                            <div class="pb-1">
+                                <img src="{{ asset('bundles/main/images/class/'~ player.class.shortName|lower|remove_accent ~'1.png') }}" data-toggle="tooltip" data-trigger="hover" title="{{ player.class.name }} {{ player.level }}"> {{ player.pseudo }}
+                            </div>
                         {% endfor %}
                     </div>
                 {% endif %}
