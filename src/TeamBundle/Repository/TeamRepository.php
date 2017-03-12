@@ -11,23 +11,35 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
  */
 class TeamRepository extends \Doctrine\ORM\EntityRepository
 {
-    public function search( $terms ) {
+    public function search( $terms, $onlyEdition, $onlyPlayer, $onlyTeam ) {
         $qb = $this->createQueryBuilder( 't' );
 
         $players = $this->getEntityManager()->getRepository( 'TeamBundle:Player' )->search( $terms );
 
-        $teams = array();
-        foreach( $players as $k => $v ){
-            $teams[] = $v->getTeam()->getId();
+        if( !$onlyTeam ) {
+            $teams = array();
+            foreach( $players as $k => $v ) {
+                $teams[] = $v->getTeam()->getId();
+            }
+
+            if( $teams )
+                $qb->orWhere( $qb->expr()->in( 't.id', $teams ) );
         }
 
-        if( $teams )
-            $qb->orWhere( $qb->expr()->in( 't.id', $teams ) );
+        if( !$onlyPlayer ) {
+            for( $i = 0; $i < count( $terms ); $i++ )
+                $qb->orWhere( 't.name LIKE ?'.$i );
+        } else
+            $terms = array();
 
-        for( $i = 0; $i < count( $terms ); $i++ )
-            $qb->orWhere( 't.name LIKE ?'.$i );
+        if( $onlyEdition ) {
+            $qb->andWhere( 't.registered = ?' . count($terms) );
+            $terms[] = true;
+        }
 
         $qb->setParameters( $terms );
+
+        $qb->orderBy( 't.name', 'ASC' );
 
         return $qb->getQuery()->getResult();
     }
@@ -35,10 +47,15 @@ class TeamRepository extends \Doctrine\ORM\EntityRepository
     public function getList( $page = 1, $maxPerPage = 9 ) {
         $qb = $this->createQueryBuilder( 't' );
 
+        $qb->where( 't.registered=?1' );
+        $qb->orderBy( 't.name', 'ASC' );
+
         $qb->setFirstResult( ( $page - 1 ) * $maxPerPage )
             ->setMaxResults( $maxPerPage );
 
-        return new Paginator( $qb );
+        $qb->setParameter( 1, true);
+
+        return new Paginator( $qb, false );
     }
 
     public function resetRegistration() {

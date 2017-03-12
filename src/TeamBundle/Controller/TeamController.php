@@ -216,14 +216,14 @@ class TeamController extends Controller
             try {
                 $em = $this->getDoctrine()->getManager();
 
-                $terms = preg_replace( '/^(.*)+$/', '%$0%', explode( ' ', $request->get( 'search' ) ) );
+                $terms = preg_replace( '/^(.*)+$/', '%$0%', explode( ' ', $request->get( 'search_text' ) ) );
 
-                $teams = $em->getRepository( 'TeamBundle:Team' )->search( $terms );
+                $teams = $em->getRepository( 'TeamBundle:Team' )->search( $terms, $request->get( 'only_actual_edition' ), $request->get( 'only_player' ), $request->get( 'only_team' ) );
 
                 $response = new Response( json_encode( array( 'status' => 'ok', 'return' => $this->render( 'TeamBundle:Front:teamsGrid.html.twig', array( 'teams' => $teams ) )->getContent() ) ) );
             }
             catch( \Exception $e ) {
-                $response = new Response( json_encode( array( 'status' => 'ko', 'message' => 'Une erreur inconnue s\'est produite', 'debug' => $e->getMessage() ) ) );
+                $response = new Response( json_encode( array( 'status' => 'ko', 'message' => 'Une erreur inconnue s\'est produite', 'debug' => $e->__toString() ) ) );
             }
             $response->headers->set( 'Content-Type', 'application/json' );
             return $response;

@@ -132,13 +132,30 @@ $('#btn_search').on('click', function(){
     button.attr('disabled', 'disabled');
     button.find('.fa').removeClass('fa-search').addClass('fa-spinner fa-pulse');
 
-    var search = $('#input_search').val();
+    var search_text = $('#input_search_text').val();
+    var only_actual_edition = $('#input_search_edition_only').is(':checked') ? 1 : 0;
+    var only_player = $('#select_search_search_in').val() == 'player' ? 1 : 0;
+    var only_team = $('#select_search_search_in').val() == 'team' ? 1 : 0;
+
+    search(search_text,only_actual_edition,only_player,only_team)
+});
+
+$('.input_player').autocomplete({
+    source: Routing.generate('team_player_ajax_search'),
+    minLength: 2
+});
+
+function search(search_text,only_actual_edition,only_player,only_team) {
+    button = $('#btn_search');
 
     $.ajax({
         type: 'POST',
         url: Routing.generate('team_ajax_search'),
         data: {
-            search: search
+            search_text: search_text,
+            only_actual_edition: only_actual_edition,
+            only_player: only_player,
+            only_team: only_team
         },
         error: function (request, error) { // Info Debuggage si erreur
             console.log("Erreur : responseText: " + request.responseText);
@@ -157,9 +174,4 @@ $('#btn_search').on('click', function(){
             button.removeAttr('disabled');
         }
     });
-});
-
-$('.input_player').autocomplete({
-    source: Routing.generate('team_player_ajax_search'),
-    minLength: 2
-});
+}

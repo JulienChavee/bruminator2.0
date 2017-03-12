@@ -14,10 +14,33 @@
     <hr>
 
     <div class="bg-inverse text-white p-1">
-        <input id="input_search" class="form-control" type="text" placeholder="Rechercher une équipe, un personnage, ...">
+        <input id="input_search_text" class="form-control" type="text" placeholder="Rechercher une équipe, un personnage, ...">
 
+        <div class="row">
+            <div class="col-md-6">
+                <div>
+                    <label class="custom-control custom-checkbox">
+                        <input id="input_search_edition_only" type="checkbox" class="custom-control-input" checked="checked">
+                        <span class="custom-control-indicator"></span>
+                        <span class="custom-control-description">N'afficher que les équipes inscrites pour cette édition</span>
+                    </label>
+                </div>
 
-        <button id="btn_search" class="btn btn-outline-primary pull-right mt-1"><i class="fa fa-search"></i> Rechercher</button>
+                <div>
+                    <label>Rechercher dans : </label>
+                    <select id="select_search_search_in" class="custom-select">
+                        <option value="both" selected>Joueurs et équipes</option>
+                        <option value="team">Equipes seulement</option>
+                        <option value="player">Joueurs uniquement</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <button id="btn_search" class="btn btn-outline-primary pull-right mt-1"><i class="fa fa-search"></i> Rechercher</button>
+            </div>
+        </div>
+
         <div class="clearfix"></div>
     </div>
 
