@@ -81,8 +81,12 @@ class PlayerController extends Controller
                 $inscription_end = \DateTime::createFromFormat( 'Y-m-d H:i:s', $em->getRepository( 'AdminBundle:Config' )->getOneBy( array( 'name' => 'inscription_end' ) ) );
                 $class = ( new \DateTime() > $inscription_end ? $player->getClass() : $em->getRepository( 'TeamBundle:Classe' )->findOneBy( array( 'id' => $request->get( 'class' ) ) ) );
 
+                $team = $player->getTeam();
+
+                if( $player->getClass() != $class )
+                    $team->setValid(false);
+
                 if( $user->getTeam() == $player->getTeam() ) {
-                    $team = $player->getTeam();
                     $remplacant = $player->getRemplacant() ? $em->getRepository( 'TeamBundle:Player' )->findOneBy( array( 'id' => $player->getRemplacant()->getId() ) ) : null;
 
                     if( $request->get( 'inverse' ) === 'true' ) {

@@ -101,6 +101,7 @@
                                     {% endfor %}
                                 </select>
                             </div>
+                            <small class="form-text text-muted">Le changement de classe entraînera une nouvelle validation de l'équipe par un organisateur</small>
                         </div>
 
                         <div class="alert alert-warning editPlayerClassChanged hidden-xs-up">
@@ -196,13 +197,11 @@
         <div class="col-md-12">
             <h2>Vos matchs</h2>
 
-            <div class="row">
-                {% for match in matchs %}
-                    {% include 'TeamBundle:Default:matchRow.html.twig' %}
-                {% else %}
-                    <i>Aucun match pour le moment</i>
-                {% endfor %}
-            </div>
+            {% for match in matchs %}
+                {% include 'TeamBundle:Default:matchRow.html.twig' %}
+            {% else %}
+                <i>Aucun match pour le moment</i>
+            {% endfor %}
         </div>
     </div>
 {% endblock %}
