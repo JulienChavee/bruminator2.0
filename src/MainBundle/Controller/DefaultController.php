@@ -20,6 +20,8 @@ class DefaultController extends Controller
 
         $matchs = $em->getRepository( 'MatchBundle:Matchs' )->findByDateInf( new \DateTime(), array( 'field' => 'date', 'type' => 'DESC' ), 10, false, true );
 
-        return $this->render('MainBundle:Default:index.html.twig', array( 'news' => $news, 'teams' => $teams, 'matchs' => $matchs ) );
+        $organisateurs = array_merge( $em->getRepository( 'UserBundle:User' )->findByRole( 'ROLE_ADMIN' ), $em->getRepository( 'UserBundle:User' )->findByRole( 'ROLE_SUPER_ADMIN' ) );
+
+        return $this->render('MainBundle:Default:index.html.twig', array( 'news' => $news, 'teams' => $teams, 'matchs' => $matchs, 'organisateurs' => $organisateurs ) );
     }
 }

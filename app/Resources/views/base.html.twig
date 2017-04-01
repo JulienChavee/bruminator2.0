@@ -143,11 +143,13 @@
                         <li class="nav-item {% if app.request.attributes.get('_route') matches '{^admin_.*$}' %}active{% endif %} dropdown">
                             <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Administration</a>
                             <div class="dropdown-menu">
-                                <a class="dropdown-item" href="{{ path('admin_news') }}">Gestion des news</a>
                                 <a class="dropdown-item" href="{{ path('admin_team') }}">Gestion des équipes</a>
                                 <a class="dropdown-item" href="{{ path('admin_match') }}">Gestion des matchs</a>
-                                <a class="dropdown-item" href="{{ path('admin_edition') }}">Gestion des éditions</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="{{ path('admin_news') }}">Gestion des news</a>
+                                <a class="dropdown-item" href="{{ path('admin_user') }}">Gestion des utilisateurs</a>
                                 <a class="dropdown-item" href="{{ path('admin_classe') }}">Gestion des classes</a>
+                                <a class="dropdown-item" href="{{ path('admin_edition') }}">Gestion des éditions</a>
                             </div>
                         </li>
                     {% endif %}

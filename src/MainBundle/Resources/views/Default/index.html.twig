@@ -58,6 +58,13 @@
                 <b>Finales :</b> du {{ 'finale'|config.start_date|format_date('dd MMMM') }} au {{ 'finale'|config.end_date|format_date('dd MMMM') }}<br>
                 <br>
                 <i>Ces dates sont à titre indicatif et peuvent être légèrement modifiées si besoin.</i>
+
+                <h3 class="mt-1">Liste des organisateurs</h3>
+                <ul>
+                    {% for organisateur in organisateurs %}
+                        <li>{{ organisateur.username }}</li>
+                    {% endfor %}
+                </ul>
             </div>
         </div>
         <!--<div class="tab-pane" id="messages" role="tabpanel">...</div>
