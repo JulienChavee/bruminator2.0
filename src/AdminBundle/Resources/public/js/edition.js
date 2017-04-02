@@ -32,10 +32,6 @@ $('.addEdition').on('click', function() {
             'start' : modal.find('#addEdition_InscriptionStart').val(),
             'end' : modal.find('#addEdition_InscriptionEnd').val()
         },
-        'qualification' : {
-            'start' : modal.find('#addEdition_QualificationStart').val(),
-            'end' : modal.find('#addEdition_QualificationEnd').val()
-        },
         'quart' : {
             'start' : modal.find('#addEdition_QuartStart').val(),
             'end' : modal.find('#addEdition_QuartEnd').val()
@@ -49,6 +45,21 @@ $('.addEdition').on('click', function() {
             'end' : modal.find('#addEdition_FinaleEnd').val()
         }
     };
+
+    if($('#addEdition_QualificationStart').length) {
+        date['qualification'] = {
+            'start': modal.find('#addEdition_QualificationStart').val(),
+            'end': modal.find('#addEdition_QualificationEnd').val()
+        };
+    } else {
+        $('.addEdition_RondeStart').each(function(index) {
+            date['ronde'+(index+1)] = {
+                'start': $(this).val(),
+                'end': $('#addEdition_Ronde'+(index+1)+'End').val()
+            };
+        });
+    }
+
 
     $.ajax({
         type: 'POST',
@@ -67,7 +78,7 @@ $('.addEdition').on('click', function() {
                 if ($('.table_editions_tbody').find('tr td').length == 1)
                     $('.table_editions_tbody').find('tr td').remove();
 
-                $('.table_editions_tbody').prepend(data.return);
+                $('.table_editions_tbody').append(data.return);
 
                 $('.modal_alert_success').modal('show');
                 setTimeout(function () {

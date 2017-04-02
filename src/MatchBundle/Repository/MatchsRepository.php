@@ -73,7 +73,7 @@ class MatchsRepository extends \Doctrine\ORM\EntityRepository
         return $qb->getQuery()->getResult();
     }
 
-    function findMatchsPhasesFinales() {
+    function findMatchsPhasesFinales( $edition ) {
         $qb = $this->createQueryBuilder( 'm' );
 
         $qb->where($qb->expr()->orX()
@@ -82,6 +82,11 @@ class MatchsRepository extends \Doctrine\ORM\EntityRepository
             ->add( 'm.type = ?3' )
             ->add( 'm.type = ?4' )
         );
+
+        if( !empty( $edition ) ) {
+            $qb->andWhere( 'm.edition = ?5' );
+            $qb->setParameter( '5', $edition );
+        }
 
         $qb->orderBy( 'm.id' );
 
@@ -93,19 +98,29 @@ class MatchsRepository extends \Doctrine\ORM\EntityRepository
         return $qb->getQuery()->getResult();
     }
 
-    function findMatchWithoutResult() {
+    function findMatchWithoutResult( $edition ) {
         $qb = $this->createQueryBuilder( 'm' );
 
         $qb->leftJoin( 'm.matchResult', 'mr', 'mr.match = m.id' )
             ->where( 'mr.id IS NULL');
 
+        if( !empty( $edition ) ) {
+            $qb->andWhere( 'm.edition = ?1' );
+            $qb->setParameter( '1', $edition );
+        }
+
         return $qb->getQuery()->getResult();
     }
 
-    function findMatchAfterBarrage() {
+    function findMatchAfterBarrage( $edition ) {
         $qb = $this->createQueryBuilder( 'm' );
 
         $qb->where('m.defense is null' );
+
+        if( !empty( $edition ) ) {
+            $qb->andWhere( 'm.edition = ?1' );
+            $qb->setParameter( '1', $edition );
+        }
 
         return $qb->getQuery()->getSingleResult();
     }

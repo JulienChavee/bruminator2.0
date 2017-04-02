@@ -80,6 +80,7 @@ class ControlMatch
                     $match->setDate( NULL );
                     $match->setArbitre( NULL );
                     $match->setType( 'Ronde 1' );
+                    $match->setEdition( $this->em->getRepository( 'MainBundle:Edition' )->findLastEdition() );
 
                     $this->em->persist( $match );
 
@@ -94,6 +95,8 @@ class ControlMatch
                 $match->setDate( NULL );
                 $match->setArbitre( NULL );
                 $match->setType( 'Ronde 1' );
+                $match->setEdition( $this->em->getRepository( 'MainBundle:Edition' )->findLastEdition() );
+
                 $this->em->persist( $match );
 
                 $rondes[ 'ronde_actuelle'] = 1;
@@ -140,6 +143,7 @@ class ControlMatch
                         $match->setDate(NULL);
                         $match->setArbitre(NULL);
                         $match->setType('Ronde ' . ($rondes[ 'ronde_actuelle' ] + 1) );
+                        $match->setEdition( $this->em->getRepository( 'MainBundle:Edition' )->findLastEdition() );
 
                         $this->em->persist($match);
 
@@ -212,6 +216,7 @@ class ControlMatch
         $match->setDate( NULL );
         $match->setArbitre( NULL );
         $match->setType( 'Match de barrage' );
+        $match->setEdition( $this->em->getRepository( 'MainBundle:Edition' )->findLastEdition() );
 
         $teams = array_slice( $teams, 0, count( $teams ) - 2 );
 
@@ -231,6 +236,7 @@ class ControlMatch
                 $match->setDate( NULL );
                 $match->setArbitre( NULL );
                 $match->setType( 'Quart de finale' );
+                $match->setEdition( $this->em->getRepository( 'MainBundle:Edition' )->findLastEdition() );
 
                 $this->em->persist( $match );
             }

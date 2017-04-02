@@ -47,15 +47,16 @@
         <div class="tab-pane" id="informations" role="tabpanel">
             <h2 class="mt-2">Dates du tournoi</h2>
             <div class="mt-1">
-                <b>Inscriptions :</b> du {{ 'inscription_start'|config|format_datetime('dd MMMM yyyy à HH:mm') }} au {{ 'inscription_end'|config|format_datetime('dd MMMM yyyy à HH:mm') }}<br>
+                {% set editionDate = getEditionDates() %}
+                <b>Inscriptions :</b> du {{ editionDate.inscription.start }} au {{ editionDate.inscription.end }}<br>
                 {% if 'type_tournoi'|config == 'ronde' %}
                     {% for val in (1..'rondes'|config.total) %}
-                        <b>Ronde {{ val }} :</b> du {{ ('ronde' ~ val)|config.start_date|format_datetime('dd MMMM') }} au {{ ('ronde' ~ val)|config.end_date|format_datetime('dd MMMM yyyy') }}<br>
+                        <b>Ronde {{ val }} :</b> du {{ attribute(editionDate,'ronde'~val).start }} au {{  attribute(editionDate,'ronde'~val).end }}<br>
                     {% endfor %}
                 {% endif %}
-                <b>Quarts de finale :</b> du {{ 'quarts_finale'|config.start_date|format_date('dd MMMM') }} au {{ 'quarts_finale'|config.end_date|format_date('dd MMMM') }}<br>
-                <b>Demi-finales :</b> du {{ 'demi_finale'|config.start_date|format_date('dd MMMM') }} au {{ 'demi_finale'|config.end_date|format_date('dd MMMM') }}<br>
-                <b>Finales :</b> du {{ 'finale'|config.start_date|format_date('dd MMMM') }} au {{ 'finale'|config.end_date|format_date('dd MMMM') }}<br>
+                <b>Quarts de finale :</b> du {{ editionDate.quart.start }} au {{ editionDate.quart.end }}<br>
+                <b>Demi-finales :</b> du {{ editionDate.demi.start }} au {{ editionDate.demi.end }}<br>
+                <b>Finales :</b> du {{ editionDate.finale.start }} au {{ editionDate.finale.end }}<br>
                 <br>
                 <i>Ces dates sont à titre indicatif et peuvent être légèrement modifiées si besoin.</i>
 

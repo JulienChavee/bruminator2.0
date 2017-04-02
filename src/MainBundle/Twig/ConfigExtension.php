@@ -26,7 +26,8 @@ class ConfigExtension extends \Twig_Extension {
         return array(
             new \Twig_SimpleFunction( 'isEndRonde', array( $this, 'isEndRonde' ) ),
             new \Twig_SimpleFunction( 'startFinal', array( $this, 'startFinal' ) ),
-            new \Twig_SimpleFunction( 'streamOn', array( $this, 'streamOn' ) )
+            new \Twig_SimpleFunction( 'streamOn', array( $this, 'streamOn' ) ),
+            new \Twig_SimpleFunction( 'getEditionDates', array( $this, 'getEditionDates' ) )
         );
     }
 
@@ -39,6 +40,17 @@ class ConfigExtension extends \Twig_Extension {
             return json_decode( $value, true );
         else
             return $value;
+    }
+
+    public function getEditionDates( $edition = null ) {
+        $em = $this->doctrine->getManager();
+
+        if( is_null( $edition ) )
+            $edition = $em->getRepository( 'MainBundle:Edition' )->findLastEdition();
+        else
+            $edition = $em->getRepository( 'MainBundle:Edition' )->findOneBy( array( 'name' => $edition ) );
+
+        return $edition->getData()[ 'date' ];
     }
 
     public function isEndRonde() {

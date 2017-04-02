@@ -55,51 +55,67 @@
                                 </div>
                             </div>
 
-                            <div class="mb-1">
-                                <div class="form-group">
-                                    <label for="addEdition_QualificationStart">Date des qualifications : du </label>
-                                    <input type="text" id="addEdition_QualificationStart" placeholder="Début des inscriptions" class="form-control addEdition_Date">
-                                </div>
+                            {% if 'type_tournoi'|config == 'ronde' %}
+                                {% for val in (1..'rondes'|config.total) %}
+                                    <div class="mb-1">
+                                        <div class="form-group">
+                                            <label for="addEdition_Ronde{{ val }}Start">Date de la ronde {{ val }} : du </label>
+                                            <input type="text" id="addEdition_Ronde{{ val }}Start" placeholder="Début ronde {{ val }}" class="form-control addEdition_Date addEdition_RondeStart">
+                                        </div>
 
-                                <div class="form-group">
-                                    <label for="addEdition_QualificationEnd"> au </label>
-                                    <input type="text" id="addEdition_QualificationEnd" placeholder="Fin des inscriptions" class="form-control addEdition_Date">
+                                        <div class="form-group">
+                                            <label for="addEdition_Ronde{{ val }}End"> au </label>
+                                            <input type="text" id="addEdition_Ronde{{ val }}End" placeholder="Fin ronde {{ val }}" class="form-control addEdition_Date addEdition_RondeEnd">
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            {% else %}
+                                <div class="mb-1">
+                                    <div class="form-group">
+                                        <label for="addEdition_QualificationStart">Date des qualifications : du </label>
+                                        <input type="text" id="addEdition_QualificationStart" placeholder="Début des qualifications" class="form-control addEdition_Date">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="addEdition_QualificationEnd"> au </label>
+                                        <input type="text" id="addEdition_QualificationEnd" placeholder="Fin des qualifications" class="form-control addEdition_Date">
+                                    </div>
                                 </div>
-                            </div>
+                            {% endif %}
 
                             <div class="mb-1">
                                 <div class="form-group">
                                     <label for="addEdition_QuartStart">Date des quarts : du </label>
-                                    <input type="text" id="addEdition_QuartStart" placeholder="Début des inscriptions" class="form-control addEdition_Date">
+                                    <input type="text" id="addEdition_QuartStart" placeholder="Début des quarts" class="form-control addEdition_Date">
                                 </div>
 
                                 <div class="form-group">
                                     <label for="addEdition_QuartEnd"> au </label>
-                                    <input type="text" id="addEdition_QuartEnd" placeholder="Fin des inscriptions" class="form-control addEdition_Date">
+                                    <input type="text" id="addEdition_QuartEnd" placeholder="Fin des quarts" class="form-control addEdition_Date">
                                 </div>
                             </div>
 
                             <div class="mb-1">
                                 <div class="form-group">
                                     <label for="addEdition_DemiStart">Date des demis : du </label>
-                                    <input type="text" id="addEdition_DemiStart" placeholder="Début des inscriptions" class="form-control addEdition_Date">
+                                    <input type="text" id="addEdition_DemiStart" placeholder="Début des demis" class="form-control addEdition_Date">
                                 </div>
 
                                 <div class="form-group">
                                     <label for="addEdition_DemiEnd"> au </label>
-                                    <input type="text" id="addEdition_DemiEnd" placeholder="Fin des inscriptions" class="form-control addEdition_Date">
+                                    <input type="text" id="addEdition_DemiEnd" placeholder="Fin des demis" class="form-control addEdition_Date">
                                 </div>
                             </div>
 
                             <div class="mb-1">
                                 <div class="form-group">
                                     <label for="addEdition_FinaleStart">Date des finales : du </label>
-                                    <input type="text" id="addEdition_FinaleStart" placeholder="Début des inscriptions" class="form-control addEdition_Date">
+                                    <input type="text" id="addEdition_FinaleStart" placeholder="Début de la finale" class="form-control addEdition_Date">
                                 </div>
 
                                 <div class="form-group">
                                     <label for="addEdition_FinaleEnd"> au </label>
-                                    <input type="text" id="addEdition_FinaleEnd" placeholder="Fin des inscriptions" class="form-control addEdition_Date">
+                                    <input type="text" id="addEdition_FinaleEnd" placeholder="Fin de la finale" class="form-control addEdition_Date">
                                 </div>
                             </div>
                         </div>
