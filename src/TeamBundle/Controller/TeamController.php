@@ -40,7 +40,7 @@ class TeamController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $now = new DateTime( 'now' );
-        $inscription_end = DateTime::createFromFormat( 'Y-m-d H:i:s', $em->getRepository( 'AdminBundle:Config' )->getOneBy( array( 'name' => 'inscription_end' ) ) );
+        $inscription_end = DateTime::createFromFormat( 'Y-m-d H:i:s', $em->getRepository( 'MainBundle:Edition' )->getDate( 'inscription', 'end' ) );
 
         if( $now < $inscription_end ) {
             $user = $this->getUser();

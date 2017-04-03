@@ -37,7 +37,7 @@
             </div>
 
             <div class="col-md-4 offset-md-1 mt-1">
-                {% if date('inscription_end'|config) > date() %}
+                {% if date(getEditionDates().inscription.end) > date() %}
                     {% include 'MainBundle:Default:lastTeam.html.twig' %}
                 {% else %}
                     {% include 'MainBundle:Default:lastMatch.html.twig' %}
@@ -48,15 +48,17 @@
             <h2 class="mt-2">Dates du tournoi</h2>
             <div class="mt-1">
                 {% set editionDate = getEditionDates() %}
-                <b>Inscriptions :</b> du {{ editionDate.inscription.start }} au {{ editionDate.inscription.end }}<br>
+                <b>Inscriptions :</b> du {{ editionDate.inscription.start|format_date('dd MMMM à HH:mm') }} au {{ editionDate.inscription.end|format_date('dd MMMM à HH:mm') }}<br>
                 {% if 'type_tournoi'|config == 'ronde' %}
                     {% for val in (1..'rondes'|config.total) %}
-                        <b>Ronde {{ val }} :</b> du {{ attribute(editionDate,'ronde'~val).start }} au {{  attribute(editionDate,'ronde'~val).end }}<br>
+                        <b>Ronde {{ val }} :</b> du {{ attribute(editionDate,'ronde'~val).start|format_date('dd MMMM') }} au {{  attribute(editionDate,'ronde'~val).end|format_date('dd MMMM') }}<br>
                     {% endfor %}
+                {% else %}
+                    <b>Qualifications :</b> du {{ editionDate.qualification.start|format_date('dd MMMM') }} au {{ editionDate.qualification.end|format_date('dd MMMM') }}<br>
                 {% endif %}
-                <b>Quarts de finale :</b> du {{ editionDate.quart.start }} au {{ editionDate.quart.end }}<br>
-                <b>Demi-finales :</b> du {{ editionDate.demi.start }} au {{ editionDate.demi.end }}<br>
-                <b>Finales :</b> du {{ editionDate.finale.start }} au {{ editionDate.finale.end }}<br>
+                <b>Quarts de finale :</b> du {{ editionDate.quart.start|format_date('dd MMMM') }} au {{ editionDate.quart.end|format_date('dd MMMM') }}<br>
+                <b>Demi-finales :</b> du {{ editionDate.demi.start|format_date('dd MMMM') }} au {{ editionDate.demi.end|format_date('dd MMMM') }}<br>
+                <b>Finales :</b> du {{ editionDate.finale.start|format_date('dd MMMM') }} au {{ editionDate.finale.end|format_date('dd MMMM') }}<br>
                 <br>
                 <i>Ces dates sont à titre indicatif et peuvent être légèrement modifiées si besoin.</i>
 

@@ -19,4 +19,11 @@ class EditionRepository extends \Doctrine\ORM\EntityRepository
 
         return $qb->getQuery()->getSingleResult();
     }
+
+    public function getDate( $date, $type = null ) {
+        if( !is_null( $type ) )
+            return $this->findLastEdition()->getData()['date']->$date->$type;
+        else
+            return $this->findLastEdition()->getData()['date']->$date;
+    }
 }

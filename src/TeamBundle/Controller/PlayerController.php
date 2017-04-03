@@ -78,7 +78,7 @@ class PlayerController extends Controller
                 $em = $this->getDoctrine()->getManager();
                 $player = $em->getRepository( 'TeamBundle:Player' )->findOneBy( array( 'id' => $request->get( 'id' ) ) );
 
-                $inscription_end = \DateTime::createFromFormat( 'Y-m-d H:i:s', $em->getRepository( 'AdminBundle:Config' )->getOneBy( array( 'name' => 'inscription_end' ) ) );
+                $inscription_end = \DateTime::createFromFormat( 'Y-m-d H:i:s', $em->getRepository( 'MainBundle:Edition' )->getDate( 'inscription', 'end' ) );
                 $class = ( new \DateTime() > $inscription_end ? $player->getClass() : $em->getRepository( 'TeamBundle:Classe' )->findOneBy( array( 'id' => $request->get( 'class' ) ) ) );
 
                 $team = $player->getTeam();

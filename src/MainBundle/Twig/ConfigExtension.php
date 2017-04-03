@@ -57,11 +57,11 @@ class ConfigExtension extends \Twig_Extension {
         $em = $this->doctrine->getManager();
 
         $rondes = json_decode( $em->getRepository( 'AdminBundle:Config' )->getOneBy( array( 'name' => 'rondes' ) ) );
-        $ronde = json_decode( $em->getRepository( 'AdminBundle:Config' )->getOneBy( array( 'name' => 'ronde'.$rondes->ronde_actuelle ) ) );
+        $ronde = json_decode( $em->getRepository( 'MainBundle:Edition' )->getDate( 'ronde'.$rondes->ronde_actuelle ) );
 
         if( $rondes->ronde_actuelle < $rondes->total ) {
             $now = new \DateTime( 'now' );
-            $endRonde = \DateTime::createFromFormat( 'Y-m-d', $ronde->end_date );
+            $endRonde = \DateTime::createFromFormat( 'Y-m-d', $ronde->end );
 
             if ( $now >= $endRonde )
                 return true;
@@ -75,11 +75,11 @@ class ConfigExtension extends \Twig_Extension {
         $em = $this->doctrine->getManager();
 
         $rondes = json_decode( $em->getRepository( 'AdminBundle:Config' )->getOneBy( array( 'name' => 'rondes' ) ) );
-        $ronde = json_decode( $em->getRepository( 'AdminBundle:Config' )->getOneBy( array( 'name' => 'ronde'.$rondes->total ) ) );
+        $ronde = json_decode( $em->getRepository( 'MainBundle:Edition' )->getDate( 'ronde'.$rondes->total ) );
 
         if( $rondes->ronde_actuelle == $rondes->total ) {
             $now = new \DateTime( 'now' );
-            $endRonde = \DateTime::createFromFormat( 'Y-m-d', $ronde->end_date );
+            $endRonde = \DateTime::createFromFormat( 'Y-m-d', $ronde->end );
 
             $matchs = $em->getRepository( 'MatchBundle:Matchs' )->findBy( array( 'type' => 'Quart de finale' ) );
 

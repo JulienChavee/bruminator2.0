@@ -19,7 +19,7 @@ class MatchsRepository extends \Doctrine\ORM\EntityRepository
         if( $onlyThisEdition ) {
             $qb->andWhere( 'm.date >= ?3' );
             $qb->andWhere( 'm.type != ?4' );
-            $date = $this->getEntityManager()->getRepository( 'AdminBundle:Config' )->getOneBy( array( 'name' => 'inscription_end' ) );
+            $date = $this->getEntityManager()->getRepository( 'MainBundle:Edition' )->getDate( 'inscription' ,'end' );
             $qb->setParameter( '3', $date );
             $qb->setParameter( '4', 'Match de barrage' );
         }

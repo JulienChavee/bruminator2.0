@@ -63,7 +63,7 @@
             </div>
         </div>
     {% else %}
-        {% if date('inscription_end'|config) > date() %}
+        {% if date(getEditionDate().inscription.end) > date() %}
             <div class="alert alert-danger">
                 Les inscriptions ne sont pas encore terminées
             </div>
