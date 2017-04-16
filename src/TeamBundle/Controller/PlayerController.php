@@ -169,16 +169,9 @@ class PlayerController extends Controller
                     $errors_validator = $this->get( 'validator' )->validate( $player );
                     // TODO : Détecter les problèmes de changements de joueur si c'est un joueur qui existe déjà (et donc qui est dans une équipe)
                     if( count( $errors_validator ) == 0 ) {
-                        $em->getConnection()->beginTransaction();
                         $em->flush();
-                        $errors_teamControl = $this->get( 'team.control_team' )->checkCompo( $team->getPlayers() );
-                        if(count( $errors_teamControl ) == 0) {
-                            $em->getConnection()->commit();
-                            $response = new Response( json_encode( array( 'status' => 'ok', 'return' => $this->render('TeamBundle:Default:playerRow.html.twig', array( 'player' => $player, 'team' => $team ) )->getContent() ) ) );
-                        } else {
-                            $em->getConnection()->rollBack();
-                            $response = new Response( json_encode( array( 'status' => 'ko', 'message' => 'Impossible de modifier le joueur', 'errors' => $this->render( 'TeamBundle:Default:validation.html.twig', array( 'errors_validator' => $errors_teamControl ) )->getContent(), 'debug' => '' ) ) );
-                        }
+                        $errors_teamControl = $this->render( 'TeamBundle:Default:teamErrors.html.twig', array( 'errors' => $this->get( 'team.control_team' )->checkCompo( $team->getPlayers() ) ) )->getContent();
+                        $response = new Response( json_encode( array( 'status' => 'ok', 'return' => $this->render('TeamBundle:Default:playerRow.html.twig', array( 'player' => $player, 'team' => $team ) )->getContent(), 'errors' => $errors_teamControl ) ) );
                     } else
                         $response = new Response( json_encode( array( 'status' => 'ko', 'message' => 'Impossible de modifier le joueur', 'errors' => $this->render( 'TeamBundle:Default:validation.html.twig', array( 'errors_validator' => $errors_validator ) )->getContent(), 'debug' => '' ) ) );
                 } else

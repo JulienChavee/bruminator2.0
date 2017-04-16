@@ -81,6 +81,14 @@ $('.editPlayer').on('click', function() {
                 line = $('div[data-id="' + id + '"]');
                 line.effect("highlight", {color: '#c9c9c9'}, 5000);
 
+                console.log(data.errors);
+
+                if($('#div-team-errors').length > 0) {
+                    $('#div-team-errors').replaceWith(data.errors);
+                } else {
+                    $('#editPlayer').after(data.errors);
+                }
+
                 $('.modal_alert_success').modal('show');
                 setTimeout(function () {
                     $(".modal_alert_success").modal('hide');

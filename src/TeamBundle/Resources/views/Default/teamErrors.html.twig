@@ -1,0 +1,10 @@
+{% if errors|length > 0 %}
+    <div id="div-team-errors" class="alert alert-danger">
+        Votre équipe n'est <b>pas valide</b>, veuillez corriger les points suivants :<br>
+        <ul>
+            {% for error in errors %}
+                <li>{{ error.message }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}
