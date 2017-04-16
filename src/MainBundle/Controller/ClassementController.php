@@ -14,7 +14,7 @@ class ClassementController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $teams = $em->getRepository( 'TeamBundle:Team' )->findBy( array( 'valid' => true ) );
+        $teams = $em->getRepository( 'TeamBundle:Team' )->findBy( array( 'valid' => true, 'registered' => true ) );
 
         $classement = $this->get( 'team.control_team')->getClassement( $teams );
 
