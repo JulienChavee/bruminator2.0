@@ -154,10 +154,36 @@
         </div>
     </div>
 
-    {% if not team.paid %}
+    {% set errors = checkCompo(team) %}
+
+    {% if not team.registered %}
         <div class="alert alert-danger">
-            <i class="fa fa-exclamation-triangle"></i> Nous n'avons toujours pas reçu l'<b>argent de votre inscription</b>. Veuillez contacter un organisateur afin d'effectuer le paiement
+            <i class="fa fa-exclamation-triangle"></i> Votre équipe <b>n'est pas inscrite</b> pour l'édition en cours. Voulez-vous inscrire votre équipe ?<br>
+            {% if  errors|length > 0 %}
+                Toutefois, la composition actuelle de votre équipe n'est pas correcte par rapport aux règles du tournoi. Il faudra la modifier afin que votre équipe soit validée par un organisateur<br>
+            {% endif %}
+            <button class="btn btn-outline-primary" data-action="register" data-type="yes" data-id="{{ team.id }}">Oui</button>
+            <button class="btn btn-outline-primary" data-action="register" data-type="new"  data-id="{{ team.id }}" disabled="disabled">Créer une nouvelle équipe (temporairement désactivé)</button>
         </div>
+    {% endif %}
+
+    {% if team.registered %}
+        {% if errors|length > 0 %}
+            <div class="alert alert-danger">
+                Votre équipe n'est <b>pas valide</b>, veuillez corriger les points suivants :<br>
+                <ul>
+                    {% for error in errors %}
+                        <li>{{ error.message }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+
+        {% if not team.paid %}
+            <div class="alert alert-warning">
+                <i class="fa fa-exclamation-triangle"></i> Nous n'avons toujours pas reçu l'<b>argent de votre inscription</b>. Veuillez contacter un organisateur afin d'effectuer le paiement
+            </div>
+        {% endif %}
     {% endif %}
 
     <div class="mb-2">
@@ -170,10 +196,14 @@
         </div>
 
         <div class="col-md-4 bg-inverse p-2 text-xs-center">
-            {% if team.valid %}
-                <span class="text-success"><i class="fa fa-check"></i> Validée</span>
+            {% if team.registered %}
+                <span class="text-danger"><i class="fa fa-close"></i> Non inscrite</span>
             {% else %}
-                <span class="text-danger"><i class="fa fa-close"></i> Non validée</span>
+                {% if team.valid %}
+                    <span class="text-success"><i class="fa fa-check"></i> Validée</span>
+                {% else %}
+                    <span class="text-danger"><i class="fa fa-close"></i> Non validée</span>
+                {% endif %}
             {% endif %}
         </div>
 

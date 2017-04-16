@@ -14,7 +14,7 @@ class TeamController extends Controller
      */
     public function indexAction() {
         $em = $this->getDoctrine()->getManager();
-        $array_teams = $em->getRepository( 'TeamBundle:Team')->findAll();
+        $array_teams = $em->getRepository( 'TeamBundle:Team')->findBy( array( 'registered' => true ) );
 
         return $this->render( 'AdminBundle:Team:index.html.twig', array( 'array_teams' => $array_teams ) );
     }
@@ -64,6 +64,31 @@ class TeamController extends Controller
             }
             catch( \Exception $e ) {
                 $response = new Response( json_encode( array( 'status' => 'ko', 'message' => 'Une erreur inconnue s\'est produite', 'debug' => $e->getMessage() ) ) );
+            }
+            $response->headers->set( 'Content-Type', 'application/json' );
+            return $response;
+        }
+        $response = new Response( json_encode( array( 'status' => 'ko', 'message' => 'Accès non autorisé', 'debug' => 'Bad request' ) ) );
+        $response->headers->set( 'Content-Type', 'application/json') ;
+        return $response;
+    }
+
+    /**
+     * @Route("/ajax/search", name="admin_team_ajax_search")
+     */
+    public function ajaxSearch( Request $request ) {
+        if( $request->isXmlHttpRequest() ) {
+            try {
+                $em = $this->getDoctrine()->getManager();
+
+                $terms = preg_replace( '/^(.*)+$/', '%$0%', explode( ' ', $request->get( 'search_text' ) ) );
+
+                $teams = $em->getRepository( 'TeamBundle:Team' )->search( $terms, $request->get( 'only_actual_edition' ), $request->get( 'only_player' ), $request->get( 'only_team' ) );
+
+                $response = new Response( json_encode( array( 'status' => 'ok', 'return' => $this->render( 'AdminBundle:Team:teamTable.html.twig', array( 'array_teams' => $teams ) )->getContent() ) ) );
+            }
+            catch( \Exception $e ) {
+                $response = new Response( json_encode( array( 'status' => 'ko', 'message' => 'Une erreur inconnue s\'est produite', 'debug' => $e->__toString() ) ) );
             }
             $response->headers->set( 'Content-Type', 'application/json' );
             return $response;

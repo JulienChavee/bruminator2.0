@@ -32,7 +32,7 @@ class ControlMatch
     }
 
     public function generateMatch() {
-        if( count( $this->em->getRepository( 'MatchBundle:Matchs' )->findMatchWithoutResult() ) == 0 ) {
+        if( count( $this->em->getRepository( 'MatchBundle:Matchs' )->findMatchWithoutResult( $this->em->getRepository( 'MainBundle:Edition' )->findLastEdition() ) ) == 0 ) {
             if( $this->typeTournoi == 'ronde' ) {
                 if( $this->rondes[ 'ronde_actuelle' ] == $this->rondes[ 'total' ] )
                     return $this->generatePhaseFinale();
@@ -47,7 +47,7 @@ class ControlMatch
 
 
     private function generateNextRonde() {
-        $teams = $this->em->getRepository( 'TeamBundle:Team' )->findBy( array( 'valid' => 1 ), array( 'inscriptionDate' => 'asc' ) );
+        $teams = $this->em->getRepository( 'TeamBundle:Team' )->findBy( array( 'valid' => 1, 'registered' => 1 ), array( 'inscriptionDate' => 'asc' ) );
         $config =  $this->em->getRepository( 'AdminBundle:Config' )->findOneBy( array( 'name' => 'rondes' ) );
         $rondes = json_decode( $config->getValue(), true );
 

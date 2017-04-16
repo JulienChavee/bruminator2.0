@@ -57,6 +57,36 @@ $('.addTeam').on('click', function() {
     });
 });
 
+$('button[data-action="register"]').on('click', function(){
+    var id = $(this).data('id');
+    var type = $(this).data('type');
+
+    $.ajax({
+        type: 'POST',
+        url: Routing.generate('team_ajax_register_to_new_edition'),
+        data: {
+            id: id,
+            action: type=='yes' ? 'register' : 'new'
+        },
+        error: function (request, error) {
+            console.log("Erreur : responseText: " + request.responseText);
+        },
+        success: function (data) {
+            if (data.status == 'ok') {
+                if(type=='new')
+                    location.href = Routing.generate('team_registration');
+                else
+                    location.href = Routing.generate('team_homepage');
+            } else {
+                $('.modal-body-more-info').html(data.message);
+
+                $('.modal_alert_error').modal('show');
+                console.log(data.debug);
+            }
+        }
+    });
+});
+
 $('.disponibilites').on('click', 'i[data-action="edit"]', function() {
     var id = $(this).data('id');
 

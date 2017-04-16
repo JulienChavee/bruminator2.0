@@ -73,7 +73,7 @@ class MatchsRepository extends \Doctrine\ORM\EntityRepository
         return $qb->getQuery()->getResult();
     }
 
-    function findMatchsPhasesFinales( $edition ) {
+    function findMatchsPhasesFinales( $edition = null ) {
         $qb = $this->createQueryBuilder( 'm' );
 
         $qb->where($qb->expr()->orX()
@@ -98,7 +98,7 @@ class MatchsRepository extends \Doctrine\ORM\EntityRepository
         return $qb->getQuery()->getResult();
     }
 
-    function findMatchWithoutResult( $edition ) {
+    function findMatchWithoutResult( $edition = null ) {
         $qb = $this->createQueryBuilder( 'm' );
 
         $qb->leftJoin( 'm.matchResult', 'mr', 'mr.match = m.id' )
@@ -112,7 +112,7 @@ class MatchsRepository extends \Doctrine\ORM\EntityRepository
         return $qb->getQuery()->getResult();
     }
 
-    function findMatchAfterBarrage( $edition ) {
+    function findMatchAfterBarrage( $edition = null ) {
         $qb = $this->createQueryBuilder( 'm' );
 
         $qb->where('m.defense is null' );

@@ -14,11 +14,17 @@ class ControlTeam {
     public function checkCompo( $players ) {
         $errors = array();
 
-        // TODO : Tenir compte du type de tournoi pour faire les check automatiquement
-        //$errors = array_merge( $errors, $this->checkPillier( $players ) );
-        //$errors = array_merge( $errors, $this->checkBannedClass( $players ) );
-        $errors = array_merge( $errors, $this->checkDoublon( $players ) );
-        if( count( $errors ) == 0 )
+        $configTournoi = json_decode( $this->em->getRepository( 'AdminBundle:Config' )->getOneBy( array( 'name' => 'composition_team' ) ) );
+
+        $errors = array_merge( $errors, $this->checkNumberPlayers( $players ) );
+
+        if( in_array( 'pillier', $configTournoi ) )
+            $errors = array_merge( $errors, $this->checkPillier( $players ) );
+        if( in_array( 'banned_classed', $configTournoi ) )
+            $errors = array_merge( $errors, $this->checkBannedClass( $players ) );
+        if( in_array( 'doublon', $configTournoi ) )
+            $errors = array_merge( $errors, $this->checkDoublon( $players ) );
+        if( in_array( 'synergie', $configTournoi ) )
             $errors = array_merge( $errors, $this->checkSynergie( $players ) );
 
         return $errors;
@@ -104,6 +110,23 @@ class ControlTeam {
 
         if( count( array_unique( $classes, SORT_REGULAR ) ) < count( $classes ) )
             $errors[][ 'message' ] = "Vous ne pouvez pas avoir de classe doublon";
+
+        return $errors;
+    }
+
+    private function checkNumberPlayers( $players ) {
+        $errors = array();
+
+        $nbPlayer = (int)$this->em->getRepository( 'AdminBundle:Config' )->getOneBy( array( 'name' => 'nb_players_team' ) );
+
+        $i = 0;
+        foreach( $players as $player ) {
+            if( !$player->getIsRemplacant() )
+                $i++;
+        }
+
+        if( $i != $nbPlayer )
+            $errors[][ 'message' ] = "Le nombre de joueur dans l'équipe est incorrect (".$i."/".$nbPlayer.")";
 
         return $errors;
     }

@@ -1,0 +1,7 @@
+{% for team in array_teams %}
+    {% include 'AdminBundle:Team:teamRow.html.twig' %}
+{% else %}
+    <tr>
+        <td colspan="6"><i>Aucune équipe</i></td>
+    </tr>
+{% endfor %}

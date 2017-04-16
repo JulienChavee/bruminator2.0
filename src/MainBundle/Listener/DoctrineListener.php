@@ -116,7 +116,14 @@ class DoctrineListener
                     $em->flush();
                 }
                 break;
+
+            default:
+                $em->flush();
         }
+
+        // HACK : http://stackoverflow.com/a/23673809
+        // Should be fixed in doctrine 2.6.0 : https://github.com/doctrine/doctrine2/issues/3468
+        $em->clear();
     }
 
     private function createLog( $action, $entity ) {

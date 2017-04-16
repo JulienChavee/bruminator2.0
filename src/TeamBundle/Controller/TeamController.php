@@ -209,6 +209,41 @@ class TeamController extends Controller
     }
 
     /**
+     * @Route("/ajax/registerToNewEdition", name="team_ajax_register_to_new_edition")
+     */
+    public function ajaxRegisterToNewEdition( Request $request ) {
+        if( $request->isXmlHttpRequest() ) {
+            try {
+                $em = $this->getDoctrine()->getManager();
+                $user = $this->getUser();
+                $team = $user->getTeam();
+
+                if( $request->get( 'action' ) == 'register' ) {
+                    $team->setRegistered( true );
+                } else {
+                    foreach( $team->getPlayers() as $player )
+                        $player->setTeam( null );
+
+                    $user->setTeam( null );
+                }
+
+                $em->flush();
+
+                $response = new Response( json_encode( array( 'status' => 'ok' ) ) );
+            }
+            catch( \Exception $e ) {
+                $response = new Response( json_encode( array( 'status' => 'ko', 'message' => 'Une erreur inconnue s\'est produite', 'debug' => $e->__toString() ) ) );
+            }
+            $response->headers->set( 'Content-Type', 'application/json' );
+            return $response;
+        }
+
+        $response = new Response( json_encode( array( 'status' => 'ko', 'message' => 'Accès non autorisé', 'debug' => 'Bad request' ) ) );
+        $response->headers->set( 'Content-Type', 'application/json') ;
+        return $response;
+    }
+
+    /**
      * @Route("/ajax/search", name="team_ajax_search")
      */
     public function ajaxSearch( Request $request ) {
