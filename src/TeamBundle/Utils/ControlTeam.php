@@ -132,7 +132,7 @@ class ControlTeam {
     }
 
     public function getPoints( $team, $isAdversaire ) {
-        $matchs = $this->em->getRepository( 'MatchBundle:Matchs' )->findByTeam( $team->getId(), false, true );
+        $matchs = $this->em->getRepository( 'MatchBundle:Matchs' )->findByTeam( $team->getId(), false, $this->em->getRepository( 'MainBundle:Edition' )->findLastEdition(), true );
         $points[ 'nb_match' ] = 0;
         $points[ 'pointsSuisse' ] = 0;
         $points[ 'pointsGoulta' ] = 0;

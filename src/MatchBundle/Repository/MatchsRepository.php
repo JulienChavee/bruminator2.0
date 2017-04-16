@@ -10,21 +10,26 @@ namespace MatchBundle\Repository;
  */
 class MatchsRepository extends \Doctrine\ORM\EntityRepository
 {
-    function findByTeam( $id, $ordered = false, $onlyThisEdition = false ) {
+    function findByTeam( $id, $ordered = false, $edition = null, $isForLadder = false ) {
         $qb = $this->createQueryBuilder( 'm' );
         $qb->where( $qb->expr()->orX()
             ->add( 'm.attack = ?1' )
             ->add( 'm.defense = ?2' )
         );
-        if( $onlyThisEdition ) {
-            $qb->andWhere( 'm.date >= ?3' );
+
+        if( $edition ) {
+            $qb->andWhere( 'm.edition = ?3' );
+            $qb->setParameter( '3', $edition );
+        }
+
+        if( $isForLadder ) {
             $qb->andWhere( 'm.type != ?4' );
-            $date = $this->getEntityManager()->getRepository( 'MainBundle:Edition' )->getDate( 'inscription' ,'end' );
-            $qb->setParameter( '3', $date );
             $qb->setParameter( '4', 'Match de barrage' );
         }
+
         if( $ordered )
             $qb->orderBy( 'm.date ', 'DESC');
+
         $qb->setParameter( '1', $id );
         $qb->setParameter( '2', $id );
 

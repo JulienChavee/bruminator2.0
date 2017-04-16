@@ -41,7 +41,7 @@ class CalendrierController extends Controller
     public function arbreAction() {
         $em = $this->getDoctrine()->getManager();
 
-        $matchs = $em->getRepository( 'MatchBundle:Matchs' )->findMatchsPhasesFinales();
+        $matchs = $em->getRepository( 'MatchBundle:Matchs' )->findMatchsPhasesFinales( $em->getRepository( 'MainBundle:Edition' )->findLastEdition() );
 
         return $this->render( 'MainBundle:Calendrier:arbre.html.twig', array( 'matchs' => $matchs ) );
     }

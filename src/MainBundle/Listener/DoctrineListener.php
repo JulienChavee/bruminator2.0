@@ -38,7 +38,7 @@ class DoctrineListener
                     if( $entity->getMatch()->getType() == 'Match de barrage' ) {
                         $args->getEntityManager()->getEventManager()->removeEventListener( 'onFlush', $this ); // Evite une infinite loop à cause du flush() plus tard
 
-                        $match = $args->getEntityManager()->getRepository( 'MatchBundle:Matchs' )->findMatchAfterBarrage();
+                        $match = $args->getEntityManager()->getRepository( 'MatchBundle:Matchs' )->findMatchAfterBarrage( $args->getEntityManager()->getRepository( 'MainBundle:Edition' )->findLastEdition() );
 
                         if( $match->getAttack() == null )
                             $match->setAttack( $entity->getWinner() );
