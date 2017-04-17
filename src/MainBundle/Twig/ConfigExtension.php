@@ -27,7 +27,8 @@ class ConfigExtension extends \Twig_Extension {
             new \Twig_SimpleFunction( 'isEndRonde', array( $this, 'isEndRonde' ) ),
             new \Twig_SimpleFunction( 'startFinal', array( $this, 'startFinal' ) ),
             new \Twig_SimpleFunction( 'streamOn', array( $this, 'streamOn' ) ),
-            new \Twig_SimpleFunction( 'getEditionDates', array( $this, 'getEditionDates' ) )
+            new \Twig_SimpleFunction( 'getEditionDates', array( $this, 'getEditionDates' ) ),
+            new \Twig_SimpleFunction( 'getConfig', array( $this, 'getValue' ) )
         );
     }
 

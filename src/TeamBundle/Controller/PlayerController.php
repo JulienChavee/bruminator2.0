@@ -187,4 +187,114 @@ class PlayerController extends Controller
         $response->headers->set( 'Content-Type', 'application/json') ;
         return $response;
     }
+
+    /**
+     * @Route("/player/ajax/add", name="team_player_ajax_add")
+     */
+    public function ajaxAddAction( Request $request ) {
+        if( $request->isXmlHttpRequest() ) {
+            try {
+                $user = $this->getUser();
+
+                $em = $this->getDoctrine()->getManager();
+
+                $inscription_end = \DateTime::createFromFormat( 'Y-m-d H:i:s', $em->getRepository( 'MainBundle:Edition' )->getDate( 'inscription', 'end' ) );
+                $class = $em->getRepository( 'TeamBundle:Classe' )->findOneBy( array( 'id' => $request->get( 'class' ) ) );
+
+                if( $user->getTeam() && new \DateTime() < $inscription_end ) {
+                    $player = $em->getRepository( 'TeamBundle:Player' )->findOneBy( array( 'pseudo' => $request->get( 'pseudo') ) );
+
+                    if( is_null( $player ) )
+                        $player = new Player();
+
+                    $player->setPseudo( $request->get( 'pseudo' ) );
+                    $player->setLevel( $request->get( 'level' ) );
+                    $player->setClass( $class );
+                    $player->setIsRemplacant( false );
+                    $player->setTeam( $user->getTeam() );
+
+                    if( !empty( $request->get( 'remplacantPseudo' ) ) && !empty( $request->get( 'remplacantLevel' ) ) ) {
+                        $remplacant = $em->getRepository( 'TeamBundle:Player' )->findOneBy( array( 'pseudo' => $request->get( 'remplacantPseudo') ) );
+
+                        if( is_null( $remplacant ) )
+                            $remplacant = new Player();
+
+                        $remplacant->setPseudo( $request->get( 'remplacantPseudo' ) );
+                        $remplacant->setLevel( $request->get( 'remplacantLevel' ) );
+                        $remplacant->setClass( $class );
+                        $remplacant->setIsRemplacant( true );
+                        $remplacant->setTeam( $user->getTeam() );
+                        $remplacant->setRemplacant( null );
+                        $player->setRemplacant( $remplacant );
+
+                        $em->persist($remplacant);
+                    }
+
+                    $em->persist($player);
+
+                    $errors_validator = $this->get( 'validator' )->validate( $player );
+                    // TODO : Détecter les problèmes de changements de joueur si c'est un joueur qui existe déjà (et donc qui est dans une équipe)
+                    if( count( $errors_validator ) == 0 ) {
+                        $em->flush();
+                        $errors_teamControl = $this->render( 'TeamBundle:Default:teamErrors.html.twig', array( 'errors' => $this->get( 'team.control_team' )->checkCompo( $user->getTeam()->getPlayers() ) ) )->getContent();
+                        $response = new Response( json_encode( array( 'status' => 'ok', 'return' => $this->render('TeamBundle:Default:playerRow.html.twig', array( 'player' => $player, 'team' => $user->getTeam() ) )->getContent(), 'errors' => $errors_teamControl ) ) );
+                    } else
+                        $response = new Response( json_encode( array( 'status' => 'ko', 'message' => 'Impossible de modifier le joueur', 'errors' => $this->render( 'TeamBundle:Default:validation.html.twig', array( 'errors_validator' => $errors_validator ) )->getContent(), 'debug' => '' ) ) );
+                } else
+                    $response = new Response( json_encode( array( 'status' => 'ko', 'message' => 'Vous n\'avez pas la permission d\'ajouter ce joueur', 'debug' => 'Utilisateur connecté n\'a pas d\'équipe ou inscription terminée' ) ) );
+            }
+            catch( \Exception $e ) {
+                $response = new Response( json_encode( array( 'status' => 'ko', 'message' => 'Une erreur inconnue s\'est produite', 'debug' => $e->__toString() ) ) );
+            }
+            $response->headers->set( 'Content-Type', 'application/json' );
+            return $response;
+        }
+        $response = new Response( json_encode( array( 'status' => 'ko', 'message' => 'Accès refusé', 'debug' => 'Bad request' ) ) );
+        $response->headers->set( 'Content-Type', 'application/json') ;
+        return $response;
+    }
+
+    /**
+     * @Route("/player/ajax/remove", name="team_player_ajax_remove")
+     */
+    public function ajaxRemoveAction( Request $request ) {
+        if( $request->isXmlHttpRequest() ) {
+            try {
+                $user = $this->getUser();
+
+                $em = $this->getDoctrine()->getManager();
+
+                $inscription_end = \DateTime::createFromFormat( 'Y-m-d H:i:s', $em->getRepository( 'MainBundle:Edition' )->getDate( 'inscription', 'end' ) );
+
+                if( $user->getTeam() && new \DateTime() < $inscription_end ) {
+
+                    $player = $em->getRepository( 'TeamBundle:Player' )->findOneBy( array( 'id' => $request->get( 'id' ), 'team' => $user->getTeam() ) );
+
+                    if( $player ) {
+                        $remplacant = !is_null( $player->getRemplacant() ) ? $em->getRepository( 'TeamBundle:Player' )->findOneBy( array( 'id' => $player->getRemplacant() ) ) : null;
+
+                        $player->setTeam( null );
+
+                        if( $remplacant )
+                            $remplacant->setTeam( null );
+
+                        $em->flush();
+
+                        $errors_teamControl = $this->render( 'TeamBundle:Default:teamErrors.html.twig', array( 'errors' => $this->get( 'team.control_team' )->checkCompo( $user->getTeam()->getPlayers() ) ) )->getContent();
+                        $response = new Response( json_encode( array( 'status' => 'ok', 'return' => $this->render('TeamBundle:Default:playerRow.html.twig', array( 'player' => $player, 'team' => $user->getTeam() ) )->getContent(), 'errors' => $errors_teamControl ) ) );
+                    } else
+                        $response = new Response( json_encode( array( 'status' => 'ko', 'message' => 'Impossible de retirer le joueur', 'debug' => 'Joueur inexistant ou pas dans la team gérée par ce manager' ) ) );
+                } else
+                    $response = new Response( json_encode( array( 'status' => 'ko', 'message' => 'Vous n\'avez pas la permission de supprimer ce joueur', 'debug' => 'Utilisateur connecté n\'a pas d\'équipe ou inscription terminée' ) ) );
+            }
+            catch( \Exception $e ) {
+                $response = new Response( json_encode( array( 'status' => 'ko', 'message' => 'Une erreur inconnue s\'est produite', 'debug' => $e->__toString() ) ) );
+            }
+            $response->headers->set( 'Content-Type', 'application/json' );
+            return $response;
+        }
+        $response = new Response( json_encode( array( 'status' => 'ko', 'message' => 'Accès refusé', 'debug' => 'Bad request' ) ) );
+        $response->headers->set( 'Content-Type', 'application/json') ;
+        return $response;
+    }
 }

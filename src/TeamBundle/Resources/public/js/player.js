@@ -25,6 +25,7 @@ $('body').on('click', '.playerCard i[data-action="edit"]', function() {
                     modal.find('.inversePlayer').addClass('hidden-xs-up');
 
                 modal.find('.editPlayer').data('id', id);
+                modal.find('[data-type="remove"]').data('id', id);
                 modal.modal('show');
             } else {
                 $('.modal-body-more-info').html(data.message);
@@ -169,4 +170,133 @@ $('#editPlayer_Remplacant_Pseudo').autocomplete({
     select: function(event, ui) {
         $('input[name=editPlayer_Remplacant_SameOrNew]').prop( 'checked', true )
     }
+});
+
+$('#addPlayer_Pseudo').autocomplete({
+    source: Routing.generate('team_player_ajax_search'),
+    minLength: 2
+});
+
+$('#addPlayer_Remplacant_Pseudo').autocomplete({
+    source: Routing.generate('team_player_ajax_search'),
+    minLength: 2
+});
+
+$('.addPlayerCard').on('mouseenter', function() {
+    $(this).removeClass('card-outline-info').addClass('card-inverse card-info')
+});
+
+$('.addPlayerCard').on('mouseleave', function() {
+    $(this).removeClass('card-inverse card-info').addClass('card-inverse card-outline-info')
+});
+
+$('.addPlayerCard').on('click', function() {
+    $('#addPlayer').modal('show');
+});
+
+$('.addPlayer').on('click', function() {
+    var modal = $('#addPlayer');
+
+    var button = $(this);
+
+    var team = button.data('team');
+    var pseudo = modal.find('#addPlayer_Pseudo').val();
+    var level = modal.find('#addPlayer_Level').val();
+    var classe = modal.find('#addPlayer_Class').val();
+    var remplacantPseudo = modal.find('#addPlayer_Remplacant_Pseudo').val();
+    var remplacantLevel = modal.find('#addPlayer_Remplacant_Level').val();
+
+    button.attr('disabled', 'disabled');
+    button.find('.fa').removeClass('fa-plus').addClass('fa-spinner fa-pulse');
+
+    $.ajax({
+        type: 'POST',
+        url: Routing.generate('team_player_ajax_add'),
+        data: {
+            team: team,
+            pseudo: pseudo,
+            level: level,
+            class: classe,
+            remplacantPseudo: remplacantPseudo,
+            remplacantLevel: remplacantLevel
+        },
+        error: function (request, error) { // Info Debuggage si erreur
+            console.log("Erreur : responseText: " + request.responseText);
+        },
+        success: function (data) {
+            if (data.status == 'ok') {
+                modal.modal('hide');
+
+                $('#addPlayerCard').before(
+                    data.return
+                );
+
+                if($('#div-team-errors').length > 0) {
+                    $('#div-team-errors').replaceWith(data.errors);
+                } else {
+                    $('#editPlayer').after(data.errors);
+                }
+
+                $('.modal_alert_success').modal('show');
+                setTimeout(function () {
+                    $(".modal_alert_success").modal('hide');
+                }, 1700);
+            } else {
+                $('.addPlayerError').removeClass('hidden-xs-up').html('<h4>' + data.message + '</h4>' + data.errors);
+                button.find('.fa').removeClass('fa-pulse fa-spinner').addClass('fa-plus');
+                button.removeAttr('disabled');
+                console.log(data.debug);
+            }
+        }
+    });
+});
+
+$('#editPlayer').on('click', '[data-type="remove"]', function() {
+    var modal = $('#editPlayer');
+    var id = $(this).data('id');
+
+    var modalConfirmation = $('.modal_alert_confirmation')
+
+    modal.modal('hide');
+
+    modalConfirmation.find('.modal-confirmation-yes').data('id', id);
+    modalConfirmation.modal('show');
+});
+
+$('.modal-confirmation-yes').on('click', function() {
+    var id = $(this).data('id');
+
+    $.ajax({
+        type: 'POST',
+        url: Routing.generate('team_player_ajax_remove'),
+        data: {
+            id: id
+        },
+        error: function (request, error) { // Info Debuggage si erreur
+            console.log("Erreur : responseText: " + request.responseText);
+        },
+        success: function (data) {
+            if(data.status == 'ok') {
+                $('div[data-id="' + id + '"]').fadeOut(1500, "easeOutExpo", function() {
+                    $(this).remove();
+                });
+
+                if($('#div-team-errors').length > 0) {
+                    $('#div-team-errors').replaceWith(data.errors);
+                } else {
+                    $('#editPlayer').after(data.errors);
+                }
+
+                $('.modal_alert_success').modal('show');
+                setTimeout(function(){
+                    $(".modal_alert_success").modal('hide');
+                }, 1700);
+            } else {
+                $('.modal-body-more-info').html(data.message);
+                $('.modal_alert_error').modal('show');
+
+                console.log(data.debug);
+            }
+        }
+    });
 });
