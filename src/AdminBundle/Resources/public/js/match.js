@@ -267,13 +267,19 @@ $('.updateFeuille').on('click', function() {
     var id = $(this).data('id');
 
     var attack_mort = $('#attack_nb_mort').val();
-    var attack_ini = {1:$('#attack_ini1').val(),2:$('#attack_ini2').val(),3:$('#attack_ini3').val(),4:$('#attack_ini4').val()};
+    var attack_ini = {};
+    for(var i = 1; i<=$('.nb_players_team').val(); i++) {
+        attack_ini[i-1] = $('#attack_ini'+i).val()
+    }
     var attack_retard = $('#attack_retard').val();
     var attack_forfait = $('#attack_forfait').is(":checked");
     var attack_penalite = $('#attack_penalite_raison').val() != '' ? {'suisse':$('#attack_penalite_suisse').val(), 'goulta':$('#attack_penalite_goulta').val(),'raison':$('#attack_penalite_raison').val()} : null;
 
     var defense_mort = $('#defense_nb_mort').val();
-    var defense_ini = {1:$('#defense_ini1').val(),2:$('#defense_ini2').val(),3:$('#defense_ini3').val(),4:$('#defense_ini4').val()};
+    var defense_ini = {}
+    for(i = 1; i<=$('.nb_players_team').val(); i++) {
+        defense_ini[i-1] = $('#defense_ini'+i).val()
+    }
     var defense_retard = $('#defense_retard').val();
     var defense_forfait = $('#defense_forfait').is(":checked");
     var defense_penalite = $('#defense_penalite_raison').val() != '' ? {'suisse':$('#defense_penalite_suisse').val(), 'goulta':$('#defense_penalite_goulta').val(),'raison':$('#defense_penalite_raison').val()} : null;

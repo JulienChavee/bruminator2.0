@@ -33,4 +33,17 @@ class PlayerRepository extends \Doctrine\ORM\EntityRepository
 
         return $qb->getQuery()->getResult();
     }
+
+    public function findPlayerWithoutTeam( $pseudo ) {
+        $qb = $this->createQueryBuilder( 'p' );
+        $qb->select( 'p.pseudo' );
+        $qb->where($qb->expr()->andX()
+            ->add( 'p.pseudo = ?1')
+            ->add( 'p.team IS NULL' )
+        );
+
+        $qb->setParameter( '1', $pseudo );
+
+        return $qb->getQuery()->getOneOrNullResult();
+    }
 }

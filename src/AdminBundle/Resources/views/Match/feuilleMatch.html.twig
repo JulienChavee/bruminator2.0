@@ -40,7 +40,8 @@
                 </div>
             </div>
 
-            {% for i in 1..4 %}
+            <input class="nb_players_team" type="hidden" value="{{ getConfig('nb_players_team') }}">
+            {% for i in 1..getConfig('nb_players_team') %}
                 <div class="form-group row">
                     {% if loop.first %}
                         <label for="attack_ini{{ i }}" class="col-sm-4 col-form-label">Initiative</label>

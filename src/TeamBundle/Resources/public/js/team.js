@@ -8,7 +8,8 @@ $('.addTeam').on('click', function() {
     var dispo = $('#team_disponibilite').val();
     var players = {};
 
-    for(var i = 1; i<=4; i++) {
+    for(var i = 1; i<=$('.nb_players_team').val(); i++) {
+        console.log(i);
         players[i] = {
             "name" : $('#player_' + i).val(),
             "level" : $('#player_level_' + i).val(),
@@ -40,7 +41,7 @@ $('.addTeam').on('click', function() {
                         $('.modal-body-more-info').append(
                             $('<span>').addClass("text-danger").append(
                                 $('<i>').addClass('fa fa-circle')
-                            ).append(" " + item)
+                            ).append(" " + item.message)
                                 .append($('<br>'))
                         )
                     });

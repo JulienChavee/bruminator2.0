@@ -67,14 +67,15 @@ class TeamController extends Controller
     public function ajaxRegistrationAction( Request $request ) {
         if( $request->isXmlHttpRequest() ) {
             $user = $this->getUser();
+            $errors = null;
+
+            // TODO : Vérifier qu'un joueur dans une team n'existe pas déjà, que le nom d'équipe est libre, ...
 
             if( !empty( $user ) && empty( $user->getTeam() ) ) {
-                $errors = $this->validateTeam( $request->get( 'name' ), $request->get( 'players'), $request->get( 'dispo' ) );
+                try {
+                    $em = $this->getDoctrine()->getManager();
 
-                if( empty( $errors ) ) {
-                    try {
-                        $em = $this->getDoctrine()->getManager();
-
+                    if( !empty( $request->get( 'name') ) && !empty( $request->get( 'dispo' ) ) ) {
                         $team = new Team();
 
                         $team->setName( $request->get( 'name' ) );
@@ -86,8 +87,12 @@ class TeamController extends Controller
                         $players = json_decode( $request->get( 'players' ), true );
 
                         foreach( $players as $k => $v ) {
-                            if( $em->getRepository( 'TeamBundle:Player' )->findOneBy( array( 'pseudo' => $v[ 'name' ] ) ) )
-                                $player = $em->getRepository( 'TeamBundle:Player' )->findOneBy( array( 'pseudo' => $v[ 'name' ] ) );
+                            if( empty( $v[ 'name' ] ) || empty( $v[ 'level' ] ) || empty( $v[ 'class' ] ) ) {
+                                $errors[][ 'message' ] = "Les champs pseudo, niveau et classe doivent être remplis pour tous les joueurs";
+                                break;
+                            }
+                            if( $em->getRepository( 'TeamBundle:Player' )->findPlayerWithoutTeam( $v[ 'name' ] ) )
+                                $player = $em->getRepository( 'TeamBundle:Player' )->findPlayerWithoutTeam( $v[ 'name' ] );
                             else
                                 $player = new Player();
 
@@ -103,8 +108,8 @@ class TeamController extends Controller
                             $em->persist( $player );
 
                             if ( !empty( $v[ 'remplacant' ][ 'name' ] ) && !empty( $v[ 'remplacant' ][ 'level' ] ) ) {
-                                if( $em->getRepository( 'TeamBundle:Player' )->findOneBy( array( 'pseudo' => $v[ 'name' ] ) ) )
-                                    $remplacant = $em->getRepository( 'TeamBundle:Player' )->findOneBy( array( 'pseudo' => $v[ 'name' ] ) );
+                                if( $em->getRepository( 'TeamBundle:Player' )->findPlayerWithoutTeam( $v[ 'remplacant' ][ 'name' ] ) )
+                                    $remplacant = $em->getRepository( 'TeamBundle:Player' )->findPlayerWithoutTeam( $v[ 'remplacant' ][ 'name' ] );
                                 else
                                     $remplacant = new Player();
 
@@ -118,8 +123,12 @@ class TeamController extends Controller
                                 $em->persist( $remplacant );
                             }
                         }
+                    } else {
+                        $errors[][ 'message' ] = "Le nom et les disponibilités d'équipes doivent être remplis";
+                    }
 
-                        $user->setTeam( $team ); // On set la team de l'utilisateur si tout est ok
+                    if( empty( $errors ) ) {
+                        $user->setTeam( $team );
 
                         $em->persist( $team );
                         $em->flush();
@@ -127,11 +136,10 @@ class TeamController extends Controller
                         $response = new Response( json_encode( array( 'status' => 'ok' ) ) );
 
                         $this->addFlash( 'success', 'Votre équipe a bien été inscrite !' );
-                    } catch( \Exception $e ) {
-                        $response = new Response( json_encode( array( 'status' => 'ko', 'message' => 'Une erreur inconnue s\'est produite', 'debug' => $e->getMessage() ) ) );
-                    }
-                } else {
-                    $response = new Response( json_encode( array( 'status' => 'ko', 'message' => $errors ) ) );
+                    } else
+                        $response = new Response( json_encode( array( 'status' => 'ko', 'message' => $errors, 'debug' => 'Erreur, champs obligatoires manquants' ) ) );
+                } catch( \Exception $e ) {
+                    $response = new Response( json_encode( array( 'status' => 'ko', 'message' => 'Une erreur inconnue s\'est produite', 'debug' => $e->getMessage() ) ) );
                 }
             } else {
                 $response = new Response( json_encode( array( 'status' => 'ko', 'message' => 'Vous possédez déjà une équipe ou vous n\'êtes pas connecté' ) ) );
@@ -389,85 +397,5 @@ class TeamController extends Controller
         $response = new Response( json_encode( array( 'status' => 'ko', 'message' => 'Accès non autorisé', 'debug' => 'Bad request' ) ) );
         $response->headers->set( 'Content-Type', 'application/json') ;
         return $response;
-    }
-
-    private function validateTeam( $teamName, $players, $dispo ) {
-        $em = $this->getDoctrine()->getManager();
-
-        $errors = array();
-        $pilliers = 0;
-        $bannedClass = 0;
-        $levelTotal = 0;
-        $classes = array();
-        $synergieTotale = 0;
-
-        if( empty( $teamName ) )
-            $errors[] = "Le nom de l'équipe ne peut pas être vide";
-
-        $players = json_decode( $players, true );
-
-        foreach( $players as $k => $v ) {
-            if( empty( $v[ 'name' ] ) )
-                $errors[] = "Le pseudo du joueur $k ne peut pas être vide";
-
-            if( empty( $v[ 'level' ] ) && !is_numeric( $v[ 'level' ] ) )
-                $errors[] = "Le niveau du joueur $k ne peut pas être vide";
-            else if( $v[ 'level' ] < $em->getRepository( 'AdminBundle:Config' )->getOneBy( array( 'name' => 'min_level' ) ) )
-                $errors[] = "Le niveau du joueur $k ne peut pas être inférieur à ".$em->getRepository( 'AdminBundle:Config' )->getOneBy( array( 'name' => 'min_level' ) );
-            else if ( $v[ 'level' ] > $em->getRepository( 'AdminBundle:Config' )->getOneBy( array( 'name' => 'max_level' ) ) ) {
-                $errors[] = "Le niveau du joueur $k ne peut pas être supérieur à ".$em->getRepository( 'AdminBundle:Config' )->getOneBy( array( 'name' => 'max_level' ) );
-            }
-
-            $levelTotal += $v[ 'level' ];
-
-            if( empty( $v[ 'class' ] ) )
-                $errors[] = "La classe du joueur $k ne peut pas être vide";
-            else {
-                $class = $em->getRepository( 'TeamBundle:Classe' )->findOneBy( array( 'id' => $v[ 'class' ] ) );
-                $classes[] = $class;
-
-                if( $class && $class->getIsPillier() )
-                    $pilliers++;
-
-                $tempClassBanned = json_decode( $class->getBannedClass() );
-
-                foreach( $players as $k2 => $v2 ) {
-                    if( $k < $k2 )
-                        $synergieTotale += $em->getRepository( 'TeamBundle:SynergieClass' )->getSynergie( $class->getId(), $v2['class'] );
-                }
-
-                $synergieTotale += $class->getPoints();
-
-                if( !is_null( $tempClassBanned ) ) {
-                    foreach ($tempClassBanned as $k2 => $v2) {
-                        $temp = $em->getRepository('TeamBundle:Classe')->findOneBy(array('id' => $v2));
-
-                        if (in_array($temp, $classes))
-                            $bannedClass++;
-                    }
-                }
-            }
-        }
-
-        if( count( array_unique( $classes, SORT_REGULAR ) ) < count( $classes ) )
-            $errors[] = "Vous ne pouvez pas avoir de classe doublon";
-
-        // TODO : Meilleure gestion des contraintes liées au type de tournoi
-        /*if( $pilliers > 1 )
-            $errors[] = "Vous ne pouvez pas avoir plus d'une classe pillier";
-
-        if( $bannedClass > 0 )
-            $errors[] = "Vous avez des classes ne pouvant pas être jouées ensemble";*/
-
-        if( $synergieTotale > $em->getRepository( 'AdminBundle:Config' )->getOneBy( array( 'name' => 'synergie_max' ) ) )
-            $errors[] = "Votre composition a une synergie trop forte ($synergieTotale)";
-
-        if( empty( $dispo ) )
-            $errors[] = "Vous devez indiquer vos disponibilités";
-
-        if( $levelTotal / $em->getRepository( 'AdminBundle:Config' )->getOneBy( array( 'name' => 'nb_players_team' ) ) < $em->getRepository( 'AdminBundle:Config' )->getOneBy( array( 'name' => 'min_average_level' ) ) )
-            $errors[] = "Le niveau moyen de l'équie doit être supérieur à ".$em->getRepository( 'AdminBundle:Config' )->getOneBy( array( 'name' => 'min_average_level' ) );
-
-        return $errors;
     }
 }
