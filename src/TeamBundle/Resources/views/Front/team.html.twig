@@ -22,11 +22,15 @@
                     <i class="fa fa-calendar"></i> {{ team.inscriptionDate | time_diff }}<br>
                     {% if team.valid %}<i class="fa fa-check text-success"></i> Équipe validée{% else %}<i class="fa fa-remove text-danger"></i> Équipe non validée{% endif %}<br>
                 </p>
-                {% for player in team.players if not player.isRemplacant %}
-                    <span class="pr-1">
-                        <img src="{{ asset('bundles/main/images/class/'~ player.class.shortName|lower|remove_accent ~'1.png') }}" data-toggle="tooltip" data-trigger="hover" title="{{ player.pseudo }}, {{ player.class.name }} {{ player.level }}">
-                    </span>
-                {% endfor %}
+                {% if date(getEditionDates().inscription.end) < date() or getConfig('hide_composition') == "false" %}
+                    {% for player in team.players if not player.isRemplacant %}
+                        <span class="pr-1">
+                            <img src="{{ asset('bundles/main/images/class/'~ player.class.shortName|lower|remove_accent ~'1.png') }}" data-toggle="tooltip" data-trigger="hover" title="{{ player.pseudo }}, {{ player.class.name }} {{ player.level }}">
+                        </span>
+                    {% endfor %}
+                {% else %}
+                    <i>Les compositions d'équipes sont masquées en phase d'inscription</i>
+                {% endif %}
             </div>
         </div>
 
