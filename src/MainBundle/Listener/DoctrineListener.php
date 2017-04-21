@@ -10,6 +10,7 @@ use MatchBundle\Entity\Matchs;
 use NotificationBundle\Entity\Notification;
 use MatchBundle\Entity\MatchResult;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
+use TeamBundle\Entity\PlayerHistory;
 use TeamBundle\Entity\Team;
 use TeamBundle\Entity\Player;
 
@@ -107,6 +108,16 @@ class DoctrineListener
 
             case $entity instanceof Player:
                 foreach( $this->changes as $k => $v ) {
+                    if( $k == 'class' ) {
+                        $playerHistory = new PlayerHistory();
+                        $playerHistory->setDate( new \DateTime() );
+                        $playerHistory->setPlayer( $entity );
+                        $playerHistory->setPreviousClass( $v[1] );
+                        $playerHistory->setEdition( $em->getRepository( 'MainBundle:Edition' )->findLastEdition() );
+
+                        $em->persist( $playerHistory );
+                    }
+
                     $action = array(
                         'value' => 'Modification de "%s" (de %s à %s)',
                         'parameters' => array( $k, $v[0], $v[1] )
