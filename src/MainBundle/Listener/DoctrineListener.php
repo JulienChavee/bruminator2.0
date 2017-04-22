@@ -113,7 +113,6 @@ class DoctrineListener
                         $playerHistory->setDate( new \DateTime() );
                         $playerHistory->setPlayer( $entity );
                         $playerHistory->setPreviousClass( $v[1] );
-                        $playerHistory->setEdition( $em->getRepository( 'MainBundle:Edition' )->findLastEdition() );
 
                         $em->persist( $playerHistory );
                     }

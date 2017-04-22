@@ -15,13 +15,13 @@ class PlayerHistoryRepository extends \Doctrine\ORM\EntityRepository
 
         $qb->where( $qb->expr()->andX()
                 ->add( 'h.player = ?1')
-                ->add( 'h.edition = ?2' )
+                ->add( 'h.date <= ?2' )
         );
 
         $qb->orderBy( 'h.date', 'DESC');
 
         $qb->setParameter( '1', $player );
-        $qb->setParameter( '2', $edition );
+        $qb->setParameter( '2', $edition->getData()['date']->inscription->end );
 
         return $qb->getQuery()->getOneOrNullResult();
     }

@@ -21,6 +21,7 @@ class TeamExtension extends \Twig_Extension {
         return array(
             new \Twig_SimpleFunction( 'checkCompo', array( $this, 'checkCompo' ) ),
             new \Twig_SimpleFunction( 'getPlayer', array( $this, 'getPlayer' ) ),
+            new \Twig_SimpleFunction( 'getPlayerHistory', array( $this, 'getPlayerHistory' ) )
         );
     }
 
@@ -40,6 +41,17 @@ class TeamExtension extends \Twig_Extension {
         $value = $em->getRepository( 'TeamBundle:Player' )->findOneBy( array( 'id' => $id ) );
 
         return $value;
+    }
+
+    public function getPlayerHistory( $player, $edition = null ) {
+        $em = $this->doctrine->getManager();
+
+       if( is_null( $edition ) )
+           $edition = $em->getRepository( 'MainBundle:Edition' )->findLastEdition();
+
+       $player = $em->getRepository( 'TeamBundle:PlayerHistory' )->retrievePlayerClass( $player, $edition ) ? $em->getRepository( 'TeamBundle:PlayerHistory' )->retrievePlayerClass( $player, $edition )->getPlayer() : $player;
+
+        return $player;
     }
 
     public function getName() {

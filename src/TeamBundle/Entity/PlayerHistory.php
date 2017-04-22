@@ -44,14 +44,6 @@ class PlayerHistory
      */
     private $date;
 
-    /**
-     * @var \MainBundle\Entity\Edition
-     *
-     * @ORM\ManyToOne(targetEntity="MainBundle\Entity\Edition")
-     * @ORM\JoinColumn(name="edition", referencedColumnName="id")
-     */
-    private $edition;
-
 
     /**
      * Get id
@@ -133,29 +125,5 @@ class PlayerHistory
     public function getPreviousClass()
     {
         return $this->previousClass;
-    }
-
-    /**
-     * Set edition
-     *
-     * @param \MainBundle\Entity\Edition $edition
-     *
-     * @return PlayerHistory
-     */
-    public function setEdition(\MainBundle\Entity\Edition $edition = null)
-    {
-        $this->edition = $edition;
-
-        return $this;
-    }
-
-    /**
-     * Get edition
-     *
-     * @return \MainBundle\Entity\Edition
-     */
-    public function getEdition()
-    {
-        return $this->edition;
     }
 }
