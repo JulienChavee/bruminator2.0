@@ -1,4 +1,4 @@
-$('.table_users_tbody').on('click', 'button[data-action="promote"]', function() {
+$('body').on('click', 'button[data-action="promote"]', function() {
     var id = $(this).data('id');
     var role = $(this).data('role');
 
@@ -14,10 +14,19 @@ $('.table_users_tbody').on('click', 'button[data-action="promote"]', function() 
         },
         success: function (data) {
             if (data.status == 'ok') {
-                var line = $('tr[data-id="' + id + '"]');
-                line.replaceWith(data.return);
-                line = $('tr[data-id="' + id + '"]');
-                line.effect("highlight", {color: '#c9c9c9'}, 5000);
+                var lineUser = $('tr[data-id="' + id + '"][data-table="user"]');
+                lineUser.replaceWith(data.return.user);
+                lineUser = $('tr[data-id="' + id + '"][data-table="user"]');
+                lineUser.effect("highlight", {color: '#c9c9c9'}, 5000);
+
+                if(data.return.arbitre) {
+                    var lineArbitre = $('tr[data-id="' + id + '"][data-table="arbitre"]');
+                    lineArbitre.replaceWith(data.return.arbitre);
+                    lineArbitre = $('tr[data-id="' + id + '"][data-table="arbitre"]');
+                    lineArbitre.effect("highlight", {color: '#c9c9c9'}, 5000);
+                } else if ($('tr[data-id="' + id + '"][data-table="arbitre"]').length){
+                    $('tr[data-id="' + id + '"][data-table="arbitre"]').remove();
+                }
 
                 $('.modal_alert_success').modal('show');
                 setTimeout(function () {

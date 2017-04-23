@@ -29,6 +29,14 @@ class User extends BaseUser implements EquatableInterface
      */
     private $team;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="arbitre_disponibilite", type="text")
+     */
+    private $arbitreDisponibilite;
+
+
     public function __construct()
     {
         parent::__construct();
@@ -66,4 +74,22 @@ class User extends BaseUser implements EquatableInterface
     {
         $this->team = $team;
     }
+
+    /**
+     * @return string
+     */
+    public function getArbitreDisponibilite()
+    {
+        return $this->arbitreDisponibilite;
+    }
+
+    /**
+     * @param string $arbitreDisponibilite
+     */
+    public function setArbitreDisponibilite($arbitreDisponibilite)
+    {
+        $this->arbitreDisponibilite = $arbitreDisponibilite;
+    }
+
+
 }

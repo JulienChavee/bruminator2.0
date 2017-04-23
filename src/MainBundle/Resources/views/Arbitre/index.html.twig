@@ -1,0 +1,82 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ parent() }} • Liste des arbitres
+{% endblock %}
+
+{% block breadcrumb %}
+    {{ parent() }}
+    <li class="breadcrumb-item active">Liste des arbitres</li>
+{% endblock %}
+
+{% block body %}
+    <div class="modal fade" id="becomeArbitre" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">Devenir arbitre</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-danger becomeArbitre hidden-xs-up"></div>
+
+                    <div class="form-group">
+                        <label for="becomeArbitre_Disponibilite">Disponibilités</label>
+                        <div>
+                            <textarea id="becomeArbitre_Disponibilite" name="becomeArbitre_Disponibilite" class="form-control" rows="5"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                    <button type="button" class="btn btn-primary becomeArbitre">Valider</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if app.user %}
+        <div class="div_becomeArbitre">
+            {% if app.user not in arbitres and getConfig('inscription_arbitre_open') %}
+                <div class="alert alert-info">
+                    Nous sommes à la recherche d'arbitres <b>volontaires</b> pour assurer le bon déroulement des matchs et le respect des règles du tournoi.<br>
+                    Si tu souhaites te présenter en tant qu'arbitre, nous te demanderons de renseigner <b>tes disponibilités</b> afin que nous puissions t'attribuer des matchs. Nous t'enverrons également une liste des choses à faire pendant ton arbitrage.<br>
+                    <button class="btn btn-primary" data-toggle="modal" data-target="#becomeArbitre">Je suis volontaire !</button>
+                </div>
+            {% else %}
+                <div class="alert alert-info">
+                    {% if is_granted('ROLE_ARBITRE_WAITING_APPROVAL') %}
+                        Nous avons bien enregistré ta demande pour devenir arbitre, nous allons la traiter d'ici peu !<br>
+                    {% else %}
+                        Tu es inscrit en tant qu'arbitre !<br>
+                    {% endif %}
+                    <br>
+                    <b>Mes disponibilités</b><br>
+                    <i>{{ app.user.arbitreDisponibilite|nl2br }}</i><br>
+                    <button class="btn btn-primary" data-toggle="modal" data-target="#becomeArbitre" data-dispo="{{ app.user.arbitreDisponibilite }}">Mettre à jour mes disponibilités !</button>
+                </div>
+            {% endif %}
+        </div>
+    {% endif %}
+
+    <h1>Liste des arbitres</h1>
+    <hr>
+
+    <ul>
+        {% for arbitre in arbitres if not arbitre.hasRole('ROLE_ARBITRE_WAITING_APPROVAL')%}
+            <li>{{ arbitre.username }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {% javascripts output='js/compiled/main/arbitre.js'
+        '@MainBundle/Resources/public/js/arbitre.js'
+    %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}

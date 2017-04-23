@@ -16,8 +16,9 @@ class UserController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $users = $em->getRepository( 'UserBundle:User' )->findAll();
+        $arbitres = $em->getRepository( 'UserBundle:User' )->findArbitre();
 
-        return $this->render( 'AdminBundle:User:index.html.twig', array( 'array_users' => $users ) );
+        return $this->render( 'AdminBundle:User:index.html.twig', array( 'array_users' => $users, 'array_arbitres' => $arbitres ) );
     }
 
     /**
@@ -47,7 +48,7 @@ class UserController extends Controller
 
                     $em->flush();
 
-                    $response = new Response( json_encode( array( 'status' => 'ok', 'return' => $this->render( 'AdminBundle:User:userRow.html.twig', array( 'user' => $user ) )->getContent() ) ) );
+                    $response = new Response( json_encode( array( 'status' => 'ok', 'return' => array( 'user' => $this->render( 'AdminBundle:User:userRow.html.twig', array( 'user' => $user ) )->getContent(), 'arbitre' => $this->render( 'AdminBundle:User:arbitreRow.html.twig', array( 'arbitre' => $user ) )->getContent() ) ) ) );
                 } else
                     $response = new Response( json_encode( array( 'status' => 'ko', 'message' => 'L\'utilisateur n\'existe pas', 'debug' => 'L\'utilisateur n\'existe pas' ) ) );
             }
