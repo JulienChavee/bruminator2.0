@@ -229,7 +229,7 @@
         </div>
     {% endblock %}
 
-    <div class="modal fade" id="modalLive" tabindex="-1" role="dialog" aria-labelledby="modalAlertSuccess" aria-hidden="true">
+    <div class="modal fade" id="modalLive" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -246,24 +246,6 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Fermer</button>
                     <a role="button" id="modalButtonGolive" class="btn btn-outline-primary" href="{{ path('twitch') }}">Aller au live</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="modalLive" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                    <h4 class="modal-title" id="myModalLabel">Bruminator en Live !</h4>
-                </div>
-                <div class="modal-body">
-                    Des matchs sont en cours, venez nous rejoindre sur notre de live pour suivre le déroulement du tournoi !
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
-                    <a type="button" id="modalButtonGolive" class="btn btn-primary" href="/live">Aller au live</a>
                 </div>
             </div>
         </div>
