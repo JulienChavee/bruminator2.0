@@ -27,19 +27,23 @@
         </thead>
 
         <tbody class="table_users_tbody">
-        {% for i in 0..teams.team|length-1 %}
-            <tr>
-                <td>{{ i + 1 }}</td>
-                <td><a href="{{ path('team_front_team_view', {'id':teams.team[i].id, 'slugTeam': teams.team[i].name|slugify}) }}">{{ teams.team[i].name }}</a></td>
-                <td>{{ teams.nb_match[i] }}</td>
-                <td>{{ teams.pointsSuisse[i] }}</td>
-                <td>{{ teams.pointsGoulta[i] }}</td>
-                <td>{{ teams.pointsSuisseAdverse[i] }}</td>
-                <td>{{ teams.pointsGoultaAdverse[i] }}</td>
-            </tr>
-        {% else %}
-
-        {% endfor %}
+            {% if teams.team is defined %}
+                {% for i in 0..teams.team|length-1 %}
+                    <tr>
+                        <td>{{ i + 1 }}</td>
+                        <td><a href="{{ path('team_front_team_view', {'id':teams.team[i].id, 'slugTeam': teams.team[i].name|slugify}) }}">{{ teams.team[i].name }}</a></td>
+                        <td>{{ teams.nb_match[i] }}</td>
+                        <td>{{ teams.pointsSuisse[i] }}</td>
+                        <td>{{ teams.pointsGoulta[i] }}</td>
+                        <td>{{ teams.pointsSuisseAdverse[i] }}</td>
+                        <td>{{ teams.pointsGoultaAdverse[i] }}</td>
+                    </tr>
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td colspan="7"><i>Aucune équipe à afficher pour le moment</i></td>
+                </tr>
+            {% endif %}
         </tbody>
     </table>
 {% endblock %}
