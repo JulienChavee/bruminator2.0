@@ -129,4 +129,27 @@ class MatchsRepository extends \Doctrine\ORM\EntityRepository
 
         return $qb->getQuery()->getSingleResult();
     }
+
+    function findMatchByTeams( $team1, $team2, $edition ) {
+        $qb = $this->createQueryBuilder( 'm' );
+
+        $qb->where( $qb->expr()->orX()
+            ->add( $qb->expr()->andX()
+                ->add( 'm.attack = ?1' )
+                ->add( 'm.defense = ?2' )
+            )
+            ->add( $qb->expr()->andX()
+                ->add( 'm.attack = ?2' )
+                ->add( 'm.defense = ?1' )
+            )
+        );
+
+        $qb->andWhere( 'm.edition = ?3' );
+
+        $qb->setParameter( '1', $team1 );
+        $qb->setParameter( '2', $team2 );
+        $qb->setParameter( '3', $edition );
+
+        return $qb->getQuery()->getResult();
+    }
 }

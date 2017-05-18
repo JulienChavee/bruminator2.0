@@ -174,7 +174,7 @@ class ControlMatch
         }
     }
 
-    private function selectTeamWithSamePoints( $teams, $nombrePaireEquipe = true ) {
+    private function selectTeamWithSamePoints( $teams ) {
         $points = $teams[ 'pointsSuisse' ][ 0 ];
         $return = array();
 
@@ -187,16 +187,6 @@ class ControlMatch
                 unset( $teams_temp[ 'pointsSuisse' ][ $i ] );
             } else
                 break;
-        }
-
-        if( $nombrePaireEquipe and count( $return ) % 2 > 0 ) {
-            $teams_temp[ 'team' ] = array_values( $teams_temp[ 'team' ] );
-            $teams_temp[ 'pointsSuisse' ] = array_values( $teams_temp[ 'pointsSuisse' ] );
-            $teams_temp = $this->selectTeamWithSamePoints( $teams_temp, false );
-
-            $rand = rand( 0, count( $teams_temp ) -1 );
-
-            $return[] = array( 'team' => $teams[ 'team' ][ $i + $rand ], 'key' => ($i + $rand) );
         }
 
         return $return;
@@ -248,5 +238,9 @@ class ControlMatch
         }
 
         return array( 'status' => 'ok' );
+    }
+
+    private function matchAlreadyExists( $team1, $team2, $edition ) {
+        return empty( $this->em->getRepository( 'MatchBundle:Matchs' )->findMatchByTeams( $team1, $team2, $edition ) );
     }
 }
