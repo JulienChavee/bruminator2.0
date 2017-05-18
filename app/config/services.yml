@@ -11,23 +11,23 @@ services:
     main.twig.config_extension:
         class: MainBundle\Twig\ConfigExtension
         arguments:
-            doctrine: "@doctrine"
-            kernel: "@kernel"
+            $doctrine: "@doctrine"
+            $kernel: "@kernel"
         tags:
             - { name: twig.extension }
 
     admin.twig.synergie_extension:
         class: AdminBundle\Twig\SynergieExtension
         arguments:
-            doctrine: "@doctrine"
+            $doctrine: "@doctrine"
         tags:
             - { name: twig.extension }
 
     admin.twig.team:
         class: AdminBundle\Twig\TeamExtension
         arguments:
-            doctrine: "@doctrine"
-            controlTeam: "@team.control_team"
+            $doctrine: "@doctrine"
+            $controlTeam: "@team.control_team"
         tags:
             - { name: twig.extension }
 
