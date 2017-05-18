@@ -12,10 +12,20 @@ monolog:
         main:
             type:         fingers_crossed
             action_level: error
-            handler:      nested
-        nested:
-            type:  stream
+            handler:      grouped
+        grouped:
+            type:  group
             path:  "%kernel.logs_dir%/%kernel.environment%.log"
             level: debug
+        swift:
+            type:               swift_mailer
+            from_email:         contact@bruminator.eu
+            to_email:           julien.chavee@gmail.com
+            subject:            "[ERROR] bruminator.eu"
+        login:
+            type:               stream
+            path:               "%kernel.logs_dir%/auth.log"
+            level:              info
+            channels:           security
         console:
             type:  console
