@@ -16,7 +16,7 @@ monolog:
         grouped:
             type:  group
             path:  "%kernel.logs_dir%/%kernel.environment%.log"
-            level: debug
+            level: notice
         swift:
             type:               swift_mailer
             from_email:         contact@bruminator.eu
