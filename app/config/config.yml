@@ -30,7 +30,6 @@ framework:
         engines: ['twig']
     default_locale:  "%locale%"
     trusted_hosts:   ~
-    trusted_proxies: ~
     session:
         # http://symfony.com/doc/current/reference/configuration/framework.html#handler-id
         handler_id:  session.handler.native_file
@@ -68,10 +67,10 @@ doctrine:
 
 # Swiftmailer Configuration
 swiftmailer:
-    transport:            %mailer_transport%
-    username:             %mailer_user%
-    password:             %mailer_password%
-    host:                 %mailer_host%
+    transport:            "%mailer_transport%"
+    username:             "%mailer_user%"
+    password:             "%mailer_password%"
+    host:                 "%mailer_host%"
     port:                 587
     encryption:           tls
     auth_mode:            login
