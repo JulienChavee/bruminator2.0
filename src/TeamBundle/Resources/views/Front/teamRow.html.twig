@@ -6,14 +6,14 @@
             {% if team.valid %}<i class="fa fa-check text-success"></i> Équipe validée{% else %}<i class="fa fa-remove text-danger"></i> Équipe non validée{% endif %}<br>
         </p>
         <div>
-            {% if date(getEditionDates().inscription.end) < date() or getConfig('hide_composition') == "false" %}
+            {% if date(getEditionDates().inscription.end) > date() and getConfig('hide_composition') == 1 %}
+                <i>Les compositions d'équipes sont masquées en phase d'inscription</i>
+            {% else %}
                 {% for player in team.players if not player.isRemplacant %}
                     <span class="pr-1">
                         <img src="{{ asset('bundles/main/images/class/'~ player.class.shortName|lower|remove_accent ~'1.png') }}" data-toggle="tooltip" data-trigger="hover" title="{{ player.pseudo }}, {{ player.class.name }} {{ player.level }}">
                     </span>
                 {% endfor %}
-            {% else %}
-                <i>Les compositions d'équipes sont masquées en phase d'inscription</i>
             {% endif %}
         </div>
         <a href="{{ path('team_front_team_view', {'id':team.id, 'slugTeam': team.name|slugify}) }}" class="btn btn-primary mt-1">Plus d'informations</a>

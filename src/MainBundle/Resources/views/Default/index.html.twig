@@ -37,7 +37,7 @@
             </div>
 
             <div class="col-md-4 offset-md-1 mt-1">
-                {% if date(getEditionDates().inscription.end) > date() and getConfig('hide_composition') == "false" %}
+                {% if date(getEditionDates().inscription.end) > date() and getConfig('hide_composition') == 0 %}
                     {% include 'MainBundle:Default:lastTeam.html.twig' %}
                 {% else %}
                     {% include 'MainBundle:Default:lastMatch.html.twig' %}
