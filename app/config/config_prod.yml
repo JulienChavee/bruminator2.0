@@ -15,8 +15,13 @@ monolog:
             handler:      grouped
         grouped:
             type:  group
-            path:  "%kernel.logs_dir%/%kernel.environment%.log"
-            level: notice
+            #path:  "%kernel.logs_dir%/%kernel.environment%.log"
+            members: [streamed,swift]
+            #level: notice
+        streamed:
+            type: stream
+            path: "%kernel.logs_dir%/%kernel.environment%.log"
+            level: debug
         swift:
             type:               swift_mailer
             from_email:         contact@bruminator.eu
