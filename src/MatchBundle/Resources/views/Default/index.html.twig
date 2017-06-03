@@ -28,7 +28,7 @@
             </div>
 
             <div class="col-md-3 bg-inverse text-white p-2 text-xs-center">
-                <i class="fa fa-trophy"></i> {% if match.matchResult %}<span {% if match.matchResult.winner.name|length > 14 %}data-toggle="tooltip" data-trigger="hover" title="{{ match.matchResult.winner.name }}"{% endif %}>{{ match.matchResult.winner.name|truncate(14) }}</span> - {% if not match.matchResult.matchResultTeam.0.forfait and not match.matchResult.matchResultTeam.1.forfait %}{{ match.matchResult.nombreTour }} tours{% endif %}{% else %}<i>En attente des résultats</i>{% endif %}
+                <i class="fa fa-trophy"></i> {% if match.matchResult %}<span {% if match.matchResult.winner.name|length > 14 %}data-toggle="tooltip" data-trigger="hover" title="{{ match.matchResult.winner.name }}"{% endif %}>{{ match.matchResult.winner.name|truncate(14) }}</span>{% if not match.matchResult.matchResultTeam.0.forfait and not match.matchResult.matchResultTeam.1.forfait %} - {{ match.matchResult.nombreTour }} tours{% endif %}{% else %}<i>En attente des résultats</i>{% endif %}
             </div>
 
             <div class="clearfix"></div>
