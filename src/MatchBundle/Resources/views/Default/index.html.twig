@@ -24,7 +24,7 @@
             </div>
 
             <div class="col-md-3 bg-inverse text-white p-2 text-xs-center">
-                <i class="fa fa-info"></i> {{ match.type }}
+                <i class="fa fa-info"></i> {{ match.type }}{% if getMap(match) %} - Map {{ getMap(match).name }}{% endif %}
             </div>
 
             <div class="col-md-3 bg-inverse text-white p-2 text-xs-center">

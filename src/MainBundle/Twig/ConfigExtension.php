@@ -28,7 +28,8 @@ class ConfigExtension extends \Twig_Extension {
             new \Twig_SimpleFunction( 'startFinal', array( $this, 'startFinal' ) ),
             new \Twig_SimpleFunction( 'streamOn', array( $this, 'streamOn' ) ),
             new \Twig_SimpleFunction( 'getEditionDates', array( $this, 'getEditionDates' ) ),
-            new \Twig_SimpleFunction( 'getConfig', array( $this, 'getValue' ) )
+            new \Twig_SimpleFunction( 'getConfig', array( $this, 'getValue' ) ),
+            new \Twig_SimpleFunction( 'getMap', array( $this, 'getMatchMap' ) )
         );
     }
 
@@ -125,6 +126,18 @@ class ConfigExtension extends \Twig_Extension {
         $channel = json_decode( $channel );
 
         return !is_null( $channel ) && !is_null( $channel->stream );
+    }
+
+    public function getMatchMap( $match )
+    {
+        if( !is_null( $match->getMap() ) )
+            return $match->getMap();
+        else
+        {
+            $em = $this->doctrine->getManager();
+            $mapDate = $em->getRepository( 'MatchBundle:MapDate' )->findMapDate( $match->getDate(), $match->getEdition() );
+            return is_null($mapDate) ? null : $mapDate->getMap();
+        }
     }
 
     public function getName() {

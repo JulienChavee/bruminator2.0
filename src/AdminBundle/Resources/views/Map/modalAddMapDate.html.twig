@@ -1,0 +1,28 @@
+<div class="alert alert-danger addMapError hidden-xs-up"></div>
+
+<div>
+    <div class="form-group">
+        <label for="exampleSelect1">Date</label>
+        <input type="text" id="add_map_date" class="form-control addEdition_DateTime">
+    </div>
+
+    <div class="form-group">
+        <label for="exampleSelect1">Map</label>
+        <select id="add_map_map" class="custom-select">
+            <option value="" selected="selected" disabled="disabled">Sélectionner une map</option>
+            {% for map in maps %}
+                <option value="{{ map.id }}">{{ map.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="exampleSelect1">Match</label>
+        <select id="add_map_match" class="custom-select">
+            <option value="" selected="selected">Sélectionner un match</option>
+            {% for match in matchs %}
+                <option value="{{ match.id }}">{{ match.attack.name }} VS {{ match.defense.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+</div>
