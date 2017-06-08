@@ -40,9 +40,21 @@ class TeamController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $now = new DateTime( 'now' );
+        $inscription_start = DateTime::createFromFormat( 'Y-m-d H:i:s', $em->getRepository( 'MainBundle:Edition' )->getDate( 'inscription', 'start' ) );
         $inscription_end = DateTime::createFromFormat( 'Y-m-d H:i:s', $em->getRepository( 'MainBundle:Edition' )->getDate( 'inscription', 'end' ) );
 
-        if( $now < $inscription_end ) {
+        if( $now < $inscription_start )
+        {
+            $this->addFlash( 'danger', 'Les inscriptions d\'équipes ne sont pas ouvertes' );
+
+            return $this->redirectToRoute( 'homepage' );
+        }
+        else if( $now > $inscription_end ) {
+            $this->addFlash( 'danger', 'Les inscriptions d\'équipes sont terminées' );
+
+            return $this->redirectToRoute( 'homepage' );
+
+        } else {
             $user = $this->getUser();
 
             if ( !empty( $user ) && empty( $user->getTeam() ) ) {
@@ -54,10 +66,6 @@ class TeamController extends Controller
 
                 return $this->redirectToRoute( 'team_homepage' );
             }
-        } else {
-            $this->addFlash( 'danger', 'Les inscriptions d\'équipes sont terminées' );
-
-            return $this->redirectToRoute( 'homepage' );
         }
     }
 
