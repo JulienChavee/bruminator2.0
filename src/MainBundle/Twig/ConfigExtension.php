@@ -59,7 +59,7 @@ class ConfigExtension extends \Twig_Extension {
         $em = $this->doctrine->getManager();
 
         $rondes = json_decode( $em->getRepository( 'AdminBundle:Config' )->getOneBy( array( 'name' => 'rondes' ) ) );
-        $ronde = json_decode( $em->getRepository( 'MainBundle:Edition' )->getDate( 'ronde'.$rondes->ronde_actuelle ) );
+        $ronde = $em->getRepository( 'MainBundle:Edition' )->getDate( 'ronde'.$rondes->ronde_actuelle );
 
         if( $rondes->ronde_actuelle < $rondes->total ) {
             $now = new \DateTime( 'now' );
@@ -77,7 +77,7 @@ class ConfigExtension extends \Twig_Extension {
         $em = $this->doctrine->getManager();
 
         $rondes = json_decode( $em->getRepository( 'AdminBundle:Config' )->getOneBy( array( 'name' => 'rondes' ) ) );
-        $ronde = json_decode( $em->getRepository( 'MainBundle:Edition' )->getDate( 'ronde'.$rondes->total ) );
+        $ronde = $em->getRepository( 'MainBundle:Edition' )->getDate( 'ronde'.$rondes->total );
 
         if( $rondes->ronde_actuelle == $rondes->total ) {
             $now = new \DateTime( 'now' );
