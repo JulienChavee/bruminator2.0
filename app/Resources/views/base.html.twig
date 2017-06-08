@@ -77,16 +77,22 @@
             </ul>
 
             <ul class="nav navbar-nav float-lg-right">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Sponsors</a>
-                    <div class="dropdown-menu">
-                        {% for key, sponsor in 'sponsor'|config %}
-                            <a class="dropdown-item" href="{{ sponsor.link }}" target="_blank">
-                                <img alt="Logo {{ key }}" src="{{ asset('bundles/main/images/sponsors/'~sponsor.image ) }}"> {{ key }}
-                            </a>
-                        {% endfor %}
-                    </div>
-                </li>
+                {% if getConfig('sponsor')|length > 0 %}
+                    <!--
+                        Exemple config sponsor :
+                        {"Fragment":{"link":"http://fragment.1fr1.net","image":"fragment.png"}}
+                    -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Sponsors</a>
+                        <div class="dropdown-menu">
+                            {% for key, sponsor in 'sponsor'|config %}
+                                <a class="dropdown-item" href="{{ sponsor.link }}" target="_blank">
+                                    <img alt="Logo {{ key }}" src="{{ asset('bundles/main/images/sponsors/'~sponsor.image ) }}"> {{ key }}
+                                </a>
+                            {% endfor %}
+                        </div>
+                    </li>
+                {% endif %}
 
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Liens</a>
