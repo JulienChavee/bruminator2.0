@@ -64,6 +64,7 @@ class TeamRepository extends \Doctrine\ORM\EntityRepository
         $qb->update();
         $qb->set( 't.registered', '0' );
         $qb->set( 't.valid', '0' );
+        $qb->set( 't.paid', '0' );
 
         return $qb->getQuery()->execute();
     }
