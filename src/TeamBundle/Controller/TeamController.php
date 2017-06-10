@@ -384,16 +384,16 @@ class TeamController extends Controller
     }
 
     /**
-     * @Route("/synergie/ajax/getClass4", name="team_front_synergie_ajax_getclass4")
+     * @Route("/synergie/ajax/getLastClass", name="team_front_synergie_ajax_getlastclass")
      */
-    public function frontSynergieAjaxGetClass4( Request $request ) {
+    public function frontSynergieAjaxGetLastClass( Request $request ) {
         if( $request->isXmlHttpRequest() ) {
             try {
                 $em = $this->getDoctrine()->getManager();
 
-                $class4 = $em->getRepository( 'TeamBundle:SynergieClass' )->getClass4( $request->get( 'class1' ), $request->get( 'class2' ), $request->get( 'class3' ) );
+                $lastClasses = $em->getRepository( 'TeamBundle:SynergieClass' )->getLastClass( $request->get( 'classes' ) );
 
-                $response = new Response( json_encode( array( 'status' => 'ok', 'return' => $class4 ) ) );
+                $response = new Response( json_encode( array( 'status' => 'ok', 'return' => $lastClasses ) ) );
             }
             catch( \Exception $e ) {
                 $response = new Response( json_encode( array( 'status' => 'ko', 'message' => 'Une erreur inconnue s\'est produite', 'debug' => $e->getTraceAsString() ) ) );

@@ -9,7 +9,6 @@ $('.addTeam').on('click', function() {
     var players = {};
 
     for(var i = 1; i<=$('.nb_players_team').val(); i++) {
-        console.log(i);
         players[i] = {
             "name" : $('#player_' + i).val(),
             "level" : $('#player_level_' + i).val(),

@@ -64,27 +64,26 @@ class SynergieClassRepository extends \Doctrine\ORM\EntityRepository
         return true;
     }
 
-    public function getClass4( $class1, $class2, $class3 ) {
+    public function getLastClass( $classes ) {
         $synergie = 0;
 
         $classRepository = $this->getEntityManager()->getRepository( 'TeamBundle:Classe' );
 
-        $synergie += $classRepository->getClassPoints( $class1 );
-        $synergie += $classRepository->getClassPoints( $class2 );
-        $synergie += $classRepository->getClassPoints( $class3 );
+        foreach($classes as $k => $class)
+        {
+            $synergie += $classRepository->getClassPoints( $class );
 
-        $synergie += $this->getSynergie( $class1, $class2 );
-        $synergie += $this->getSynergie( $class1, $class3 );
-        $synergie += $this->getSynergie( $class2, $class3 );
+            for( $i=$k+1 ; $i <= count( $classes ) ; $i++ )
+                $synergie += $this->getSynergie( $class, $classes[$i] );
+        }
 
         if( $synergie < $this->getEntityManager()->getRepository( 'AdminBundle:Config' )->getOneBy( array( 'name' => 'synergie_max' ) ) ) {
             $res = array();
 
-            foreach( $classRepository->getClassesNotIn( array( $class1, $class2, $class3 ) ) as $k => $v ) {
+            foreach( $classRepository->getClassesNotIn( array_values( $classes ) ) as $k => $v ) {
                 $temp = 0;
-                $temp += $this->getSynergie( $v->getId(), $class1 );
-                $temp += $this->getSynergie( $v->getId(), $class2 );
-                $temp += $this->getSynergie( $v->getId(), $class3 );
+                foreach($classes as $class)
+                    $temp += $this->getSynergie( $v->getId(), $class );
 
                 if( $synergie + $v->getPoints() + $temp <= $this->getEntityManager()->getRepository( 'AdminBundle:Config' )->getOneBy( array( 'name' => 'synergie_max' ) ) )
                     $res[] = $v->getName();
