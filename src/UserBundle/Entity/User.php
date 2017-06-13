@@ -32,7 +32,7 @@ class User extends BaseUser implements EquatableInterface
     /**
      * @var string
      *
-     * @ORM\Column(name="arbitre_disponibilite", type="text")
+     * @ORM\Column(name="arbitre_disponibilite",nullable=true)
      */
     private $arbitreDisponibilite;
 
