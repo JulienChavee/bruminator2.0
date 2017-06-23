@@ -100,7 +100,7 @@ class TeamController extends Controller
                                 break;
                             }
                             if( $em->getRepository( 'TeamBundle:Player' )->findPlayerWithoutTeam( $v[ 'name' ] ) )
-                                $player = $em->getRepository( 'TeamBundle:Player' )->findPlayerWithoutTeam( $v[ 'name' ] );
+                                $player = $em->getRepository( 'TeamBundle:Player' )->findOneBy( array( 'pseudo' => $v[ 'name' ] ) );
                             else
                                 $player = new Player();
 
