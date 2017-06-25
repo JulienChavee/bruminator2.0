@@ -153,8 +153,7 @@ class MatchController extends Controller
                 $em = $this->getDoctrine()->getManager();
 
                 $match = $em->getRepository( 'MatchBundle:Matchs' )->findOneBy( array( 'id' => $request->get( 'id' ) ) );
-                $listArbitres = $em->getRepository( 'UserBundle:User' )->findByRole( 'ROLE_ADMIN' );
-                $listArbitres = array_merge( $em->getRepository( 'UserBundle:User' )->findByRole( 'ROLE_SUPER_ADMIN' ), $listArbitres );
+                $listArbitres = $em->getRepository( 'UserBundle:User' )->findArbitre();
 
                 $normalizer  = new ObjectNormalizer();;
                 $normalizer->setCircularReferenceHandler(function ($object) {
