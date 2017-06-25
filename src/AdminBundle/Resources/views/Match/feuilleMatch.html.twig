@@ -51,9 +51,9 @@
                             <option selected="selected" disabled="disabled">Joueur {{ i }}</option>
                             {% for player in match.attack.players if not player.isRemplacant %}
                                 <optgroup label="{{ player.class.name }}">
-                                    <option value="{{ player.id }}" {% if match.matchResult and match.matchResult.matchResultTeam.0.initiative and attribute(match.matchResult.matchResultTeam.0.initiative,i) == player.id %}selected="selected"{% endif %}>{{ player.pseudo }}</option>
+                                    <option value="{{ player.id }}" {% if match.matchResult and match.matchResult.matchResultTeam.0.initiative and attribute(match.matchResult.matchResultTeam.0.initiative,(i-1)) == player.id %}selected="selected"{% endif %}>{{ player.pseudo }}</option>
                                     {% if player.remplacant %}
-                                        <option value="{{ player.remplacant.id }}" {% if match.matchResult and match.matchResult.matchResultTeam.0.initiative and attribute(match.matchResult.matchResultTeam.0.initiative,i) == player.remplacant.id %}selected="selected"{% endif %}>{{ player.remplacant.pseudo }}</option>
+                                        <option value="{{ player.remplacant.id }}" {% if match.matchResult and match.matchResult.matchResultTeam.0.initiative and attribute(match.matchResult.matchResultTeam.0.initiative,(i-1)) == player.remplacant.id %}selected="selected"{% endif %}>{{ player.remplacant.pseudo }}</option>
                                     {% endif %}
                                 </optgroup>
                             {% endfor %}
@@ -119,9 +119,9 @@
                             <option selected="selected" disabled="disabled">Joueur {{ i }}</option>
                             {% for player in match.defense.players if not player.isRemplacant %}
                                 <optgroup label="{{ player.class.name }}">
-                                    <option value="{{ player.id }}" {% if match.matchResult and match.matchResult.matchResultTeam.1.initiative and attribute(match.matchResult.matchResultTeam.1.initiative,i) == player.id %}selected="selected"{% endif %}>{{ player.pseudo }}</option>
+                                    <option value="{{ player.id }}" {% if match.matchResult and match.matchResult.matchResultTeam.1.initiative and attribute(match.matchResult.matchResultTeam.1.initiative,(i-1)) == player.id %}selected="selected"{% endif %}>{{ player.pseudo }}</option>
                                     {% if player.remplacant %}
-                                        <option value="{{ player.remplacant.id }}" {% if match.matchResult and match.matchResult.matchResultTeam.1.initiative and attribute(match.matchResult.matchResultTeam.1.initiative,i) == player.remplacant.id %}selected="selected"{% endif %}>{{ player.remplacant.pseudo }}</option>
+                                        <option value="{{ player.remplacant.id }}" {% if match.matchResult and match.matchResult.matchResultTeam.1.initiative and attribute(match.matchResult.matchResultTeam.1.initiative,(i-1)) == player.remplacant.id %}selected="selected"{% endif %}>{{ player.remplacant.pseudo }}</option>
                                     {% endif %}
                                 </optgroup>
                             {% endfor %}
