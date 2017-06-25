@@ -270,63 +270,122 @@ class Matchs
             $res[ 'pointsSuisse' ] = 3;
             $res[ 'details' ][ 'pointsSuisse' ][] = array( 'nb' => 3, 'explication' => 'Victoire' );
 
-            if( $forfait ){
-                $res['pointsGoulta'] = 60;
-                $res['details']['pointsGoulta'][] = array('nb' => 60, 'explication' => 'Victoire par forfait');
-            } else {
-                $mort = $this->getMatchResult()->getWinner() == $this->getAttack() ? $this->getMatchResult()->getMatchResultTeam()[0]->getNombreMort() : $this->getMatchResult()->getMatchResultTeam()[1]->getNombreMort();
-                switch ($mort) {
-                    case '0':
-                        $res['pointsGoulta'] = 60;
-                        $res['details']['pointsGoulta'][] = array('nb' => 60, 'explication' => 'Victoire parfaite');
-                        break;
-                    case '1':
+            switch($this->getEdition()->getId())
+            {
+                case '16':
+                    if( $forfait ){
                         $res['pointsGoulta'] = 50;
-                        $res['details']['pointsGoulta'][] = array('nb' => 50, 'explication' => 'Victoire à trois');
-                        break;
-                    case '2':
-                        $res['pointsGoulta'] = 45;
-                        $res['details']['pointsGoulta'][] = array('nb' => 45, 'explication' => 'Victoire à deux');
-                        break;
-                    case '3':
-                        $res['pointsGoulta'] = 40;
-                        $res['details']['pointsGoulta'][] = array('nb' => 40, 'explication' => 'Victoire sur le fil');
-                        break;
-                }
+                        $res['details']['pointsGoulta'][] = array('nb' => 50, 'explication' => 'Victoire par forfait');
+                    } else {
+                        $mort = $this->getMatchResult()->getWinner() == $this->getAttack() ? $this->getMatchResult()->getMatchResultTeam()[0]->getNombreMort() : $this->getMatchResult()->getMatchResultTeam()[1]->getNombreMort();
+                        switch ($mort) {
+                            case '0':
+                                $res['pointsGoulta'] = 50;
+                                $res['details']['pointsGoulta'][] = array('nb' => 50, 'explication' => 'Victoire parfaite');
+                                break;
+                            case '1':
+                                $res['pointsGoulta'] = 45;
+                                $res['details']['pointsGoulta'][] = array('nb' => 45, 'explication' => 'Victoire à deux');
+                                break;
+                            case '2':
+                                $res['pointsGoulta'] = 40;
+                                $res['details']['pointsGoulta'][] = array('nb' => 40, 'explication' => 'Victoire sur le fil');
+                                break;
+                        }
 
-                if ($this->getMatchResult()->getNombreTour() < 9) {
-                    $res['pointsGoulta'] += 20;
-                    $res['details']['pointsGoulta'][] = array('nb' => 20, 'explication' => 'Victoire écrasante');
-                }
+                        if ($this->getMatchResult()->getNombreTour() < 9) {
+                            $res['pointsGoulta'] += 20;
+                            $res['details']['pointsGoulta'][] = array('nb' => 20, 'explication' => 'Victoire écrasante');
+                        }
+                    }
+                    break;
+                default:
+                    if( $forfait ){
+                        $res['pointsGoulta'] = 60;
+                        $res['details']['pointsGoulta'][] = array('nb' => 60, 'explication' => 'Victoire par forfait');
+                    } else {
+                        $mort = $this->getMatchResult()->getWinner() == $this->getAttack() ? $this->getMatchResult()->getMatchResultTeam()[0]->getNombreMort() : $this->getMatchResult()->getMatchResultTeam()[1]->getNombreMort();
+                        switch ($mort) {
+                            case '0':
+                                $res['pointsGoulta'] = 60;
+                                $res['details']['pointsGoulta'][] = array('nb' => 60, 'explication' => 'Victoire parfaite');
+                                break;
+                            case '1':
+                                $res['pointsGoulta'] = 50;
+                                $res['details']['pointsGoulta'][] = array('nb' => 50, 'explication' => 'Victoire à trois');
+                                break;
+                            case '2':
+                                $res['pointsGoulta'] = 45;
+                                $res['details']['pointsGoulta'][] = array('nb' => 45, 'explication' => 'Victoire à deux');
+                                break;
+                            case '3':
+                                $res['pointsGoulta'] = 40;
+                                $res['details']['pointsGoulta'][] = array('nb' => 40, 'explication' => 'Victoire sur le fil');
+                                break;
+                        }
+
+                        if ($this->getMatchResult()->getNombreTour() < 9) {
+                            $res['pointsGoulta'] += 20;
+                            $res['details']['pointsGoulta'][] = array('nb' => 20, 'explication' => 'Victoire écrasante');
+                        }
+                    }
             }
+
         } else {
             $res[ 'pointsSuisse' ] = 0;
             $res[ 'details' ][ 'pointsSuisse' ][] = array( 'nb' => 0, 'explication' => 'Défaite' );
 
-            if( $forfait ) {
-                $res['pointsGoulta'] = -10;
-                $res['details']['pointsGoulta'][] = array('nb' => -10, 'explication' => 'Forfait');
-            } else {
-                $mort = $this->getMatchResult()->getWinner() == $this->getAttack() ? $this->getMatchResult()->getMatchResultTeam()[0]->getNombreMort() : $this->getMatchResult()->getMatchResultTeam()[1]->getNombreMort();
-                switch ($mort) {
-                    case '0':
-                        $res['pointsGoulta'] = 5;
-                        $res['details']['pointsGoulta'][] = array('nb' => 5, 'explication' => 'Victoire parfaite (adverse)');
-                        break;
-                    case '1':
-                        $res['pointsGoulta'] = 15;
-                        $res['details']['pointsGoulta'][] = array('nb' => 15, 'explication' => 'Victoire à trois (adverse)');
-                        break;
-                    case '2':
-                        $res['pointsGoulta'] = 20;
-                        $res['details']['pointsGoulta'][] = array('nb' => 20, 'explication' => 'Victoire à deux (adverse)');
-                        break;
-                    case '3':
-                        $res['pointsGoulta'] = 25;
-                        $res['details']['pointsGoulta'][] = array('nb' => 25, 'explication' => 'Victoire sur le fil (adverse)');
-                        break;
-                }
+            switch($this->getEdition()->getId())
+            {
+                case '16':
+                    if( $forfait ) {
+                        $res['pointsGoulta'] = -10;
+                        $res['details']['pointsGoulta'][] = array('nb' => -10, 'explication' => 'Forfait');
+                    } else {
+                        $mort = $this->getMatchResult()->getWinner() == $this->getAttack() ? $this->getMatchResult()->getMatchResultTeam()[0]->getNombreMort() : $this->getMatchResult()->getMatchResultTeam()[1]->getNombreMort();
+                        switch ($mort) {
+                            case '0':
+                                $res['pointsGoulta'] = 15;
+                                $res['details']['pointsGoulta'][] = array('nb' => 5, 'explication' => 'Victoire parfaite (adverse)');
+                                break;
+                            case '1':
+                                $res['pointsGoulta'] = 15;
+                                $res['details']['pointsGoulta'][] = array('nb' => 15, 'explication' => 'Victoire à deux (adverse)');
+                                break;
+                            case '2':
+                                $res['pointsGoulta'] = 20;
+                                $res['details']['pointsGoulta'][] = array('nb' => 20, 'explication' => 'Victoire sur le fil (adverse)');
+                                break;
+                        }
+                    }
+                    break;
+                default:
+                    if( $forfait ) {
+                        $res['pointsGoulta'] = -10;
+                        $res['details']['pointsGoulta'][] = array('nb' => -10, 'explication' => 'Forfait');
+                    } else {
+                        $mort = $this->getMatchResult()->getWinner() == $this->getAttack() ? $this->getMatchResult()->getMatchResultTeam()[0]->getNombreMort() : $this->getMatchResult()->getMatchResultTeam()[1]->getNombreMort();
+                        switch ($mort) {
+                            case '0':
+                                $res['pointsGoulta'] = 5;
+                                $res['details']['pointsGoulta'][] = array('nb' => 5, 'explication' => 'Victoire parfaite (adverse)');
+                                break;
+                            case '1':
+                                $res['pointsGoulta'] = 15;
+                                $res['details']['pointsGoulta'][] = array('nb' => 15, 'explication' => 'Victoire à trois (adverse)');
+                                break;
+                            case '2':
+                                $res['pointsGoulta'] = 20;
+                                $res['details']['pointsGoulta'][] = array('nb' => 20, 'explication' => 'Victoire à deux (adverse)');
+                                break;
+                            case '3':
+                                $res['pointsGoulta'] = 25;
+                                $res['details']['pointsGoulta'][] = array('nb' => 25, 'explication' => 'Victoire sur le fil (adverse)');
+                                break;
+                        }
+                    }
             }
+
         }
 
         if( $team == $this->getAttack() )
