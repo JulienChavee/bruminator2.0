@@ -345,7 +345,7 @@ class Matchs
                         $mort = $this->getMatchResult()->getWinner() == $this->getAttack() ? $this->getMatchResult()->getMatchResultTeam()[0]->getNombreMort() : $this->getMatchResult()->getMatchResultTeam()[1]->getNombreMort();
                         switch ($mort) {
                             case '0':
-                                $res['pointsGoulta'] = 15;
+                                $res['pointsGoulta'] = 5;
                                 $res['details']['pointsGoulta'][] = array('nb' => 5, 'explication' => 'Victoire parfaite (adverse)');
                                 break;
                             case '1':
