@@ -214,7 +214,7 @@ class MatchController extends Controller
                 $feuille->setMatch( $match );
                 $feuille->setFirst( $forfait ? null : $em->getRepository( 'TeamBundle:Team' )->findOneBy( array( 'id' => $matchData[ 'first_team' ] ) ) );
                 $feuille->setNombreTour( $forfait ? null : $matchData[ 'nbTour' ] );
-                $feuille->setWinner( $forfait ? ( $teamAttackData[ 'forfait' ] ? $match->getDefense() : $match->getAttack() ) : ( $teamAttackData[ 'morts' ] == 4 ? $match->getDefense() : $match->getAttack() ) );
+                $feuille->setWinner( $forfait ? ( $teamAttackData[ 'forfait' ] ? $match->getDefense() : $match->getAttack() ) : ( $teamAttackData[ 'morts' ] == $em->getRepository( 'AdminBundle:Config' )->getOneBy( array( 'name' => 'nb_players_team' ) ) ? $match->getDefense() : $match->getAttack() ) );
 
                 $feuilleTeamAttack->setMatchResult( $feuille );
                 $feuilleTeamAttack->setTeam( $match->getAttack() );
