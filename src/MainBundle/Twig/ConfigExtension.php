@@ -134,9 +134,14 @@ class ConfigExtension extends \Twig_Extension {
             return $match->getMap();
         else
         {
-            $em = $this->doctrine->getManager();
-            $mapDate = $em->getRepository( 'MatchBundle:MapDate' )->findMapDate( $match->getDate(), $match->getEdition() );
-            return is_null($mapDate) ? null : $mapDate->getMap();
+            if( !is_null( $match->getDate() ) )
+            {
+                $em = $this->doctrine->getManager();
+                $mapDate = $em->getRepository( 'MatchBundle:MapDate' )->findMapDate( $match->getDate(), $match->getEdition() );
+                return is_null($mapDate) ? null : $mapDate->getMap();
+            }
+            else
+                return null;
         }
     }
 
