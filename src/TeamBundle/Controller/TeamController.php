@@ -288,6 +288,9 @@ class TeamController extends Controller
      * @Route("/view/liste/{page}", name="team_front_homepage", defaults={"page": 1})
      */
     public function frontIndexAction( $page ) {
+        if( $page <= 0 )
+            return $this->redirectToRoute( 'team_front_homepage' );
+
         $em = $this->getDoctrine()->getManager();
 
         $maxTeams = 9;
