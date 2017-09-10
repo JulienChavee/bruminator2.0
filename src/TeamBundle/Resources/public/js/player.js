@@ -1,6 +1,6 @@
 var previousRemplacantPseudo = "";
 
-$('body').on('click', '.playerCard i[data-action="edit"]', function() {
+$('body').on('click', '.playerCard .editable_tool[data-action="edit"]', function() {
     var id = $(this).data('id');
     var modal = $('#editPlayer');
 
@@ -53,7 +53,7 @@ $('.editPlayer').on('click', function() {
     var inverse = modal.find('#editPlayer_Inverse').is(":checked");
 
     button.attr('disabled', 'disabled');
-    button.find('.fa').removeClass('fa-pencil').addClass('fa-spinner fa-pulse');
+    button.find('.fas').removeClass('fa-pencil').addClass('fa-spinner-third fa-spin');
 
     $.ajax({
         type: 'POST',

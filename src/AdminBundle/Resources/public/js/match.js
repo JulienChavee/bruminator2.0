@@ -67,15 +67,15 @@ $('body').on('click', '.editDate i[data-action="edit"]', function() {
                 useCurrent : false,
                 stepping: 5,
                 icons: {
-                    time: 'fa fa-clock-o',
-                    date: 'fa fa-calendar',
-                    up: 'fa fa-chevron-up',
-                    down: 'fa fa-chevron-down',
-                    previous: 'fa fa-chevron-left',
-                    next: 'fa fa-chevron-right',
-                    today: 'fa fa-screenshot',
-                    clear: 'fa fa-trash',
-                    close: 'fa fa-remove'
+                    time: 'fas fa-clock',
+                    date: 'far fa-calendar',
+                    up: 'far fa-chevron-up',
+                    down: 'far fa-chevron-down',
+                    previous: 'far fa-chevron-left',
+                    next: 'far fa-chevron-right',
+                    today: 'far fa-screenshot',
+                    clear: 'far fa-trash',
+                    close: 'far fa-remove'
                 }
             });
         }
@@ -134,13 +134,13 @@ $('body').on('click', '.editDate button[data-action="cancel"]', function(){
                     $('div[data-id="' + id + '"] .editDate').empty()
                         .append(moment(data.return.date).locale('fr').format("DD MMMM YYYY - HH:mm"))
                         .append(
-                            $('<i>').addClass('fa fa-pencil editable_tool invisible').data('id', id).attr('data-action', 'edit')
+                            $('<i>').addClass('fas fa-pencil editable_tool invisible').data('id', id).attr('data-action', 'edit')
                         );
                 } else {
                     $('div[data-id="' + id + '"] .editDate').empty().append(
                         $('<i>').text('Aucune date pour le moment ')
                     ).append(
-                        $('<i>').addClass('fa fa-pencil editable_tool invisible').data('id', id).attr('data-action', 'edit')
+                        $('<i>').addClass('fas fa-pencil editable_tool invisible').data('id', id).attr('data-action', 'edit')
                     );
                 }
             } else {
@@ -246,13 +246,13 @@ $('body').on('click', '.editArbitre button[data-action="cancel"]', function(){
                     $('div[data-id="' + id + '"] .editArbitre').empty()
                         .append(data.return.username)
                         .append(
-                            $('<i>').addClass('fa fa-pencil editable_tool invisible').data('id', id).attr('data-action', 'edit')
+                            $('<i>').addClass('fas fa-pencil editable_tool invisible').data('id', id).attr('data-action', 'edit')
                         );
                 } else {
                     $('div[data-id="' + id + '"] .editArbitre').empty().append(
                         $('<i>').text('Aucun arbitre pour le moment ')
                     ).append(
-                        $('<i>').addClass('fa fa-pencil editable_tool invisible').data('id', id).attr('data-action', 'edit')
+                        $('<i>').addClass('fas fa-pencil editable_tool invisible').data('id', id).attr('data-action', 'edit')
                     );
                 }
             } else {

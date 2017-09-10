@@ -3,7 +3,7 @@
         <div class="card-header">
             <span class="text-danger">{{ match.attack.name }}</span> <b>VS</b> <span class="text-primary">{{ match.defense.name }}</span>
             <span class="float-xs-right">
-                <a href="{{ path('admin_match_feuille', {'id':match.id}) }}"><i class="fa fa-file-text" data-toggle="tooltip" data-trigger="hover" title="Editer la feuille de match" role="button"></i></a>
+                <a href="{{ path('admin_match_feuille', {'id':match.id}) }}"><i class="fas fa-file-text" data-toggle="tooltip" data-trigger="hover" title="Editer la feuille de match" role="button"></i></a>
             </span>
         </div>
         <div class="card-block">
@@ -19,7 +19,7 @@
                             {% else %}
                                 <i>Aucune date pour le moment</i>
                             {% endif %}
-                            <i class="fa fa-pencil editable_tool invisible" data-toggle="tooltip" data-trigger="hover" title="Modifier la date" role="button" data-action="edit" data-id="{{ match.id }}"></i>
+                            <i class="fas fa-pencil editable_tool invisible" data-toggle="tooltip" data-trigger="hover" title="Modifier la date" role="button" data-action="edit" data-id="{{ match.id }}"></i>
                         </div>
                     </div>
 
@@ -33,7 +33,7 @@
                             {% else %}
                                 <i>Aucun arbitre pour le moment</i>
                             {% endif %}
-                            <i class="fa fa-pencil editable_tool invisible" data-toggle="tooltip" data-trigger="hover" title="Modifier la date" role="button" data-action="edit" data-id="{{ match.id }}"></i>
+                            <i class="fas fa-pencil editable_tool invisible" data-toggle="tooltip" data-trigger="hover" title="Modifier la date" role="button" data-action="edit" data-id="{{ match.id }}"></i>
                         </div>
                     </div>
                 </div>

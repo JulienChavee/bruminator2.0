@@ -1,7 +1,7 @@
 <div class="col-md-3 editable_content" data-id="{{ player.id }}">
     <div class="card card-block playerCard">
         <h4 class="card-title">
-            {% if app.user.team == team %} <small class="float-xs-right"><i class="fa fa-pencil editable_tool invisible" data-toggle="tooltip" data-trigger="hover" title="Modifier le joueur" role="button" data-action="edit" data-id="{{ player.id }}"></i></small> {% endif %}
+            {% if app.user.team == team %} <small class="float-xs-right"><i class="fas fa-pencil editable_tool invisible" data-toggle="tooltip" data-trigger="hover" title="Modifier le joueur" role="button" data-action="edit" data-id="{{ player.id }}"></i></small> {% endif %}
             <img src="{{ asset('bundles/main/images/class/'~ player.class.shortName|lower|remove_accent ~'1.png') }}" data-toggle="tooltip" data-trigger="hover" title="{{ player.class.name }}">
             {{ player.pseudo }}
         </h4>
@@ -10,7 +10,7 @@
             {% if player.remplacant %}
                 <b>Remplaçant :</b> {{ player.remplacant.pseudo }} ({{ player.remplacant.level }})
             {% else %}
-                <span class="text-danger"><b><i class="fa fa-exclamation"></i></b> Aucun remplaçant</span>
+                <span class="text-danger"><b><i class="fas fa-exclamation"></i></b> Aucun remplaçant</span>
             {% endif %}
         </p>
     </div>

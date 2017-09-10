@@ -18,7 +18,7 @@
 
         <div class="streamInfos">
             <h3>Actuellement : <small class="text-muted">{% if not channel or not channel.stream %}Stream Offline{% else %}<span id='streamTitle'>{{ channel.stream.channel.status }}</span>{% endif %}</small></h3>
-            {% if channel and channel.stream %}<h4><span class='fa fa-user'></span> <span id='viewers'>{{ channel.stream.viewers }}</span></h4>{% endif %}
+            {% if channel and channel.stream %}<h4><span class='fas fa-user'></span> <span id='viewers'>{{ channel.stream.viewers }}</span></h4>{% endif %}
         </div>
     </div>
     <div class="col-sm-4">

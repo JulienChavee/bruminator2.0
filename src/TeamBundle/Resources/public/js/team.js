@@ -2,7 +2,7 @@ $('.addTeam').on('click', function() {
     var button = $(this);
 
     button.attr('disabled', 'disabled');
-    button.prepend($('<i>').addClass('fa fa-spinner fa-pulse'));
+    button.prepend($('<i>').addClass('fas fa-spinner-third fa-spin'));
 
     var teamName = $('#team_name').val();
     var dispo = $('#team_disponibilite').val();
@@ -39,7 +39,7 @@ $('.addTeam').on('click', function() {
                     $.each(data.message, function (i, item) {
                         $('.modal-body-more-info').append(
                             $('<span>').addClass("text-danger").append(
-                                $('<i>').addClass('fa fa-circle')
+                                $('<i>').addClass('far fa-circle')
                             ).append(" " + item.message)
                                 .append($('<br>'))
                         )
@@ -104,7 +104,7 @@ $('.disponibilites').on('click', 'i[data-action="edit"]', function() {
                 $('.disponibilites.editable_content').find('div').empty().append(
                     $('<textarea>').addClass('form-control input_disponibilite').text(data.return)
                 ).append(
-                    $('<button>').addClass('btn btn-primary mt-1 pull-xs-right update_dispo').html('<i class="fa fa-pencil"></i> Enregistrer').data('id', id)
+                    $('<button>').addClass('btn btn-primary mt-1 pull-xs-right update_dispo').html('<i class="fas fa-pencil"></i> Enregistrer').data('id', id)
                 );
             } else {
                 $('.modal-body-more-info').html(data.message);

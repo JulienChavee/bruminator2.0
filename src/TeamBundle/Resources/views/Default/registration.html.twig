@@ -66,19 +66,19 @@
                 <div class="card-block">
                     <h3 class="card-title">Joueur {{ i }}</h3>
                     <fieldset class="form-group">
-                        <label>Pseudo <sup class="text-danger"><i class="fa fa-asterisk" aria-hidden="true"></i></sup></label>
+                        <label>Pseudo <sup class="text-danger"><i class="fas fa-asterisk" aria-hidden="true"></i></sup></label>
                             <input id="player_{{ i }}" type="text" class="form-control input_player" placeholder="Pseudo du joueur {{ i }}">
                             <div class="form-control-feedback"></div>
                     </fieldset>
 
                     <fieldset class="form-group">
-                        <label>Niveau <sup class="text-danger"><i class="fa fa-asterisk" aria-hidden="true"></i></sup></label>
+                        <label>Niveau <sup class="text-danger"><i class="fas fa-asterisk" aria-hidden="true"></i></sup></label>
                         <input id="player_level_{{ i }}" type="number" class="form-control" min="185" max="200" placeholder="Niveau du joueur {{ i }}">
                         <div class="form-control-feedback"></div>
                     </fieldset>
 
                     <fieldset class="form-group">
-                        <label>Classe <sup class="text-danger"><i class="fa fa-asterisk" aria-hidden="true"></i></sup></label>
+                        <label>Classe <sup class="text-danger"><i class="fas fa-asterisk" aria-hidden="true"></i></sup></label>
                         <select id="player_class_{{ i }}" class="custom-select form-control">
                             <option disabled selected>Sélectionnez une classe</option>
                             {% for class in classes %}
@@ -108,7 +108,7 @@
     <div class="row mt-2">
         <div class="col-md-6">
             <fieldset class="form-group">
-                <label>Disponibilités <sup class="text-danger"><i class="fa fa-asterisk" aria-hidden="true"></i></sup></label>
+                <label>Disponibilités <sup class="text-danger"><i class="fas fa-asterisk" aria-hidden="true"></i></sup></label>
                 <textarea id="team_disponibilite" class="form-control" rows="5"></textarea>
                 <small class="form-text text-muted">
                     Entrez ici vos disponibilités ainsi que vos remarques (serveur d'origine si migrant, ...)

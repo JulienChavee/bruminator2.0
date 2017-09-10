@@ -1,13 +1,13 @@
 <tr data-id="{{ user.id }}" data-table="user">
     <td>
         {% if user.hasRole('ROLE_ADMIN') or user.hasRole('ROLE_SUPER_ADMIN') %}
-            <i class="fa fa-user-secret text-danger" data-toggle="tooltip" title="Organisateur"></i>
+            <i class="fas fa-user-secret text-danger" data-toggle="tooltip" title="Organisateur"></i>
         {% elseif user.hasRole('ROLE_ARBITRE') %}
-            <i class="fa fa-user text-primary" data-toggle="tooltip" title="Arbitre"></i>
+            <i class="fas fa-user text-primary" data-toggle="tooltip" title="Arbitre"></i>
         {% elseif user.hasRole('ROLE_ARBITRE_WAITING_APPROVAL') %}
-            <i class="fa fa-user text-warning" data-toggle="tooltip" title="Arbitre en attente de validation"></i>
+            <i class="fas fa-user text-warning" data-toggle="tooltip" title="Arbitre en attente de validation"></i>
         {% else %}
-            <i class="fa fa-user" data-toggle="tooltip" title="Utilisateur"></i>
+            <i class="fas fa-user" data-toggle="tooltip" title="Utilisateur"></i>
         {% endif %}
         {{ user.username }}
     </td>
@@ -16,24 +16,24 @@
     <td>
         <div class="btn-toolbar" role="toolbar" aria-label="Outils">
             <div class="btn-group btn-group-sm" role="group" aria-label="Edition">
-                <button type="button" class="btn btn-secondary" data-action="edit" data-id="{{ user.id }}" data-toggle="tooltip" title="Modifier l'utilisateur" disabled><i class="fa fa-pencil"></i></button>
-                <button type="button" class="btn btn-secondary" data-action="edit" data-id="{{ user.id }}" data-toggle="tooltip" title="Envoyer un email" disabled><i class="fa fa-envelope"></i></button>
-                <button type="button" class="btn btn-secondary" data-action="edit" data-id="{{ user.id }}" data-toggle="tooltip" title="Ré-initialiser le mot de passe" disabled><i class="fa fa-key"></i></button>
+                <button type="button" class="btn btn-secondary" data-action="edit" data-id="{{ user.id }}" data-toggle="tooltip" title="Modifier l'utilisateur" disabled><i class="fas fa-pencil"></i></button>
+                <button type="button" class="btn btn-secondary" data-action="edit" data-id="{{ user.id }}" data-toggle="tooltip" title="Envoyer un email" disabled><i class="fas fa-envelope"></i></button>
+                <button type="button" class="btn btn-secondary" data-action="edit" data-id="{{ user.id }}" data-toggle="tooltip" title="Ré-initialiser le mot de passe" disabled><i class="fas fa-key"></i></button>
                 <div class="btn-group  btn-group-sm" role="group" data-toggle="tooltip" title="Promouvoir l'utilisateur">
                     <button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="fa fa-user-plus"></i>
+                        <i class="fas fa-user-plus"></i>
                     </button>
                     <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
                         {% if not user.hasRole('ROLE_ADMIN') and not user.hasRole('ROLE_SUPER_ADMIN') %}
-                            <button class="dropdown-item" type="button" data-action="promote" data-id="{{ user.id }}" data-role="organisateur"><i class="fa fa-user-secret text-danger"></i> Organisateur</button>
+                            <button class="dropdown-item" type="button" data-action="promote" data-id="{{ user.id }}" data-role="organisateur"><i class="fas fa-user-secret text-danger"></i> Organisateur</button>
                         {% endif %}
 
                         {% if not user.hasRole('ROLE_ADMIN') and not user.hasRole('ROLE_SUPER_ADMIN') and not user.hasRole('ROLE_ARBITRE') %}
-                            <button class="dropdown-item" type="button" data-action="promote" data-id="{{ user.id }}" data-role="arbitre"><i class="fa fa-user text-primary"></i> Arbitre</button>
+                            <button class="dropdown-item" type="button" data-action="promote" data-id="{{ user.id }}" data-role="arbitre"><i class="fas fa-user text-primary"></i> Arbitre</button>
                         {% endif %}
 
                         {% if user.hasRole('ROLE_ADMIN') or user.hasRole('ROLE_SUPER_ADMIN') or user.hasRole('ROLE_ARBITRE') or user.hasRole('ROLE_ARBITRE_WAITING_APPROVAL') %}
-                            <button class="dropdown-item" type="button" data-action="promote" data-id="{{ user.id }}" data-role="user"><i class="fa fa-user"></i> Utilisateur</button>
+                            <button class="dropdown-item" type="button" data-action="promote" data-id="{{ user.id }}" data-role="user"><i class="fas fa-user"></i> Utilisateur</button>
                         {% endif %}
                     </div>
                 </div>

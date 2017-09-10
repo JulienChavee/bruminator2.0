@@ -8,7 +8,6 @@
     <title>{% block title %}Bruminator{% endblock %}</title>
     {% block stylesheets %}
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css" integrity="sha384-AysaV+vQoT3kOAXZkl02PThvDr8HYKPZhNT5h/CXfBThSRXQ6jW5DO2ekP5ViFdi" crossorigin="anonymous">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
         {% stylesheets '@MainBundle/Resources/public/css/sticky-footer.css' %}
             <link rel="stylesheet" href="{{ asset_url }}">
@@ -73,7 +72,7 @@
                 </li>
                 {% if streamOn() %}
                     <li class="nav-item {% if app.request.attributes.get('_route') matches '{^live.*$}' %}active{% endif %}">
-                        <a class="nav-link" href="{{ path('twitch') }}"><i class="fa fa-circle text-danger"></i> Live Bruminator !</a>
+                        <a class="nav-link" href="{{ path('twitch') }}"><i class="far fa-circle text-danger"></i> Live Bruminator !</a>
                     </li>
                 {% endif %}
             </ul>
@@ -100,16 +99,19 @@
                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Liens</a>
                     <div class="dropdown-menu">
                         <a class="dropdown-item" href="{{ 'lien_twitch'|config.url }}" target="_blank">
-                            <i class="fa fa-twitch fa-fw"></i> {{ 'lien_twitch'|config.name }}
+                            <i class="fab fa-twitch fa-fw"></i> {{ 'lien_twitch'|config.name }}
                         </a>
                         <a class="dropdown-item" href="{{ 'lien_twitter'|config.url }}" target="_blank">
-                            <i class="fa fa-twitter fa-fw"></i> {{ 'lien_twitter'|config.name }}
+                            <i class="fab fa-twitter fa-fw"></i> {{ 'lien_twitter'|config.name }}
                         </a>
                         <a class="dropdown-item" href="{{ 'lien_facebook'|config.url }}" target="_blank">
-                            <i class="fa fa-facebook fa-fw"></i> {{ 'lien_facebook'|config.name }}
+                            <i class="fab fa-facebook fa-fw"></i> {{ 'lien_facebook'|config.name }}
                         </a>
                         <a class="dropdown-item" href="{{ 'lien_youtube'|config.url }}" target="_blank">
-                            <i class="fa fa-youtube-play fa-fw"></i> {{ 'lien_youtube'|config.name }}
+                            <i class="fab fa-youtube-play fa-fw"></i> {{ 'lien_youtube'|config.name }}
+                        </a>
+                        <a class="dropdown-item" href="{{ 'lien_discord'|config.url }}" target="_blank">
+                            <i class="fab fa-discord fa-fw"></i> {{ 'lien_youtube'|config.name }}
                         </a>
                         <a class="dropdown-item" href="{{ 'lien_dofus'|config.url }}" target="_blank">
                             {% image '@MainBundle/Resources/public/images/dofus.png' output='/images/dofus.png' %}
@@ -121,7 +123,7 @@
                 </li>
                 {% if app.user %}
                     <li class="nav-item {% if app.request.attributes.get('_route') matches '{^user_.*$}' %}active{% endif %} dropdown">
-                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user"></i> {{ app.user.username }}</a>
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user"></i> {{ app.user.username }}</a>
                         <div class="dropdown-menu">
                             <a class="dropdown-item" href="{{ path('fos_user_profile_show') }}">Gérer mon compte</a>
                             <a class="dropdown-item" href="{{ path('fos_user_security_logout') }}">Se déconnecter</a>
@@ -129,13 +131,22 @@
                     </li>
 
                     <li id="dropdown-notification" class="nav-item dropdown" data-time="{{ "now"|date("Y-m-d H:i") }}">
-                        <a id="dropdown-notification-bell" class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">{% if notification.getCountNotifications() > 0 %}<i class="fa fa-bell"></i><span class="tag tag-pill tag-danger">{{ notification.getCountNotifications() }}{% else %}<i class="fa fa-bell-o"></i>{% endif %}</span></a>
+                        <a id="dropdown-notification-bell" class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                            {% if notification.getCountNotifications() > 0 %}
+                                <span class="fa-layers fa-fw" >
+                                    <i class="fas fa-bell"></i>
+                                    <span class="fa-layers-counter fa-layers-bottom-left" style="font-size: 1.6em;">{{ notification.getCountNotifications() }}</span>
+                                </span>
+                            {% else %}
+                                <i class="far fa-bell"></i>
+                            {% endif %}
+                        </a>
                         <div class="dropdown-menu" style="width: 250px;max-width: 250px;">
                             {% for notification in notification.getNotifications() %}
                                 <span class="dropdown-item" style="white-space: normal;">
                                     <small>{% if not notification.timeRead %}<b>{% endif %}{{ notification.message }}{% if not notification.timeRead %}</b>{% endif %}</small>
                                     <br>
-                                    <small class="text-muted"><i class="fa fa-clock-o"></i> {{ notification.timeCreated|time_diff }}</small>
+                                    <small class="text-muted"><i class="far fa-clock"></i> {{ notification.timeCreated|time_diff }}</small>
                                     {% if not loop.last %}
                                         <hr>
                                     {% endif %}
@@ -185,7 +196,7 @@
                     </div>
 
                     <div class="modal-body">
-                        <i class="fa fa-check text-success"></i> Action correctement effectuée
+                        <i class="far fa-check text-success"></i> Action correctement effectuée
                         <div class="modal-body-more-info text-muted"></div>
                     </div>
                 </div>
@@ -205,7 +216,7 @@
                     </div>
 
                     <div class="modal-body">
-                        <i class="fa fa-times text-danger"></i> Une erreur s'est produite
+                        <i class="far fa-times text-danger"></i> Une erreur s'est produite
                         <div class="modal-body-more-info text-muted"></div>
                     </div>
                 </div>
@@ -273,9 +284,9 @@
     <ol class="breadcrumb">
         {% block breadcrumb %}
             {% if app.request.get('_route') == 'homepage' %}
-                <li class="breadcrumb-item active"><i class="fa fa-home"></i> Accueil</li>
+                <li class="breadcrumb-item active"><i class="fas fa-home"></i> Accueil</li>
             {% else %}
-                <li class="breadcrumb-item"><a href="{{ path('homepage') }}"><i class="fa fa-home"></i> Accueil</a></li>
+                <li class="breadcrumb-item"><a href="{{ path('homepage') }}"><i class="fas fa-home"></i> Accueil</a></li>
             {% endif %}
         {% endblock %}
     </ol>
@@ -326,6 +337,15 @@
     {% endjavascripts %}
 
     {% javascripts '@MainBundle/Resources/public/js/cookie.js' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+    {% javascripts '@MainBundle/Resources/public/js/fontawesome/fontawesome.min.js'
+        '@MainBundle/Resources/public/js/fontawesome/packs/brands.min.js'
+        '@MainBundle/Resources/public/js/fontawesome/packs/solid.min.js'
+        '@MainBundle/Resources/public/js/fontawesome/packs/light.min.js'
+        '@MainBundle/Resources/public/js/fontawesome/packs/regular.min.js'
+    %}
         <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
 

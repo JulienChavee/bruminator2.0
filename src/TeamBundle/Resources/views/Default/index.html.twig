@@ -96,7 +96,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-                    <button type="button" class="btn btn-primary addPlayer" data-team="{{ team.id }}"><i class="fa fa-plus"></i> Ajouter</button>
+                    <button type="button" class="btn btn-primary addPlayer" data-team="{{ team.id }}"><i class="fas fa-plus"></i> Ajouter</button>
                 </div>
             </div>
         </div>
@@ -131,7 +131,7 @@
                         </div>
 
                         <div class="alert alert-warning editPlayerPseudoChanged hidden-xs-up">
-                            <i class='fa fa-exclamation-triangle'></i> Nous avons détecté que vous souhaitiez changer le pseudo du joueur.<br>
+                            <i class='fas fa-exclamation-triangle'></i> Nous avons détecté que vous souhaitiez changer le pseudo du joueur.<br>
                             Est-ce toujours le même joueur mais avec un pseudo différent ou bien un tout autre joueur ?
                             <div class="custom-controls-stacked">
                                 <label class="custom-control custom-radio">
@@ -170,7 +170,7 @@
                         </div>
 
                         <div class="alert alert-warning editPlayerClassChanged hidden-xs-up">
-                            <i class='fa fa-exclamation-triangle'></i> Nous avons détecté que vous souhaitiez changer de classe et que vous possédez un remplaçant.<br>
+                            <i class='fas fa-exclamation-triangle'></i> Nous avons détecté que vous souhaitiez changer de classe et que vous possédez un remplaçant.<br>
                             Si c'est le cas, merci de veiller à ce que le remplaçant soit de la même classe que vous. Le cas échéant, changez celui-ci ou bien retirez le en effaçant les champs ci-dessous.
                         </div>
 
@@ -184,7 +184,7 @@
                         </div>
 
                         <div class="alert alert-warning editPlayerRemplacantPseudoChanged hidden-xs-up">
-                            <i class='fa fa-exclamation-triangle'></i> Nous avons détecté que vous souhaitiez changer le pseudo du joueur.<br>
+                            <i class='fas fa-exclamation-triangle'></i> Nous avons détecté que vous souhaitiez changer le pseudo du joueur.<br>
                             Est-ce toujours le même joueur mais avec un pseudo différent ou bien un tout autre joueur ?
                             <div class="custom-controls-stacked">
                                 <label class="custom-control custom-radio">
@@ -214,7 +214,7 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-type="remove">Supprimer</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-                    <button type="button" class="btn btn-primary editPlayer" data-team="{{ team.id }}"><i class="fa fa-pencil"></i> Modifier</button>
+                    <button type="button" class="btn btn-primary editPlayer" data-team="{{ team.id }}"><i class="fas fa-pencil"></i> Modifier</button>
                 </div>
             </div>
         </div>
@@ -224,7 +224,7 @@
 
     {% if not team.registered %}
         <div class="alert alert-danger">
-            <i class="fa fa-exclamation-triangle"></i> Votre équipe <b>n'est pas inscrite</b> pour l'édition en cours. Voulez-vous inscrire votre équipe ?<br>
+            <i class="fas fa-exclamation-triangle"></i> Votre équipe <b>n'est pas inscrite</b> pour l'édition en cours. Voulez-vous inscrire votre équipe ?<br>
             {% if  errors|length > 0 %}
                 Toutefois, la composition actuelle de votre équipe n'est pas correcte par rapport aux règles du tournoi. Il faudra la modifier afin que votre équipe soit validée par un organisateur<br>
             {% endif %}
@@ -238,28 +238,28 @@
 
         {% if not team.paid %}
             <div class="alert alert-warning">
-                <i class="fa fa-exclamation-triangle"></i> Nous n'avons toujours pas reçu l'<b>argent de votre inscription</b>. Veuillez contacter un organisateur afin d'effectuer le paiement
+                <i class="fas fa-exclamation-triangle"></i> Nous n'avons toujours pas reçu l'<b>argent de votre inscription</b>. Veuillez contacter un organisateur afin d'effectuer le paiement
             </div>
         {% endif %}
     {% endif %}
 
     <div class="mb-2">
         <div class="col-md-4 bg-inverse text-white p-2 text-xs-center">
-            <i class="fa fa-tag"></i> {{ team.name }}
+            <i class="far fa-tag"></i> {{ team.name }}
         </div>
 
         <div class="col-md-4 bg-inverse text-white p-2 text-xs-center">
-            <i class="fa fa-calendar"></i> {{ team.inscriptionDate | localizeddate('long', 'short', 'fr', 'Europe/Brussels', 'dd MMMM yyyy - HH:mm') }}
+            <i class="far fa-calendar"></i> {{ team.inscriptionDate | localizeddate('long', 'short', 'fr', 'Europe/Brussels', 'dd MMMM yyyy - HH:mm') }}
         </div>
 
         <div class="col-md-4 bg-inverse p-2 text-xs-center">
             {% if not team.registered %}
-                <span class="text-danger"><i class="fa fa-close"></i> Non inscrite</span>
+                <span class="text-danger"><i class="fas fa-close"></i> Non inscrite</span>
             {% else %}
                 {% if team.valid %}
-                    <span class="text-success"><i class="fa fa-check"></i> Validée</span>
+                    <span class="text-success"><i class="fas fa-check"></i> Validée</span>
                 {% else %}
-                    <span class="text-danger"><i class="fa fa-close"></i> Non validée</span>
+                    <span class="text-danger"><i class="fas fa-close"></i> Non validée</span>
                 {% endif %}
             {% endif %}
         </div>
@@ -277,7 +277,7 @@
         {% if nbPlayer < getConfig('nb_players_team') %}
             <div id="addPlayerCard" class="col-md-3" data-toggle="tooltip" data-trigger="hover" title="Ajouter un joueur">
                 <div class="card card-outline-info card-block addPlayerCard">
-                    <span class="align-middle d-block text-xs-center"><i class="fa fa-plus"></i></span>
+                    <span class="align-middle d-block text-xs-center"><i class="fas fa-plus"></i></span>
                 </div>
             </div>
         {% endif %}
@@ -285,7 +285,7 @@
 
     <div class="row mt-2">
         <div class="col-md-6 disponibilites editable_content">
-            <h2>Vos disponibilités <small><i class="fa fa-pencil editable_tool invisible" data-toggle="tooltip" data-trigger="hover" title="Modifier les disponibilités" role="button" data-action="edit" data-id="{{ team.id }}"></i></small></h2>
+            <h2>Vos disponibilités <small><i class="fas fa-pencil editable_tool invisible" data-toggle="tooltip" data-trigger="hover" title="Modifier les disponibilités" role="button" data-action="edit" data-id="{{ team.id }}"></i></small></h2>
             {% include '@Team/Default/dispoRow.html.twig' %}
         </div>
     </div>

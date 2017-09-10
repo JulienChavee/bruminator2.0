@@ -16,19 +16,19 @@
     <div class="row">
         <div class="mb-2">
             <div class="col-md-3 bg-inverse text-white p-2 text-xs-center">
-                <i class="fa fa-calendar"></i> {{ match.date|format_date('dd MMMM YYYY - HH:mm') }}
+                <i class="fas fa-clock"></i> {{ match.date|format_date('dd MMMM YYYY - HH:mm') }}
             </div>
 
             <div class="col-md-3 bg-inverse text-white p-2 text-xs-center">
-                <i class="fa fa-user"></i> {% if match.arbitre %}{{ match.arbitre.username }}{% else %}Aucun arbitre désigné{% endif %}
+                <i class="fas fa-user"></i> {% if match.arbitre %}{{ match.arbitre.username }}{% else %}Aucun arbitre désigné{% endif %}
             </div>
 
             <div class="col-md-3 bg-inverse text-white p-2 text-xs-center">
-                <i class="fa fa-info"></i> {{ match.type }}{% if getMap(match) %} - Map {{ getMap(match).name }}{% endif %}
+                <i class="far fa-info"></i> {{ match.type }}{% if getMap(match) %} - Map {{ getMap(match).name }}{% endif %}
             </div>
 
             <div class="col-md-3 bg-inverse text-white p-2 text-xs-center">
-                <i class="fa fa-trophy"></i> {% if match.matchResult %}<span {% if match.matchResult.winner.name|length > 14 %}data-toggle="tooltip" data-trigger="hover" title="{{ match.matchResult.winner.name }}"{% endif %}>{{ match.matchResult.winner.name|truncate(14) }}</span>{% if not match.matchResult.matchResultTeam.0.forfait and not match.matchResult.matchResultTeam.1.forfait %} - {{ match.matchResult.nombreTour }} tours{% endif %}{% else %}<i>En attente des résultats</i>{% endif %}
+                <i class="far fa-trophy"></i> {% if match.matchResult %}<span {% if match.matchResult.winner.name|length > 14 %}data-toggle="tooltip" data-trigger="hover" title="{{ match.matchResult.winner.name }}"{% endif %}>{{ match.matchResult.winner.name|truncate(14) }}</span>{% if not match.matchResult.matchResultTeam.0.forfait and not match.matchResult.matchResultTeam.1.forfait %} - {{ match.matchResult.nombreTour }} tours{% endif %}{% else %}<i>En attente des résultats</i>{% endif %}
             </div>
 
             <div class="clearfix"></div>
@@ -42,7 +42,7 @@
                 <h2 class="text-danger">{{ match.attack.name }}</h2>
                 {% if not match.matchResult.matchResultTeam.0.forfait and not match.matchResult.matchResultTeam.1.forfait %}
                     <div>
-                        <b>Initiative :</b> {% if match.matchResult.first == match.attack %}<i class="fa fa-check text-success"></i> Cette équipe a commencé le match{% endif %}<br>
+                        <b>Initiative :</b> {% if match.matchResult.first == match.attack %}<i class="fas fa-check text-success"></i> Cette équipe a commencé le match{% endif %}<br>
 
                         {% for id in match.matchResult.matchResultTeam.0.initiative %}
                                 {% if not id is null %}
@@ -62,7 +62,7 @@
                             {% for points in match.points(match.attack).details.pointsSuisse %}
                                 <div class="row">
                                     <div class="col-md-5">
-                                        {% if points.nb >= 0 %}<i class="fa fa-plus text-success"></i>{% else %}<i class="fa fa-minus text-danger"></i>{% endif %} {{ points.explication }}
+                                        {% if points.nb >= 0 %}<i class="fas fa-plus text-success"></i>{% else %}<i class="fas fa-minus text-danger"></i>{% endif %} {{ points.explication }}
                                     </div>
                                     <div class="col-md-2">
                                         : {{ points.nb }}
@@ -75,7 +75,7 @@
                             {% endfor %}
                             <div class="row">
                                 <div class="col-md-5">
-                                    <i class="fa fa-calculator"></i> Total
+                                    <i class="far fa-calculator"></i> Total
                                 </div>
                                 <div class="col-md-2">
                                     : {{ match.points(match.attack).pointsSuisse }}
@@ -88,7 +88,7 @@
                             {% for points in match.points(match.attack).details.pointsGoulta %}
                                 <div class="row">
                                     <div class="col-md-5">
-                                        {% if points.nb >= 0 %}<i class="fa fa-plus text-success"></i>{% else %}<i class="fa fa-minus text-danger"></i>{% endif %} {{ points.explication }}
+                                        {% if points.nb >= 0 %}<i class="fas fa-plus text-success"></i>{% else %}<i class="fas fa-minus text-danger"></i>{% endif %} {{ points.explication }}
                                     </div>
                                     <div class="col-md-2">
                                         : {{ points.nb }}
@@ -101,7 +101,7 @@
                             {% endfor %}
                             <div class="row">
                                 <div class="col-md-5">
-                                    <i class="fa fa-calculator"></i> Total
+                                    <i class="fas fa-calculator"></i> Total
                                 </div>
                                 <div class="col-md-2">
                                     : {{ match.points(match.attack).pointsGoulta }}
@@ -116,7 +116,7 @@
                 <h2 class="text-primary">{{ match.defense.name }}</h2>
                 {% if not match.matchResult.matchResultTeam.0.forfait and not match.matchResult.matchResultTeam.1.forfait %}
                     <div>
-                        <b>Initiative :</b> {% if match.matchResult.first == match.defense %}<i class="fa fa-check text-success"></i> Cette équipe a commencé le match{% endif %}<br>
+                        <b>Initiative :</b> {% if match.matchResult.first == match.defense %}<i class="fas fa-check text-success"></i> Cette équipe a commencé le match{% endif %}<br>
 
                         {% for id in match.matchResult.matchResultTeam.1.initiative %}
                             {% if not id is null %}
@@ -136,7 +136,7 @@
                             {% for points in match.points(match.defense).details.pointsSuisse %}
                                 <div class="row">
                                     <div class="col-md-5">
-                                        {% if points.nb >= 0 %}<i class="fa fa-plus text-success"></i>{% else %}<i class="fa fa-minus text-danger"></i>{% endif %} {{ points.explication }}
+                                        {% if points.nb >= 0 %}<i class="fas fa-plus text-success"></i>{% else %}<i class="fas fa-minus text-danger"></i>{% endif %} {{ points.explication }}
                                     </div>
                                     <div class="col-md-2">
                                         : {{ points.nb }}
@@ -149,7 +149,7 @@
                             {% endfor %}
                             <div class="row">
                                 <div class="col-md-5">
-                                    <i class="fa fa-calculator"></i> Total
+                                    <i class="far fa-calculator"></i> Total
                                 </div>
                                 <div class="col-md-2">
                                     : {{ match.points(match.defense).pointsSuisse }}
@@ -161,7 +161,7 @@
                             {% for points in match.points(match.defense).details.pointsGoulta %}
                                 <div class="row">
                                     <div class="col-md-5">
-                                        {% if points.nb >= 0 %}<i class="fa fa-plus text-success"></i>{% else %}<i class="fa fa-minus text-danger"></i>{% endif %} {{ points.explication }}
+                                        {% if points.nb >= 0 %}<i class="fas fa-plus text-success"></i>{% else %}<i class="fas fa-minus text-danger"></i>{% endif %} {{ points.explication }}
                                     </div>
                                     <div class="col-md-2">
                                         : {{ points.nb }}
@@ -174,7 +174,7 @@
                             {% endfor %}
                             <div class="row">
                                 <div class="col-md-5">
-                                    <i class="fa fa-calculator"></i> Total
+                                    <i class="far fa-calculator"></i> Total
                                 </div>
                                 <div class="col-md-2">
                                     : {{ match.points(match.defense).pointsGoulta }}

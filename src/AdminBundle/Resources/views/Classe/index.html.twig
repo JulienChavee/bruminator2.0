@@ -35,7 +35,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-                    <button type="button" class="btn btn-primary editSynergie"><i class="fa fa-pencil"></i> Modifier</button>
+                    <button type="button" class="btn btn-primary editSynergie"><i class="fas fa-pencil"></i> Modifier</button>
                 </div>
             </div>
         </div>
@@ -76,7 +76,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-                    <button type="button" class="btn btn-primary editClasse"><i class="fa fa-pencil"></i> Modifier</button>
+                    <button type="button" class="btn btn-primary editClasse"><i class="fas fa-pencil"></i> Modifier</button>
                 </div>
             </div>
         </div>
@@ -134,7 +134,7 @@
                                 {% if class2.id > class.id %}
                                     {% set syn = synergie(class.id, class2.id) %}
                                     {% set rand = syn + (class.id * class2.id * random()) %}
-                                    <td class="editable_content" data-rand="{{ rand }}"><span class="synergie_value">{% if syn != null %}{{ syn }}{% else %}-{% endif %}</span> <i class="fa fa-pencil editable_tool invisible" data-toggle="tooltip" data-trigger="hover" title="Modifier la synergie" role="button" data-action="edit" data-class1="{{ class.id }}" data-class2="{{ class2.id }}" data-rand="{{ rand }}"></i></td>
+                                    <td class="editable_content" data-rand="{{ rand }}"><span class="synergie_value">{% if syn != null %}{{ syn }}{% else %}-{% endif %}</span> <i class="fas fa-pencil editable_tool invisible" data-toggle="tooltip" data-trigger="hover" title="Modifier la synergie" role="button" data-action="edit" data-class1="{{ class.id }}" data-class2="{{ class2.id }}" data-rand="{{ rand }}"></i></td>
                                 {% else %}
                                     <td class="table-active"></td>
                                 {% endif %}

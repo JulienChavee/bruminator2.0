@@ -5,7 +5,7 @@
     <div>
         <h4 {% if team.name|length > 20 %}data-toggle="tooltip" data-trigger="hover" title="{{ team.name }}"{% endif %}>{{ team.name|truncate(20) }}</h4>
         <div class="text-muted pb-1">
-            <i class="fa fa-clock-o"></i> {{ team.inscriptionDate|time_diff }} - <a href="{{ path('team_front_team_view', {'id':team.id, 'slugTeam': team.name|slugify}) }}" class="text-muted">Vers l'équipe <i class="fa fa-share"></i></a>
+            <i class="fas fa-clock"></i> {{ team.inscriptionDate|time_diff }} - <a href="{{ path('team_front_team_view', {'id':team.id, 'slugTeam': team.name|slugify}) }}" class="text-muted">Vers l'équipe <i class="fas fa-share"></i></a>
         </div>
 
         {% for player in team.players if not player.isRemplacant%}

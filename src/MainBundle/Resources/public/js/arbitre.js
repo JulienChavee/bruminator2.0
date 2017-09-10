@@ -1,7 +1,7 @@
 $('.becomeArbitre').on('click', function() {
     var button = $(this);
     button.attr('disabled', 'disabled');
-    button.prepend($('<i>').addClass('fa fa-spinner fa-pulse'));
+    button.prepend($('<i>').addClass('fas fa-spinner-third fa-spin'));
 
     var modal = $('#becomeArbitre');
 

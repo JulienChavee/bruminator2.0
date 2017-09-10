@@ -4,15 +4,15 @@ $(function () {
         format: 'DD/MM/YYYY HH:mm',
         useCurrent : false,
         icons: {
-            time: 'fa fa-clock-o',
-            date: 'fa fa-calendar',
-            up: 'fa fa-chevron-up',
-            down: 'fa fa-chevron-down',
-            previous: 'fa fa-chevron-left',
-            next: 'fa fa-chevron-right',
-            today: 'fa fa-screenshot',
-            clear: 'fa fa-trash',
-            close: 'fa fa-remove'
+            time: 'fas fa-clock',
+            date: 'far fa-calendar',
+            up: 'far fa-chevron-up',
+            down: 'far fa-chevron-down',
+            previous: 'far fa-chevron-left',
+            next: 'far fa-chevron-right',
+            today: 'far fa-screenshot',
+            clear: 'far fa-trash',
+            close: 'far fa-remove'
         }
     });
 });

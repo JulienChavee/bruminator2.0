@@ -15,7 +15,7 @@ window.setInterval(function(){
                     )
                 ).append(
                     $('<h4>').append(
-                        $('<span>').addClass('fa fa-user')
+                        $('<span>').addClass('fas fa-user')
                     ).append(
                         $('<span>').attr('id', 'viewers')
                     )

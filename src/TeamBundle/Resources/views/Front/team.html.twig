@@ -19,8 +19,8 @@
             <div class="card card-block">
                 <h4 class="card-title">Informations générales</h4>
                 <p class="card-text">
-                    <i class="fa fa-calendar"></i> {{ team.inscriptionDate | time_diff }}<br>
-                    {% if team.valid %}<i class="fa fa-check text-success"></i> Équipe validée{% else %}<i class="fa fa-remove text-danger"></i> Équipe non validée{% endif %}<br>
+                    <i class="far fa-calendar"></i> {{ team.inscriptionDate | time_diff }}<br>
+                    {% if team.valid %}<i class="fas fa-check text-success"></i> Équipe validée{% else %}<i class="fas fa-remove text-danger"></i> Équipe non validée{% endif %}<br>
                 </p>
                 {% if date(getEditionDates().inscription.end) > date() and getConfig('hide_composition') == 1 %}
                     <i>Les compositions d'équipes sont masquées en phase d'inscription</i>

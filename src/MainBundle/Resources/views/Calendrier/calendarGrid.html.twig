@@ -1,7 +1,7 @@
 <div class="text-xs-center mb-2">
-    <button class="btn btn-primary pull-left changeMonth" data-month="{{ time|date_modify('-1 month')|date('m') }}", data-year="{{ time|date_modify('-1 month')|date('Y') }}"><i class="fa fa-chevron-left"></i> {{ time|date_modify('-1 month')|format_date('MMMM') }}</button>
+    <button class="btn btn-primary pull-left changeMonth" data-month="{{ time|date_modify('-1 month')|date('m') }}", data-year="{{ time|date_modify('-1 month')|date('Y') }}"><i class="far fa-chevron-left"></i> {{ time|date_modify('-1 month')|format_date('MMMM') }}</button>
     <span class="h2">{{ time|format_date('MMMM') }}</span>
-    <button class="btn btn-primary pull-right changeMonth" data-month="{{ time|date_modify('+1 month')|date('m') }}", data-year="{{ time|date_modify('+1 month')|date('Y') }}">{{ time|date_modify('+1 month')|format_date('MMMM') }} <i class="fa fa-chevron-right"></i></button>
+    <button class="btn btn-primary pull-right changeMonth" data-month="{{ time|date_modify('+1 month')|date('m') }}", data-year="{{ time|date_modify('+1 month')|date('Y') }}">{{ time|date_modify('+1 month')|format_date('MMMM') }} <i class="far fa-chevron-right"></i></button>
 </div>
 
 <table class="table table-bordered" style="table-layout: fixed;">
@@ -38,7 +38,7 @@
                         <div class="text-xs-center mt-1">
                             {% for match in matchs if match.date and match.date|date('d') == day %}
                                 {% if loop.index == 3 %}
-                                    <span class="d-block btn btn-outline-info" role="button" data-toggle="collapse" data-target="#collapseDay{{ day }}" aria-expanded="false" aria-controls="collapseDay{{ day }}">Suivant <i class="fa fa-chevron-down"></i></span>
+                                    <span class="d-block btn btn-outline-info" role="button" data-toggle="collapse" data-target="#collapseDay{{ day }}" aria-expanded="false" aria-controls="collapseDay{{ day }}">Suivant <i class="far fa-chevron-down"></i></span>
                                     <div class="collapse" id="collapseDay{{ day }}">
 
                                     {% set collapse = true %}

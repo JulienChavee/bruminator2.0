@@ -1,10 +1,10 @@
 <tr data-id="{{ map.id }}">
     <td>{{ map.name }}</td>
-    <td>{% if map.visible %}<i class="fa fa-check text-success"></i>{% else %}<i class="fa fa-times text-danger"></i>{% endif %}</td>
+    <td>{% if map.visible %}<i class="fas fa-check text-success"></i>{% else %}<i class="fas fa-times text-danger"></i>{% endif %}</td>
     <td>
         <div class="btn-toolbar" role="toolbar" aria-label="Outils">
             <div class="btn-group btn-group-sm" role="group" aria-label="Edition">
-                <button type="button" class="btn btn-secondary" data-action="hide" data-id="{{ map.id }}" data-toggle="tooltip" title="Masquer/Rendre visible la map pour les joueurs">{% if map.visible %}<i class="fa fa-eye-slash text-danger"></i>{% else %}<i class="fa fa-eye text-success"></i>{% endif %}</button>
+                <button type="button" class="btn btn-secondary" data-action="hide" data-id="{{ map.id }}" data-toggle="tooltip" title="Masquer/Rendre visible la map pour les joueurs">{% if map.visible %}<i class="fas fa-eye-slash text-danger"></i>{% else %}<i class="fas fa-eye text-success"></i>{% endif %}</button>
             </div>
         </div>
     </td>
